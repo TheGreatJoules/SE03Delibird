@@ -1,0 +1,44 @@
+{
+  "person":
+  [
+    {
+      "owner": {
+        "id": "1",
+        "first_name": "alpha",
+        "middle_name": "",
+        "last_name": "jobs",
+        "phone_number": "(562) 985-4111",
+        "address": "1250 Bellflower Blvd, Long Beach, CA 90840",
+        "email": "steve_jobs@csulb.edu",
+        "start": 1647721600,
+        "end": ""
+      }
+    },
+    {
+      "salesperson": {
+        "id": "1",
+        "first_name": "beta",
+        "middle_name": "",
+        "last_name": "jobs",
+        "phone_number": "(562) 985-4111",
+        "address": "1250 Bellflower Blvd, Long Beach, CA 90840",
+        "email": "steve_jobs@csulb.edu",
+        "start": 1647721600,
+        "end": ""
+      }
+    },
+    {
+      "customer": {
+        "id": "1",
+        "first_name": "gamma",
+        "middle_name": "",
+        "last_name": "jobs",
+        "phone_number": "(562) 985-4111",
+        "address": "1250 Bellflower Blvd, Long Beach, CA 90840",
+        "email": "steve_jobs@csulb.edu",
+        "start": 1647721600,
+        "end": ""
+      }
+    }
+  ]
+}
