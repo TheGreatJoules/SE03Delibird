@@ -1,6 +1,5 @@
 package com.csulb.ase.assignment3.models;
 
-import com.sun.istack.internal.Nullable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
