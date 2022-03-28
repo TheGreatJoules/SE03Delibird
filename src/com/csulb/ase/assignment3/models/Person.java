@@ -16,6 +16,8 @@ public abstract class Person {
     @NonNull
     private String id;
     @NonNull
+    private PersonEnum type;
+    @NonNull
     private String first_name;
     private String middle_name;
     @NonNull
@@ -27,4 +29,6 @@ public abstract class Person {
     @NonNull
     private Date start;
     private Date end;
+
+    public Person() {}
 }

@@ -57,7 +57,7 @@ public class OwnerController {
                 .address(address)
                 .start(start)
                 .quote(quote)
-                .type(supplierType)
+                .supplies(supplierType)
                 .status(businessStatus)
                 .build();
         supplierList.add(supplier);
