@@ -23,12 +23,11 @@ public abstract class Person {
     @NonNull
     private String last_name;
     private String phone_number;
-    @NonNull
     private String address;
     private String email;
     @NonNull
-    private Date start;
-    private Date end;
+    private long start;
+    private long end;
 
     public Person() {}
 }
