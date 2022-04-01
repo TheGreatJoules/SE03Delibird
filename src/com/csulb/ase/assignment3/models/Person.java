@@ -8,15 +8,15 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 
-@AllArgsConstructor
-@SuperBuilder
-@Setter
 @Getter
+@Setter
+@SuperBuilder
+@AllArgsConstructor
 public abstract class Person {
     @NonNull
     private String id;
     @NonNull
-    private PersonEnum type;
+    private PersonEnum person_type;
     @NonNull
     private String first_name;
     private String middle_name;

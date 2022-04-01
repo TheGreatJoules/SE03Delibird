@@ -1,11 +1,24 @@
 package com.csulb.ase.assignment3.models;
 
-public interface Invoice {
-    public void CreateOrder();
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 
-    public void ReadOrder();
+import java.util.List;
 
-    public void UpdateOrder();
-
-    public void DeleteOrder();
+@Setter
+@Getter
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+public class Invoice {
+    @NonNull
+    private String id;
+    @NonNull
+    private long timestamp;
+    private double total_cost;
+    private List<Order> orders;
 }

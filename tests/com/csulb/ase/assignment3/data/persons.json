@@ -1,0 +1,3 @@
+{"id":"SAL-1","person_type":"SALESPERSON","first_name":"sally","last_name":"iris","phone_number":"(562) 985-4333","address":"1450 Bellflower Blvd, Long Beach, CA 90840","email":"sally_telly@csulb.edu","start":1647721600}
+{"id":"CUS-1","person_type":"CUSTOMER","first_name":"bob","last_name":"ford","phone_number":"(562) 985-4222","address":"1250 Bellmotor Blvd, Long Beach, CA 90840","email":"sally_telly@csulb.edu","start":1647721600}
+{"id":"SUP-1","person_type":"SUPPLIER","first_name":"ricky","last_name":"rock","phone_number":"(562) 985-4444","address":"1650 Bellstone Blvd, Long Beach, CA 90840","email":"sally_telly@csulb.edu","start":1647721600}

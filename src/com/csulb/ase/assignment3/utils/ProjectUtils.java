@@ -2,6 +2,7 @@ package com.csulb.ase.assignment3.utils;
 
 import com.csulb.ase.assignment3.models.ComponentEnum;
 import com.csulb.ase.assignment3.models.PersonEnum;
+import com.csulb.ase.assignment3.models.ProductEnum;
 
 public class ProjectUtils {
     public static final String delimit = "-";
@@ -9,6 +10,9 @@ public class ProjectUtils {
     public static int supplierCount = 0;
     public static int salespersonCount = 0;
     public static int customerCount = 0;
+    public static int warehouseCount = 0;
+    public static int orderCount = 0;
+    public static int invoiceCount = 0;
 
     public static String generatePersonId(PersonEnum type){
         StringBuilder sb = new StringBuilder();
@@ -43,19 +47,40 @@ public class ProjectUtils {
             case WAREHOUSE:
                 sb.append("WAR");
                 sb.append(delimit);
-                sb.append(++ownerCount);
+                sb.append(++warehouseCount);
                 return sb.toString();
             case ORDER:
                 sb.append("ORD");
                 sb.append(delimit);
-                sb.append(++supplierCount);
+                sb.append(++orderCount);
                 return sb.toString();
             case INVOICE:
                 sb.append("INV");
                 sb.append(delimit);
-                sb.append(++salespersonCount);
+                sb.append(++invoiceCount);
                 return sb.toString();
+            default:
+                return null;
         }
-        return "123";
     }
+
+    public static String generateProductId(ProductEnum type){
+        StringBuilder sb = new StringBuilder();
+        switch(type) {
+            case TELEVISION:
+                sb.append("TLV");
+                sb.append(delimit);
+                sb.append(++warehouseCount);
+                return sb.toString();
+            case STEREO:
+                sb.append("STR");
+                sb.append(delimit);
+                sb.append(++orderCount);
+                return sb.toString();
+
+            default:
+                return null;
+        }
+    }
+
 }

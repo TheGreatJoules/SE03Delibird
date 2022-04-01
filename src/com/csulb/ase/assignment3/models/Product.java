@@ -13,11 +13,22 @@ import lombok.experimental.SuperBuilder;
 public abstract class Product {
     @NonNull
     private String id;
-    private String productName;
-    private String Manufacturer;
+    @NonNull
+    private String warehouse_id;
+    @NonNull
+    private String warehouse_address;
+    @NonNull
+    private ProductEnum product_type;
+    @NonNull
+    private int stock_count;
+    @NonNull
+    private int sold_count;
+    private String product_name;
+    private String manufacturer;
     private String dimensions;
-    private ProductColor productColor;
+    private ProductColor product_color;
     private int year;
-    private int quantityStock;
-    private int quantitySold;
+
+    public Product() {}
+
 }

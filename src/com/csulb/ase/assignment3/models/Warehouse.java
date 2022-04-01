@@ -1,11 +1,21 @@
 package com.csulb.ase.assignment3.models;
 
-public interface Warehouse {
-    public void CreateProduct();
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    public void ReadProduct();
+import java.util.List;
+import java.util.Map;
 
-    public void UpdateProduct();
-
-    public void DeleteProduct();
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Warehouse {
+    private String id;
+    private String address;
+    private Map<ProductEnum, List<Product>> products;
 }

@@ -1,20 +1,28 @@
 package com.csulb.ase.assignment3.models;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.Setter;
 
-import java.util.Date;
-
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Order {
     @NonNull
     private String id;
     @NonNull
+    private String invoice_id;
+    @NonNull
     private String product_id;
     @NonNull
-    private Date date;
+    private ProductEnum product_type;
+    @NonNull
+    private long timestamp;
     @NonNull
     private int quantity;
     @NonNull
-    private int totalCost;
+    private double cost;
 }

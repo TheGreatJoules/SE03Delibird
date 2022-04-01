@@ -19,7 +19,9 @@ public class Owner extends Person {
     private String username;
     @NonNull
     private String password;
-    private Map<String, Customer> customerMap;
-    private Map<String, SalesPerson> salesPersonMap;
-    private Map<String, Supplier> supplierMap;
+    private Map<String, Customer> customers;
+    private Map<String, SalesPerson> salesPersons;
+    private Map<String, Supplier> suppliers;
+    private Map<String, Invoice> invoices;
+    private Inventory inventory;
 }
