@@ -15,5 +15,5 @@ import java.util.Map;
 public class Inventory {
     @NonNull
     private int total_items;
-    private Map<String, Warehouse> warehouses;
+    private int total_warehouses;
 }

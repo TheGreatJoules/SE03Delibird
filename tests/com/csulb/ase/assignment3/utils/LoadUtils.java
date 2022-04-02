@@ -6,6 +6,7 @@ import com.csulb.ase.assignment3.models.Invoice;
 import com.csulb.ase.assignment3.models.Order;
 import com.csulb.ase.assignment3.models.Owner;
 import com.csulb.ase.assignment3.models.PersonEnum;
+import com.csulb.ase.assignment3.models.Product;
 import com.csulb.ase.assignment3.models.ProductEnum;
 import com.csulb.ase.assignment3.models.SalesPerson;
 import com.csulb.ase.assignment3.models.Stereo;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LoadUtils {
@@ -103,37 +105,49 @@ public class LoadUtils {
      * @return inventory
      * @throws IOException
      */
-    public static Inventory loadInventoryFromJson(String product_path) throws IOException {
+    public static Map<String, Warehouse> loadProductsFromJson(String product_path) throws IOException {
         String[] items = IOUtils.toString(new FileInputStream(product_path), StandardCharsets.UTF_8).split("\\r?\\n");
-        Inventory inventory = new Inventory();
-        inventory.setWarehouses(new HashMap<>());
+        Map<String, Warehouse> warehouses = new HashMap<>();
         for (String item : items) {
             JSONObject jsonItem = new JSONObject(item);
             switch (ProductEnum.valueOf(jsonItem.get("product_type").toString())) {
                 case TELEVISION:
                     Television television = objectMapper.readValue(item, Television.class);
-                    if (inventory.getWarehouses().get(television.getWarehouse_id()) == null) {
-                        inventory.getWarehouses().put(television.getWarehouse_id(), Warehouse.builder()
+                    if (warehouses.get(television.getWarehouse_id()) == null) {
+                        warehouses.put(television.getWarehouse_id(), Warehouse.builder()
                                         .id(television.getWarehouse_id())
                                         .address(television.getWarehouse_address())
                                         .products(new HashMap<>())
                                 .build());
                     }
-                    inventory.getWarehouses().get(television.getWarehouse_id()).getProducts().computeIfAbsent(ProductEnum.TELEVISION, k -> new ArrayList<>());
-                    inventory.getWarehouses().get(television.getWarehouse_id()).getProducts().get(ProductEnum.TELEVISION).add(television);
+                    warehouses.get(television.getWarehouse_id()).getProducts().computeIfAbsent(ProductEnum.TELEVISION, k -> new ArrayList<>());
+                    warehouses.get(television.getWarehouse_id()).getProducts().get(ProductEnum.TELEVISION).add(television);
                     break;
                 case STEREO:
                     Stereo stereo = objectMapper.readValue(item, Stereo.class);
-                    if (inventory.getWarehouses().get(stereo.getWarehouse_id()) == null) {
-                        inventory.getWarehouses().put(stereo.getWarehouse_id(), Warehouse.builder()
+                    if (warehouses.get(stereo.getWarehouse_id()) == null) {
+                        warehouses.put(stereo.getWarehouse_id(), Warehouse.builder()
                                 .id(stereo.getWarehouse_id())
                                 .address(stereo.getWarehouse_address())
                                 .products(new HashMap<>())
                                 .build());
                     }
-                    inventory.getWarehouses().get(stereo.getWarehouse_id()).getProducts().computeIfAbsent(ProductEnum.STEREO, k -> new ArrayList<>());
-                    inventory.getWarehouses().get(stereo.getWarehouse_id()).getProducts().get(ProductEnum.TELEVISION).add(stereo);
+                    warehouses.get(stereo.getWarehouse_id()).getProducts().computeIfAbsent(ProductEnum.STEREO, k -> new ArrayList<>());
+                    warehouses.get(stereo.getWarehouse_id()).getProducts().get(ProductEnum.TELEVISION).add(stereo);
                     break;
+            }
+        }
+        return warehouses;
+    }
+
+    public static Inventory loadInventoryFromWarehouses(Map<String, Warehouse> warehouses) {
+        Inventory inventory = new Inventory();
+        for (Map.Entry<String, Warehouse> warehouseEntry : warehouses.entrySet()) {
+            if (warehouseEntry.getValue().getProducts() != null) {
+                for (Map.Entry<ProductEnum, List<Product>> productEntry : warehouseEntry.getValue().getProducts().entrySet()) {
+                    inventory.setTotal_items(inventory.getTotal_items() + productEntry.getValue().size());
+                }
+                inventory.setTotal_warehouses(inventory.getTotal_warehouses() + 1);
             }
         }
         return inventory;

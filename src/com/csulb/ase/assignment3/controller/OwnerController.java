@@ -13,10 +13,12 @@ import com.csulb.ase.assignment3.models.PersonEnum;
 import com.csulb.ase.assignment3.models.SalesPerson;
 import com.csulb.ase.assignment3.models.Supplier;
 import com.csulb.ase.assignment3.models.SupplierType;
+import com.csulb.ase.assignment3.models.Warehouse;
 import com.csulb.ase.assignment3.utils.ProjectUtils;
 
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.Map;
 
 public class OwnerController {
     private final Owner owner;
@@ -35,9 +37,9 @@ public class OwnerController {
         this.inventoryManager = new InventoryManager();
     }
 
-    public OwnerController(Owner owner, Inventory inventory) {
+    public OwnerController(Owner owner, Inventory inventory, Map<String, Warehouse> warehouses) {
         this.owner = owner;
-        this.inventoryManager = inventory != null ? new InventoryManager(inventory) : new InventoryManager();
+        this.inventoryManager = new InventoryManager(inventory, warehouses);
     }
 
     public Person createCustomer(String firstname, String middleName, String lastname, String phone_number, String email, String address, long start,
@@ -111,4 +113,23 @@ public class OwnerController {
         return salesperson;
     }
 
+    public int addWarehhouse() {
+        return 0;
+    }
+
+    public int removeWarehouse() {
+        return 0;
+    }
+
+    public int addProduct() {
+        return 0;
+    }
+
+    public int removeProduct() {
+        return 0;
+    }
+
+    public int updateProduct() {
+        return 0;
+    }
 }
