@@ -1,5 +1,6 @@
 package com.csulb.ase.assignment3.utils;
 
+import com.csulb.ase.assignment3.components.InvoiceManager;
 import com.csulb.ase.assignment3.models.Customer;
 import com.csulb.ase.assignment3.models.Inventory;
 import com.csulb.ase.assignment3.models.Invoice;
@@ -70,6 +71,19 @@ public class LoadUtils {
 
         owner.setInvoices(loadInvoicesFromJson(order_path));
         return owner;
+    }
+
+    public static InvoiceManager getInvoiceFromJson(String order_path) throws IOException {
+        return new InvoiceManager(loadInvoicesFromJson(order_path));
+    }
+
+    public static Order getOrderFromJson(String str) {
+        JSONObject jsonItem = new JSONObject(str);
+        try {
+            return objectMapper.readValue(str, Order.class);
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     public static Product getProductFromJson(String str) {

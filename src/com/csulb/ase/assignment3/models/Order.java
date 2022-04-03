@@ -16,6 +16,8 @@ public class Order {
     @NonNull
     private String invoice_id;
     @NonNull
+    private String warehouse_id;
+    @NonNull
     private String product_id;
     @NonNull
     private ProductEnum product_type;

@@ -13,7 +13,6 @@ import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class TestWarehouseManager {
     private static final String PRODUCTS_PATH = "tests/com/csulb/ase/assignment3/data/products.json";
     private WarehouseManager warehouseManager;
