@@ -25,9 +25,15 @@ public abstract class Product {
     private int stock_count;
     private int sold_count;
     private String product_name;
+    private String model_name;
+    private String series;
     private String manufacturer;
     private String dimensions;
-    private ColorEnum product_color;
+    private double height;
+    private double width;
+    private double depth;
+    private double weight;
     private int year;
+    private ColorEnum product_color;
 
 }

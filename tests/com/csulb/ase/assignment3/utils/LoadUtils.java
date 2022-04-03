@@ -20,9 +20,7 @@ import org.json.JSONObject;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class LoadUtils {
@@ -72,6 +70,22 @@ public class LoadUtils {
 
         owner.setInvoices(loadInvoicesFromJson(order_path));
         return owner;
+    }
+
+    public static Product getProductFromJson(String str) {
+        JSONObject jsonItem = new JSONObject(str);
+        try {
+            switch (ProductEnum.valueOf(jsonItem.get("product_type").toString())) {
+                case STEREO:
+                    return objectMapper.readValue(str, Stereo.class);
+                case TELEVISION:
+                    return objectMapper.readValue(str, Television.class);
+                default:
+                    return null;
+            }
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     /**

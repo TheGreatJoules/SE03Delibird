@@ -55,6 +55,10 @@ public class InventoryManager {
         return 0;
     }
 
+    public Product readProduct(String warehouse_id, String product_id) {
+        return this.warehouseManager.readProduct(warehouse_id, product_id);
+    }
+
     public Warehouse readInventory(String warehouse_id) {
         return this.warehouseManager.readWarehouse(warehouse_id);
     }

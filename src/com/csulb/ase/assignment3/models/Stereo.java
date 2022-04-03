@@ -12,7 +12,10 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Stereo extends Product{
-    private String stereoType;
-    private double outputWattage;
+    private double output_wattage;
     private double channels;
+    private double audio_zones;
+    private boolean wifi_capable;
+    private boolean bluetooth_enabled;
+    private String minimum_impedance;
 }

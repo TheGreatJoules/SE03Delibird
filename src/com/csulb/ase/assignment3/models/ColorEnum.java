@@ -9,6 +9,6 @@ public enum ColorEnum {
     PURPLE,
     PINK,
     BLACK,
-    WHILE,
+    WHITE,
     GREY
 }
