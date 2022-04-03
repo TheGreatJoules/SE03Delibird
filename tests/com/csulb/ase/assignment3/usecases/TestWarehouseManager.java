@@ -2,6 +2,7 @@ package com.csulb.ase.assignment3.usecases;
 
 import com.csulb.ase.assignment3.components.WarehouseManager;
 import com.csulb.ase.assignment3.models.Product;
+import com.csulb.ase.assignment3.models.Warehouse;
 import com.csulb.ase.assignment3.utils.LoadUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -56,6 +57,24 @@ public class TestWarehouseManager {
         assert actual == null;
     }
 
+    @Test(dataProvider = "read-warehouses")
+    public void test_FindWarehouse(String str) {
+        Warehouse warehouse = this.warehouseManager.readWarehouse(str);
+        assert warehouse != null;
+    }
+
+    @Test(dataProvider = "read-warehouses")
+    public void test_DeleteWarehouse(String str) {
+        int trasaction_status = this.warehouseManager.deleteWarehouse(str);
+        assert trasaction_status == 0;
+    }
+
+    @Test(dataProvider = "update-warehouses")
+    public void test_UpdateWarehouse(String warehouse_id, String address) {
+        int trasaction_status = this.warehouseManager.updateWarehouse(warehouse_id, address);
+        assert trasaction_status == 0;
+    }
+
     @DataProvider(name="read-products")
     public static Object[][] getSavedProducts() {
         return new Object[][] {
@@ -74,6 +93,20 @@ public class TestWarehouseManager {
     public static Object[][] getUpdateProducts() {
         return new Object[][] {
                 {"{\"id\":\"PRO-STR-123\",\"warehouse_id\":\"WAR-USA-CA-1\",\"warehouse_address\":\"Long Beach\",\"product_type\":\"STEREO\",\"manufacturer\":\"Sony\",\"model_name\":\"R-S202BL\",\"series\":\"RX-V\",\"height\":5.5,\"width\":17.125,\"depth\":12.625,\"weight\":14.8,\"product_color\":\"WHITE\",\"output_wattage\":200,\"channels\":2,\"audio_zones\":1,\"minimum_impedance\":\"4 ohms\",\"wifi_capable\":false,\"bluetooth_enabled\":true,\"stock_count\":5,\"sold_count\":0}"}
+        };
+    }
+
+    @DataProvider(name="read-warehouses")
+    public static Object[][] getSavedWarehouse() {
+        return new Object[][] {
+                {"WAR-USA-CA-1"}
+        };
+    }
+
+    @DataProvider(name="update-warehouses")
+    public static Object[][] getUpdateWarehouse() {
+        return new Object[][] {
+                {"WAR-USA-CA-1", "11837 Artesia Blvd"}
         };
     }
 }
