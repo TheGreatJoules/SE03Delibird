@@ -89,11 +89,11 @@ public class LoadUtils {
                 invoices.put(order.getInvoice_id(), Invoice.builder()
                                 .id(order.getInvoice_id())
                                 .timestamp(order.getTimestamp())
-                                .orders(new ArrayList<>())
+                                .orders(new HashMap<>())
                         .build());
             }
             double current_cost = invoices.get(order.getInvoice_id()).getTotal_cost();
-            invoices.get(order.getInvoice_id()).getOrders().add(order);
+            invoices.get(order.getInvoice_id()).getOrders().put(order.getId(), order);
             invoices.get(order.getInvoice_id()).setTotal_cost(current_cost + order.getCost());
         }
         return invoices;

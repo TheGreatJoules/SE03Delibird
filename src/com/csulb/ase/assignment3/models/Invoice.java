@@ -8,6 +8,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 
 @Setter
 @Getter
@@ -20,5 +21,5 @@ public class Invoice {
     @NonNull
     private long timestamp;
     private double total_cost;
-    private List<Order> orders;
+    private Map<String, Order> orders;
 }

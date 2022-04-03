@@ -35,7 +35,7 @@ public class WarehouseManager {
     }
 
     public int createProduct(Product product) {
-        Warehouse warehouse = warehouses.get(product.getWarehouse_id());
+        Warehouse warehouse = this.warehouses.get(product.getWarehouse_id());
         if (warehouse == null) {
             warehouse = createWarehouse(product.getWarehouse_address(), null);
             this.total_warehouses += 1;
@@ -46,13 +46,13 @@ public class WarehouseManager {
     }
 
     public int updateProduct(Product product) {
-        Warehouse warehouse = warehouses.get(product.getWarehouse_id());
+        Warehouse warehouse = this.warehouses.get(product.getWarehouse_id());
         warehouse.getProducts().put(product.getId(), product);
         return 0;
     }
 
     public int deleteProduct(Product product) {
-        Warehouse warehouse = warehouses.get(product.getWarehouse_id());
+        Warehouse warehouse = this.warehouses.get(product.getWarehouse_id());
         if (warehouse.getProducts().get(product.getId()) == null) {
             return 1;
         }
@@ -73,12 +73,12 @@ public class WarehouseManager {
         return warehouse;
     }
 
-    public Warehouse readWarehouse(String id) {
-        return warehouses.get(id);
+    public Warehouse readWarehouse(String warehouse_id) {
+        return warehouses.get(warehouse_id);
     }
 
-    public int updateWarehouse(String id, String address) {
-        Warehouse warehouse = warehouses.get(id);
+    public int updateWarehouse(String warehouse_id, String address) {
+        Warehouse warehouse = this.warehouses.get(warehouse_id);
         if (warehouse == null) {
             return -1;
         }
