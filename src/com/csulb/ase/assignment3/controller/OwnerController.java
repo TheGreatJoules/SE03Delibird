@@ -5,23 +5,19 @@ import com.csulb.ase.assignment3.models.BusinessStatus;
 import com.csulb.ase.assignment3.models.Customer;
 import com.csulb.ase.assignment3.models.DeliveryEnum;
 import com.csulb.ase.assignment3.models.Inventory;
-import com.csulb.ase.assignment3.models.Invoice;
 import com.csulb.ase.assignment3.models.Owner;
 import com.csulb.ase.assignment3.models.PaymentEnum;
 import com.csulb.ase.assignment3.models.Person;
 import com.csulb.ase.assignment3.models.PersonEnum;
 import com.csulb.ase.assignment3.models.Product;
-import com.csulb.ase.assignment3.models.ProductEnum;
 import com.csulb.ase.assignment3.models.SalesPerson;
 import com.csulb.ase.assignment3.models.Supplier;
 import com.csulb.ase.assignment3.models.SupplierType;
 import com.csulb.ase.assignment3.models.Warehouse;
-import com.csulb.ase.assignment3.models.WarehouseTransaction;
 import com.csulb.ase.assignment3.utils.ProjectUtils;
 
 import java.time.Instant;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class OwnerController {
@@ -117,25 +113,22 @@ public class OwnerController {
         return salesperson;
     }
 
-    public int addWarehhouse(String address, Map<ProductEnum, List<Product>> products) {
-        inventoryManager.createWarehouse(address, products);
+    public Product retrieveProduct(String warehouse_id, String product_id) {
+        return inventoryManager.readInventory(warehouse_id).getProducts().get(product_id);
+    }
+
+    public int addProduct(Product product) {
+        inventoryManager.createInventory(product);
         return 0;
     }
 
-    public int removeWarehouse(String id) {
-        inventoryManager.deleteWarehouse(id);
+    public int updateProduct(Product product) {
+        inventoryManager.updateInventory(product);
         return 0;
     }
 
-    public int addProduct() {
-        return 0;
-    }
-
-    public int removeProduct() {
-        return 0;
-    }
-
-    public int updateProduct() {
+    public int removeProduct(Product product) {
+        inventoryManager.deleteInventory(product);
         return 0;
     }
 }

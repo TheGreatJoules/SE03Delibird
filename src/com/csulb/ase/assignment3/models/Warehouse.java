@@ -20,5 +20,5 @@ public class Warehouse {
     private String id;
     private String address;
     private int total_items;
-    private Map<ProductEnum, List<Product>> products;
+    private Map<String, Product> products;
 }

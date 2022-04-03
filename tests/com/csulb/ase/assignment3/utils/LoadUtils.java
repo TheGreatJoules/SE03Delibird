@@ -120,8 +120,7 @@ public class LoadUtils {
                                         .products(new HashMap<>())
                                 .build());
                     }
-                    warehouses.get(television.getWarehouse_id()).getProducts().computeIfAbsent(ProductEnum.TELEVISION, k -> new ArrayList<>());
-                    warehouses.get(television.getWarehouse_id()).getProducts().get(ProductEnum.TELEVISION).add(television);
+                    warehouses.get(television.getWarehouse_id()).getProducts().put(television.getId(), television);
                     break;
                 case STEREO:
                     Stereo stereo = objectMapper.readValue(item, Stereo.class);
@@ -132,8 +131,7 @@ public class LoadUtils {
                                 .products(new HashMap<>())
                                 .build());
                     }
-                    warehouses.get(stereo.getWarehouse_id()).getProducts().computeIfAbsent(ProductEnum.STEREO, k -> new ArrayList<>());
-                    warehouses.get(stereo.getWarehouse_id()).getProducts().get(ProductEnum.TELEVISION).add(stereo);
+                    warehouses.get(stereo.getWarehouse_id()).getProducts().put(stereo.getId(), stereo);
                     break;
             }
         }
@@ -144,13 +142,12 @@ public class LoadUtils {
         Inventory inventory = new Inventory();
         for (Map.Entry<String, Warehouse> warehouseEntry : warehouses.entrySet()) {
             if (warehouseEntry.getValue().getProducts() != null) {
-                for (Map.Entry<ProductEnum, List<Product>> productEntry : warehouseEntry.getValue().getProducts().entrySet()) {
-                    inventory.setTotal_items(inventory.getTotal_items() + productEntry.getValue().size());
+                for (Map.Entry<String, Product> productEntry : warehouseEntry.getValue().getProducts().entrySet()) {
+                    inventory.setTotal_items(inventory.getTotal_items() + 1);
                 }
                 inventory.setTotal_warehouses(inventory.getTotal_warehouses() + 1);
             }
         }
         return inventory;
     }
-
 }
