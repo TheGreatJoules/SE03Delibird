@@ -10,14 +10,18 @@ import com.csulb.ase.assignment3.models.Owner;
 import com.csulb.ase.assignment3.models.PaymentEnum;
 import com.csulb.ase.assignment3.models.Person;
 import com.csulb.ase.assignment3.models.PersonEnum;
+import com.csulb.ase.assignment3.models.Product;
+import com.csulb.ase.assignment3.models.ProductEnum;
 import com.csulb.ase.assignment3.models.SalesPerson;
 import com.csulb.ase.assignment3.models.Supplier;
 import com.csulb.ase.assignment3.models.SupplierType;
 import com.csulb.ase.assignment3.models.Warehouse;
+import com.csulb.ase.assignment3.models.WarehouseTransaction;
 import com.csulb.ase.assignment3.utils.ProjectUtils;
 
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OwnerController {
@@ -113,11 +117,13 @@ public class OwnerController {
         return salesperson;
     }
 
-    public int addWarehhouse() {
+    public int addWarehhouse(String address, Map<ProductEnum, List<Product>> products) {
+        inventoryManager.createWarehouse(address, products);
         return 0;
     }
 
-    public int removeWarehouse() {
+    public int removeWarehouse(String id) {
+        inventoryManager.deleteWarehouse(id);
         return 0;
     }
 
