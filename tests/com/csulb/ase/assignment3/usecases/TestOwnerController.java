@@ -2,6 +2,7 @@ package com.csulb.ase.assignment3.usecases;
 
 import com.csulb.ase.assignment3.components.InventoryManager;
 import com.csulb.ase.assignment3.components.InvoiceManager;
+import com.csulb.ase.assignment3.components.PersonManager;
 import com.csulb.ase.assignment3.controller.OwnerController;
 import com.csulb.ase.assignment3.models.Order;
 import com.csulb.ase.assignment3.models.Owner;
@@ -24,6 +25,7 @@ public class TestOwnerController {
     private static final String PRODUCTS_PATH = "tests/com/csulb/ase/assignment3/data/products.json";
 
     private Owner owner;
+    private PersonManager personManager;
     private InvoiceManager invoiceManager;
     private InventoryManager inventoryManager;
     private OwnerController ownerController;
@@ -32,76 +34,70 @@ public class TestOwnerController {
     public void setup() throws IOException {
         invoiceManager = LoadUtils.getInvoiceFromJson(ORDERS_PATH);
         inventoryManager = LoadUtils.loadInventoryManagerFromJson(PRODUCTS_PATH);
+        personManager = LoadUtils.loadPersonManagerFromJson(PERSONS_PATH);
         owner = LoadUtils.loadOwnerFromJson(OWNER_PATH, PERSONS_PATH);
-        ownerController = new OwnerController(owner, inventoryManager, invoiceManager);
+        ownerController = new OwnerController(owner, inventoryManager, invoiceManager, personManager);
     }
 
     @Test(dataProvider = "add-persons")
     public void test_CreateReadPerson_Successful(String str) {
-        OwnerController ownerController = new OwnerController(owner);
         Person exact = LoadUtils.loadPersonFromJson(str);
-        int transaction_status = ownerController.createPerson(Objects.requireNonNull(exact));
+        int transaction_status = this.ownerController.createPerson(Objects.requireNonNull(exact));
         assert transaction_status == 0;
-        Person actual = ownerController.retrievePerson(exact.getId());
+        Person actual = this.ownerController.readPerson(exact.getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 
     @Test(dataProvider = "add-products")
     public void test_CreateReadProduct_Successful(String str) {
-        OwnerController ownerController = new OwnerController(owner);
         Product exact = LoadUtils.getProductFromJson(str);
-        int transaction_status = ownerController.createProduct(exact);
+        int transaction_status = this.ownerController.createProduct(exact);
         assert transaction_status == 0;
-        Product actual = ownerController.retrieveProduct(Objects.requireNonNull(exact).getId());
+        Product actual = this.ownerController.retrieveProduct(Objects.requireNonNull(exact).getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 
     @Test(dataProvider = "update-products")
     public void test_UpdateReadProduct_Successful(String str) {
-        OwnerController ownerController = new OwnerController(owner, inventoryManager);
         Product exact = LoadUtils.getProductFromJson(str);
-        int transaction_status = ownerController.updateProduct(exact);
+        int transaction_status = this.ownerController.updateProduct(exact);
         assert transaction_status == 0;
-        Product actual = ownerController.retrieveProduct(Objects.requireNonNull(exact).getId());
+        Product actual = this.ownerController.retrieveProduct(Objects.requireNonNull(exact).getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 
     @Test(dataProvider = "delete-products")
     public void test_DeleteReadProduct_Successful(String product_id) {
-        OwnerController ownerController = new OwnerController(owner, inventoryManager);
-        int transaction_status = ownerController.deleteProduct(product_id);
+        int transaction_status = this.ownerController.deleteProduct(product_id);
         assert transaction_status == 0;
-        Product actual = ownerController.retrieveProduct(product_id);
+        Product actual = this.ownerController.retrieveProduct(product_id);
         assert actual == null;
     }
 
     @Test(dataProvider = "add-orders")
     public void test_AddReadOrder_Successful(String str) {
-        OwnerController ownerController = new OwnerController(owner, inventoryManager);
         Order exact = LoadUtils.getOrderFromJson(str);
-        int transaction_status = ownerController.createOrder(exact);
+        int transaction_status = this.ownerController.createOrder(exact);
         assert transaction_status == 0;
-        Order actual = ownerController.retrieveOrder(Objects.requireNonNull(exact).getId());
+        Order actual = this.ownerController.readOrder(Objects.requireNonNull(exact).getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 
     @Test(dataProvider = "delete-orders")
     public void test_DeleteReadOrder_Successful(String str) {
-        OwnerController ownerController = new OwnerController(owner, inventoryManager, invoiceManager);
         Order exact = LoadUtils.getOrderFromJson(str);
-        int transaction_status = ownerController.deleteOrder(Objects.requireNonNull(exact).getId());
+        int transaction_status = this.ownerController.deleteOrder(Objects.requireNonNull(exact).getId());
         assert transaction_status == 0;
-        Order actual = ownerController.retrieveOrder(Objects.requireNonNull(exact).getId());
+        Order actual = this.ownerController.readOrder(Objects.requireNonNull(exact).getId());
         assert actual == null;
     }
 
     @Test(dataProvider = "update-orders")
     public void test_UpdateReadOrder_Successful(String str) {
-        OwnerController ownerController = new OwnerController(owner, inventoryManager, invoiceManager);
         Order exact = LoadUtils.getOrderFromJson(str);
-        int transaction_status = ownerController.updateOrder(exact);
+        int transaction_status = this.ownerController.updateOrder(exact);
         assert transaction_status == 0;
-        Order actual = ownerController.retrieveOrder(Objects.requireNonNull(exact).getId());
+        Order actual = this.ownerController.readOrder(Objects.requireNonNull(exact).getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 

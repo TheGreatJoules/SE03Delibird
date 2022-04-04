@@ -2,6 +2,7 @@ package com.csulb.ase.assignment3.utils;
 
 import com.csulb.ase.assignment3.components.InventoryManager;
 import com.csulb.ase.assignment3.components.InvoiceManager;
+import com.csulb.ase.assignment3.components.PersonManager;
 import com.csulb.ase.assignment3.models.Customer;
 import com.csulb.ase.assignment3.models.Inventory;
 import com.csulb.ase.assignment3.models.Invoice;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class LoadUtils {
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -37,39 +39,19 @@ public class LoadUtils {
      * @throws IOException
      */
     public static Owner loadOwnerFromJson(String owner_path, String people_path) throws IOException {
-        Owner owner = objectMapper.readValue(IOUtils.toString(new FileInputStream(owner_path), StandardCharsets.UTF_8), Owner.class);
-        String[] persons = IOUtils.toString(new FileInputStream(people_path), StandardCharsets.UTF_8).split("\\r?\\n");
+        return objectMapper.readValue(IOUtils.toString(new FileInputStream(owner_path), StandardCharsets.UTF_8), Owner.class);
+    }
 
-        for (String person : persons) {
-            JSONObject jsonItem = new JSONObject(person);
-            switch (PersonEnum.valueOf(jsonItem.get("person_type").toString())) {
-                case OWNER:
-                    break;
-                case CUSTOMER:
-                    if (owner.getCustomers() == null) {
-                        owner.setCustomers(new HashMap<>());
-                    }
-                    Customer customer = objectMapper.readValue(person, Customer.class);
-                    owner.getCustomers().put(customer.getId(), customer);
-                    break;
-                case SALESPERSON:
-                    if (owner.getSalesPersons() == null) {
-                        owner.setSalesPersons(new HashMap<>());
-                    }
-                    SalesPerson salesPerson = objectMapper.readValue(person, SalesPerson.class);
-                    owner.getSalesPersons().put(salesPerson.getId(), salesPerson);
-                    break;
-                case SUPPLIER:
-                    if (owner.getSuppliers() == null) {
-                        owner.setSuppliers(new HashMap<>());
-                    }
-                    Supplier supplier = objectMapper.readValue(person, Supplier.class);
-                    owner.getSuppliers().put(supplier.getId(), supplier);
-                    break;
-                default:
-            }
+    public static PersonManager loadPersonManagerFromJson(String people_path) throws IOException {
+        Map<String, Person> persons = new HashMap<>();
+        String[] people = IOUtils.toString(new FileInputStream(people_path), StandardCharsets.UTF_8).split("\\r?\\n");
+
+        for (String person : people) {
+            Person p = loadPersonFromJson(person);
+            persons.put(Objects.requireNonNull(p).getId(), p);
         }
-        return owner;
+
+        return new PersonManager(persons);
     }
 
     public static Person loadPersonFromJson(String str) {

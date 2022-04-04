@@ -42,7 +42,7 @@ public class InvoiceManager{
         Invoice invoice = invoices.get(ids[0]);
         if (invoice == null) {
             invoice = Invoice.builder()
-                    .id(Objects.requireNonNull(GeneratorUtils.generateEntityId(ComponentEnum.INVOICE)))
+                    .id(ids[0])
                     .timestamp(order.getTimestamp())
                     .orders(new HashMap<>())
                     .build();
