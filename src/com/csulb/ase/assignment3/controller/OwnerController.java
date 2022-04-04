@@ -134,6 +134,10 @@ public class OwnerController {
         return 0;
     }
 
+    public Order retrieveOrder(String order_id) {
+        return this.invoiceManager.readOrder(order_id);
+    }
+
     public int updateOrder(Order order) {
         this.invoiceManager.updateOrder(order);
         return 0;

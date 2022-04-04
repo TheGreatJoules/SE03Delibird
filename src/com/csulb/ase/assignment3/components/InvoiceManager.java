@@ -1,10 +1,13 @@
 package com.csulb.ase.assignment3.components;
 
+import com.csulb.ase.assignment3.models.ComponentEnum;
 import com.csulb.ase.assignment3.models.Invoice;
 import com.csulb.ase.assignment3.models.Order;
+import com.csulb.ase.assignment3.utils.GeneratorUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class InvoiceManager{
     private Map<String, Invoice> invoices;
@@ -39,6 +42,7 @@ public class InvoiceManager{
         Invoice invoice = invoices.get(ids[0]);
         if (invoice == null) {
             invoice = Invoice.builder()
+                    .id(Objects.requireNonNull(GeneratorUtils.generateEntityId(ComponentEnum.INVOICE)))
                     .timestamp(order.getTimestamp())
                     .orders(new HashMap<>())
                     .build();
@@ -66,6 +70,9 @@ public class InvoiceManager{
      */
     public Order readOrder(String order_id) {
         String[] ids = order_id.split(":");
+        if (readInvoice(ids[0]) == null) {
+            return null;
+        }
         return readInvoice(ids[0]).getOrders().get(order_id);
     }
 
@@ -80,6 +87,9 @@ public class InvoiceManager{
         }
         String[] ids = order.getId().split(":");
         Invoice invoice = invoices.get(ids[0]);
+        if (invoice == null) {
+            return -1;
+        }
         invoice.getOrders().put(order.getId(), order);
         return 0;
     }
@@ -109,6 +119,9 @@ public class InvoiceManager{
             return -1;
         }
         String[] ids = order_id.split(":");
+        if (this.invoices.get(ids[0]) == null || this.invoices.get(ids[0]).getOrders() == null) {
+            return -1;
+        }
         this.invoices.get(ids[0]).getOrders().remove(order_id);
 
         Invoice invoice = this.invoices.get(ids[0]);

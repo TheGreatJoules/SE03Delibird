@@ -3,6 +3,7 @@ package com.csulb.ase.assignment3.usecases;
 import com.csulb.ase.assignment3.components.InventoryManager;
 import com.csulb.ase.assignment3.components.InvoiceManager;
 import com.csulb.ase.assignment3.controller.OwnerController;
+import com.csulb.ase.assignment3.models.Order;
 import com.csulb.ase.assignment3.models.Owner;
 import com.csulb.ase.assignment3.models.Person;
 import com.csulb.ase.assignment3.models.Product;
@@ -74,6 +75,36 @@ public class TestOwnerController {
         assert actual == null;
     }
 
+    @Test(dataProvider = "add-orders")
+    public void test_AddReadOrder_Successful(String str) {
+        OwnerController ownerController = new OwnerController(owner, inventoryManager);
+        Order exact = LoadUtils.getOrderFromJson(str);
+        int transaction_status = ownerController.createOrder(exact);
+        assert transaction_status == 0;
+        Order actual = ownerController.retrieveOrder(Objects.requireNonNull(exact).getId());
+        assertThat(actual).isEqualToComparingFieldByField(exact);
+    }
+
+    @Test(dataProvider = "delete-orders")
+    public void test_DeleteReadOrder_Successful(String str) {
+        OwnerController ownerController = new OwnerController(owner, inventoryManager, invoiceManager);
+        Order exact = LoadUtils.getOrderFromJson(str);
+        int transaction_status = ownerController.deleteOrder(Objects.requireNonNull(exact).getId());
+        assert transaction_status == 0;
+        Order actual = ownerController.retrieveOrder(Objects.requireNonNull(exact).getId());
+        assert actual == null;
+    }
+
+    @Test(dataProvider = "update-orders")
+    public void test_UpdateReadOrder_Successful(String str) {
+        OwnerController ownerController = new OwnerController(owner, inventoryManager, invoiceManager);
+        Order exact = LoadUtils.getOrderFromJson(str);
+        int transaction_status = ownerController.updateOrder(exact);
+        assert transaction_status == 0;
+        Order actual = ownerController.retrieveOrder(Objects.requireNonNull(exact).getId());
+        assertThat(actual).isEqualToComparingFieldByField(exact);
+    }
+
     @DataProvider(name="add-persons")
     public static Object[][] getAddedPersons() {
         return new Object[][] {
@@ -99,6 +130,28 @@ public class TestOwnerController {
     public static Object[][] getDeletedProducts() {
         return new Object[][] {
                 {"WAR-1:PRO-STR-123"}
+        };
+    }
+
+    @DataProvider(name="add-orders")
+    public static Object[][] getAddedOrders() {
+        return new Object[][] {
+                {"{\"id\":\"INV-1:ORD-4:STR-235\",\"product_type\":\"STEREO\",\"timestamp\":1648722131,\"quantity\":5,\"cost\":199.99}"},
+                {"{\"id\":\"INV-2:ORD-1:TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}\n"}
+        };
+    }
+
+    @DataProvider(name="update-orders")
+    public static Object[][] getUpdatedOrders() {
+        return new Object[][] {
+                {"{\"id\":\"INV-1:ORD-1:TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":3,\"cost\":299.99}\n"}
+        };
+    }
+
+    @DataProvider(name="delete-orders")
+    public static Object[][] getDeletedOrders() {
+        return new Object[][] {
+                {"{\"id\":\"INV-1:ORD-1:TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}\n"}
         };
     }
 }
