@@ -1,5 +1,6 @@
 package com.csulb.ase.assignment3.utils;
 
+import com.csulb.ase.assignment3.components.InventoryManager;
 import com.csulb.ase.assignment3.components.InvoiceManager;
 import com.csulb.ase.assignment3.models.Customer;
 import com.csulb.ase.assignment3.models.Inventory;
@@ -164,6 +165,11 @@ public class LoadUtils {
             }
         }
         return warehouses;
+    }
+
+    public static InventoryManager loadInventoryManagerFromJson(String product_path) throws IOException {
+        Map<String, Warehouse> warehouses = LoadUtils.loadProductsFromJson(product_path);
+        return new InventoryManager(warehouses);
     }
 
     public static Inventory loadInventoryFromWarehouses(Map<String, Warehouse> warehouses) {

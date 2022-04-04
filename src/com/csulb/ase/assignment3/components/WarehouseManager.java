@@ -3,7 +3,7 @@ package com.csulb.ase.assignment3.components;
 import com.csulb.ase.assignment3.models.ComponentEnum;
 import com.csulb.ase.assignment3.models.Product;
 import com.csulb.ase.assignment3.models.Warehouse;
-import com.csulb.ase.assignment3.utils.ProjectUtils;
+import com.csulb.ase.assignment3.utils.GeneratorUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,6 +56,7 @@ public class WarehouseManager {
      * @return status code
      */
     public int createProduct(Product product) {
+        int response = 0;
         if (product == null) {
             return -1;
         }
@@ -63,10 +64,14 @@ public class WarehouseManager {
         if (warehouse == null) {
             warehouse = createWarehouse(product.getWarehouse_address(), null);
             this.total_warehouses += 1;
+            response += 1;
+        }
+        if (warehouse.getProducts().get(product.getId()) == null) {
+            response += 1;
         }
         warehouse.getProducts().put(product.getId(), product);
         this.total_items += 1;
-        return 0;
+        return response;
     }
 
     /**
@@ -89,12 +94,13 @@ public class WarehouseManager {
      * @return status code
      */
     public int deleteProduct(Product product) {
+        int response = 0;
         if (product == null) {
             return -1;
         }
         Warehouse warehouse = this.warehouses.get(product.getWarehouse_id());
         if (warehouse.getProducts().get(product.getId()) == null) {
-            return -2;
+            return -1;
         }
         warehouse.getProducts().remove(product.getId());
         this.total_items -= 1;
@@ -103,7 +109,7 @@ public class WarehouseManager {
 
     public Warehouse createWarehouse(String address, Map<String, Product> products) {
         Warehouse warehouse = Warehouse.builder()
-                .id(Objects.requireNonNull(ProjectUtils.generateEntityId(ComponentEnum.WAREHOUSE)))
+                .id(Objects.requireNonNull(GeneratorUtils.generateEntityId(ComponentEnum.WAREHOUSE)))
                 .total_items(0)
                 .address(address)
                 .products(products != null ? products : new HashMap<>())

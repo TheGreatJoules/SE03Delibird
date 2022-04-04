@@ -4,7 +4,7 @@ import com.csulb.ase.assignment3.models.ComponentEnum;
 import com.csulb.ase.assignment3.models.PersonEnum;
 import com.csulb.ase.assignment3.models.ProductEnum;
 
-public class ProjectUtils {
+public class GeneratorUtils {
     public static final String delimit = "-";
     public static int ownerCount = 0;
     public static int supplierCount = 0;
