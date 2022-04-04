@@ -25,70 +25,69 @@ public class TestInvoiceManager {
     @Test(dataProvider = "read-orders")
     public void test_Find_Invoice(String str) {
         Order exact = LoadUtils.getOrderFromJson(str);
-        Order actual = invoiceManager.readOrder(Objects.requireNonNull(exact).getInvoice_id(), exact.getId());
+        Order actual = this.invoiceManager.readOrder(Objects.requireNonNull(exact).getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 
     @Test(dataProvider = "add-orders")
     public void test_Create_Invoice(String str) {
         Order exact = LoadUtils.getOrderFromJson(str);
-        int transaction_status = invoiceManager.createInvoice(exact);
+        int transaction_status = this.invoiceManager.createInvoice(exact);
         assert transaction_status == 0;
-        Order actual = invoiceManager.readOrder(Objects.requireNonNull(exact).getInvoice_id(), exact.getId());
+        Order actual = this.invoiceManager.readOrder(Objects.requireNonNull(exact).getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 
     @Test(dataProvider = "update-orders")
     public void test_Update_Invoice(String str) {
         Order exact = LoadUtils.getOrderFromJson(str);
-        int transaction_status = invoiceManager.updateOrder(exact);
+        int transaction_status = this.invoiceManager.updateOrder(exact);
         assert transaction_status == 0;
-        Order actual = invoiceManager.readOrder(Objects.requireNonNull(exact).getInvoice_id(), exact.getId());
+        Order actual = this.invoiceManager.readOrder(Objects.requireNonNull(exact).getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 
     @Test(dataProvider = "delete-orders")
-    public void test_Delete_Order(String str) {
-        Order exact = LoadUtils.getOrderFromJson(str);
-        int transaction_status = invoiceManager.deleteOrder(exact);
+    public void test_Delete_Order(String order_id) {
+        int transaction_status = this.invoiceManager.deleteOrder(order_id);
         assert transaction_status == 0;
-        Order actual = invoiceManager.readOrder(Objects.requireNonNull(exact).getInvoice_id(), exact.getId());
+        Order actual = this.invoiceManager.readOrder(order_id);
         assert actual == null;
     }
 
     @Test(dataProvider = "delete-invoices")
     public void test_Delete_Invoice(String invoice_id) {
-        int transaction_status = invoiceManager.deleteInvoice(invoice_id);
+        int transaction_status = this.invoiceManager.deleteInvoice(invoice_id);
         assert transaction_status == 0;
-        Invoice actual = invoiceManager.readInvoice(invoice_id);
+        Invoice actual = this.invoiceManager.readInvoice(invoice_id);
         assert actual == null;
     }
 
     @DataProvider(name="read-orders")
     public static Object[][] getSavedProducts() {
         return new Object[][] {
-                {"{\"id\":\"ORD-1\",\"invoice_id\":\"INV-1\",\"product_id\":\"TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}\n"}
+                {"{\"id\":\"INV-1:ORD-1:TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}\n"}
         };
     }
 
     @DataProvider(name="add-orders")
     public static Object[][] getAddedOrders() {
         return new Object[][] {
-                {"{\"id\":\"ORD-4\",\"invoice_id\":\"INV-1\",\"product_id\":\"STR-234\",\"product_type\":\"STEREO\",\"timestamp\":1648722131,\"quantity\":2,\"cost\":199.99}"}
+                {"{\"id\":\"INV-1:ORD-4:STR-234\",\"product_type\":\"STEREO\",\"timestamp\":1648722131,\"quantity\":2,\"cost\":199.99}"}
         };
     }
 
     @DataProvider(name="update-orders")
     public static Object[][] getUpdatedOrders() {
         return new Object[][] {
-                {"{\"id\":\"ORD-1\",\"invoice_id\":\"INV-1\",\"product_id\":\"TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":3,\"cost\":299.99}"}
+                {"{\"id\":\"INV-1:ORD-1:TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":3,\"cost\":299.99}"}
         };
     }
 
     @DataProvider(name="delete-orders")
     public static Object[][] getDeleteOrders() {
         return new Object[][] {
-                {"{\"id\":\"ORD-1\",\"invoice_id\":\"INV-1\",\"product_id\":\"TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}\n"}
+                {"INV-1:ORD-1:TLV-123"}
         };
     }
 

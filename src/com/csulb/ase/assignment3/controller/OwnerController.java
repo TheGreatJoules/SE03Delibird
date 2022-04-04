@@ -6,6 +6,8 @@ import com.csulb.ase.assignment3.models.BusinessStatus;
 import com.csulb.ase.assignment3.models.Customer;
 import com.csulb.ase.assignment3.models.DeliveryEnum;
 import com.csulb.ase.assignment3.models.Inventory;
+import com.csulb.ase.assignment3.models.Invoice;
+import com.csulb.ase.assignment3.models.Order;
 import com.csulb.ase.assignment3.models.Owner;
 import com.csulb.ase.assignment3.models.PaymentEnum;
 import com.csulb.ase.assignment3.models.Person;
@@ -108,10 +110,10 @@ public class OwnerController {
 
     public Product retrieveProduct(String product_id) {
         String[] ids = product_id.split(":");
-        if (this.inventoryManager.readWarehouses(ids[1]) == null) {
+        if (this.inventoryManager.readWarehouses(ids[0]) == null) {
             return null;
         }
-        return this.inventoryManager.readWarehouses(ids[1]).getProducts().get(product_id);
+        return this.inventoryManager.readWarehouses(ids[0]).getProducts().get(product_id);
     }
 
     public int updateProduct(Product product) {
@@ -124,6 +126,21 @@ public class OwnerController {
 
     public int deleteProduct(String product_id) {
         this.inventoryManager.deleteInventory(product_id);
+        return 0;
+    }
+
+    public int createOrder(Order order) {
+        this.invoiceManager.createInvoice(order);
+        return 0;
+    }
+
+    public int updateOrder(Order order) {
+        this.invoiceManager.updateOrder(order);
+        return 0;
+    }
+
+    public int deleteOrder(String order_id) {
+        this.invoiceManager.deleteOrder(order_id);
         return 0;
     }
 }

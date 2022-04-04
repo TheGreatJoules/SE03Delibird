@@ -38,13 +38,13 @@ public class WarehouseManager {
     public Product readProduct(String product_id) {
         String[] ids = product_id.split(":");
 
-        if (readWarehouse(ids[1]).getProducts() == null) {
+        if (readWarehouse(ids[0]).getProducts() == null) {
             return null;
         }
-        if (readWarehouse(ids[1]).getProducts().get(product_id) == null) {
+        if (readWarehouse(ids[0]).getProducts().get(product_id) == null) {
             return null;
         }
-        return readWarehouse(ids[1]).getProducts().get(product_id);
+        return readWarehouse(ids[0]).getProducts().get(product_id);
     }
 
     /**
@@ -58,7 +58,7 @@ public class WarehouseManager {
             return -1;
         }
         String[] ids = product.getId().split(":");
-        Warehouse warehouse = this.warehouses.get(ids[1]);
+        Warehouse warehouse = this.warehouses.get(ids[0]);
         if (warehouse == null) {
             warehouse = createWarehouse(product.getWarehouse_address(), null);
             this.total_warehouses += 1;
@@ -82,7 +82,7 @@ public class WarehouseManager {
             return -1;
         }
         String[] ids = product.getId().split(":");
-        Warehouse warehouse = this.warehouses.get(ids[1]);
+        Warehouse warehouse = this.warehouses.get(ids[0]);
         warehouse.getProducts().put(product.getId(), product);
         return 0;
     }
@@ -93,12 +93,11 @@ public class WarehouseManager {
      * @return status code
      */
     public int deleteProduct(String product_id) {
-        int response = 0;
         if (product_id == null) {
             return -1;
         }
         String[] ids = product_id.split(":");
-        Warehouse warehouse = this.warehouses.get(ids[1]);
+        Warehouse warehouse = this.warehouses.get(ids[0]);
         if (warehouse.getProducts().get(product_id) == null) {
             return -1;
         }

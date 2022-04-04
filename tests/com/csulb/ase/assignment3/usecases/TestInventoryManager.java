@@ -13,6 +13,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,7 +30,7 @@ public class TestInventoryManager {
     public void test_CreateStereo_Product(String str) {
         Product exact = LoadUtils.getProductFromJson(str);
         Product actual = Stereo.builder()
-                .id("PRO-STR-123:WAR-1")
+                .id("WAR-1:PRO-STR-123")
                 .warehouse_address("Irvine")
                 .product_type(ProductEnum.STEREO)
                 .manufacturer("Sony")
@@ -56,7 +57,7 @@ public class TestInventoryManager {
     public void test_CreateTelevision_Product(String str) {
         Product exact = LoadUtils.getProductFromJson(str);
         Product actual = Television.builder()
-                .id("PRO-TV-124:WAR-1")
+                .id("WAR-1:PRO-TV-124")
                 .warehouse_address("Long Beach")
                 .product_type(ProductEnum.TELEVISION)
                 .manufacturer("Sony")
@@ -104,7 +105,7 @@ public class TestInventoryManager {
         int current_items = this.inventoryManager.readInventory().getTotal_items();
         int current_warehouses = this.inventoryManager.readInventory().getTotal_warehouses();
         Product exact = LoadUtils.getProductFromJson(str);
-        int transaction_status = this.inventoryManager.deleteInventory(exact.getId());
+        int transaction_status = this.inventoryManager.deleteInventory(Objects.requireNonNull(exact).getId());
         assert transaction_status == 0;
         int actual = this.inventoryManager.readInventory().getTotal_items();
         assert (current_items - 1) == actual;
@@ -119,35 +120,35 @@ public class TestInventoryManager {
     @DataProvider(name="add-television")
     public static Object[][] getAddedTelevision() {
         return new Object[][] {
-                {"{\"id\":\"PRO-TV-124:WAR-1\",\"warehouse_address\":\"Long Beach\",\"product_type\":\"TELEVISION\",\"manufacturer\":\"Sony\",\"model_name\":\"KD55X80K\",\"series\":\"X80K\",\"height\":48.63,\"width\":13.38,\"depth\":30.88,\"weight\":49.9,\"product_color\":\"BLACK\",\"year\":2022,\"resolution\":\"4K\",\"display_type\":\"LCD\",\"refresh_type\":\"60 Hz\",\"stock_count\":5,\"sold_count\":0}"}
+                {"{\"id\":\"WAR-1:PRO-TV-124\",\"warehouse_address\":\"Long Beach\",\"product_type\":\"TELEVISION\",\"manufacturer\":\"Sony\",\"model_name\":\"KD55X80K\",\"series\":\"X80K\",\"height\":48.63,\"width\":13.38,\"depth\":30.88,\"weight\":49.9,\"product_color\":\"BLACK\",\"year\":2022,\"resolution\":\"4K\",\"display_type\":\"LCD\",\"refresh_type\":\"60 Hz\",\"stock_count\":5,\"sold_count\":0}"}
         };
     }
 
     @DataProvider(name="add-stereo")
     public static Object[][] getAddedStereo() {
         return new Object[][] {
-                {"{\"id\":\"PRO-STR-123:WAR-1\",\"warehouse_address\":\"Irvine\",\"product_type\":\"STEREO\",\"manufacturer\":\"Sony\",\"model_name\":\"R-S202BL\",\"series\":\"RX-V\",\"height\":5.5,\"width\":17.125,\"depth\":12.625,\"weight\":14.8,\"product_color\":\"BLACK\",\"output_wattage\":200,\"channels\":2,\"audio_zones\":1,\"minimum_impedance\":\"4 ohms\",\"wifi_capable\":false,\"bluetooth_enabled\":true,\"stock_count\":5,\"sold_count\":0}"}
+                {"{\"id\":\"WAR-1:PRO-STR-123\",\"warehouse_address\":\"Irvine\",\"product_type\":\"STEREO\",\"manufacturer\":\"Sony\",\"model_name\":\"R-S202BL\",\"series\":\"RX-V\",\"height\":5.5,\"width\":17.125,\"depth\":12.625,\"weight\":14.8,\"product_color\":\"BLACK\",\"output_wattage\":200,\"channels\":2,\"audio_zones\":1,\"minimum_impedance\":\"4 ohms\",\"wifi_capable\":false,\"bluetooth_enabled\":true,\"stock_count\":5,\"sold_count\":0}"}
         };
     }
 
     @DataProvider(name="add-products")
     public static Object[][] getAddedProducts() {
         return new Object[][] {
-                {"{\"id\":\"PRO-TV-124:WAR-1\",\"warehouse_address\":\"Long Beach\",\"product_type\":\"TELEVISION\",\"manufacturer\":\"Sony\",\"model_name\":\"KD55X80K\",\"series\":\"X80K\",\"height\":48.63,\"width\":13.38,\"depth\":30.88,\"weight\":49.9,\"product_color\":\"BLACK\",\"year\":2022,\"resolution\":\"4K\",\"display_type\":\"LCD\",\"refresh_type\":\"60 Hz\",\"stock_count\":5,\"sold_count\":0}"}
+                {"{\"id\":\"WAR-1:PRO-TV-124\",\"warehouse_address\":\"Long Beach\",\"product_type\":\"TELEVISION\",\"manufacturer\":\"Sony\",\"model_name\":\"KD55X80K\",\"series\":\"X80K\",\"height\":48.63,\"width\":13.38,\"depth\":30.88,\"weight\":49.9,\"product_color\":\"BLACK\",\"year\":2022,\"resolution\":\"4K\",\"display_type\":\"LCD\",\"refresh_type\":\"60 Hz\",\"stock_count\":5,\"sold_count\":0}"}
         };
     }
 
     @DataProvider(name="update-products")
     public static Object[][] getUpdatedProducts() {
         return new Object[][] {
-                {"{\"id\":\"PRO-TV-124:WAR-1\",\"warehouse_address\":\"Long Beach\",\"product_type\":\"TELEVISION\",\"manufacturer\":\"Sony\",\"model_name\":\"KD55X80K\",\"series\":\"X80K\",\"height\":48.63,\"width\":13.38,\"depth\":30.88,\"weight\":49.9,\"product_color\":\"BLACK\",\"year\":2022,\"resolution\":\"4K\",\"display_type\":\"LCD\",\"refresh_type\":\"60 Hz\",\"stock_count\":5,\"sold_count\":0}"}
+                {"{\"id\":\"WAR-1:PRO-TV-124\",\"warehouse_address\":\"Long Beach\",\"product_type\":\"TELEVISION\",\"manufacturer\":\"Sony\",\"model_name\":\"KD55X80K\",\"series\":\"X80K\",\"height\":48.63,\"width\":13.38,\"depth\":30.88,\"weight\":49.9,\"product_color\":\"BLACK\",\"year\":2022,\"resolution\":\"4K\",\"display_type\":\"LCD\",\"refresh_type\":\"60 Hz\",\"stock_count\":5,\"sold_count\":0}"}
         };
     }
 
     @DataProvider(name="delete-products")
     public static Object[][] getDeletedProducts() {
         return new Object[][] {
-                {"{\"id\":\"PRO-STR-123:WAR-1\",\"warehouse_address\":\"Irvine\",\"product_type\":\"STEREO\",\"manufacturer\":\"Sony\",\"model_name\":\"R-S202BL\",\"series\":\"RX-V\",\"height\":5.5,\"width\":17.125,\"depth\":12.625,\"weight\":14.8,\"product_color\":\"BLACK\",\"output_wattage\":200,\"channels\":2,\"audio_zones\":1,\"minimum_impedance\":\"4 ohms\",\"wifi_capable\":false,\"bluetooth_enabled\":true,\"stock_count\":5,\"sold_count\":0}"}
+                {"{\"id\":\"WAR-1:PRO-STR-123\",\"warehouse_address\":\"Irvine\",\"product_type\":\"STEREO\",\"manufacturer\":\"Sony\",\"model_name\":\"R-S202BL\",\"series\":\"RX-V\",\"height\":5.5,\"width\":17.125,\"depth\":12.625,\"weight\":14.8,\"product_color\":\"BLACK\",\"output_wattage\":200,\"channels\":2,\"audio_zones\":1,\"minimum_impedance\":\"4 ohms\",\"wifi_capable\":false,\"bluetooth_enabled\":true,\"stock_count\":5,\"sold_count\":0}"}
         };
     }
 

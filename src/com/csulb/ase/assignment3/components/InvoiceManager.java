@@ -35,7 +35,8 @@ public class InvoiceManager{
         if (order == null) {
             return -1;
         }
-        Invoice invoice = invoices.get(order.getInvoice_id());
+        String[] ids = order.getId().split(":");
+        Invoice invoice = invoices.get(ids[0]);
         if (invoice == null) {
             invoice = Invoice.builder()
                     .timestamp(order.getTimestamp())
@@ -60,12 +61,12 @@ public class InvoiceManager{
 
     /**
      * Find the order based on its unique permutation of invoice and order id
-     * @param invoice_id
      * @param order_id
      * @return Order
      */
-    public Order readOrder(String invoice_id, String order_id) {
-        return readInvoice(invoice_id).getOrders().get(order_id);
+    public Order readOrder(String order_id) {
+        String[] ids = order_id.split(":");
+        return readInvoice(ids[0]).getOrders().get(order_id);
     }
 
     /**
@@ -77,7 +78,8 @@ public class InvoiceManager{
         if (order == null) {
             return -1;
         }
-        Invoice invoice = invoices.get(order.getInvoice_id());
+        String[] ids = order.getId().split(":");
+        Invoice invoice = invoices.get(ids[0]);
         invoice.getOrders().put(order.getId(), order);
         return 0;
     }
@@ -99,21 +101,24 @@ public class InvoiceManager{
     /**
      * Delete the loaded order from the collection.
      * If no orders exist with the respected invoice id delete the invoice entry
-     * @param order
+     * @param order_id
      * @return status code
      */
-    public int deleteOrder(Order order) {
-        if (order == null) {
+    public int deleteOrder(String order_id) {
+        if (order_id == null) {
             return -1;
         }
-        Invoice invoice = this.invoices.get(order.getInvoice_id());
+        String[] ids = order_id.split(":");
+        this.invoices.get(ids[0]).getOrders().remove(order_id);
+
+        Invoice invoice = this.invoices.get(ids[0]);
         if (invoice == null) {
             return -2;
         }
-        this.invoices.get(order.getInvoice_id()).getOrders().remove(order.getId());
+
         this.total_orders -=1;
         if (invoice.getOrders().size() == 0) {
-            deleteInvoice(order.getInvoice_id());
+            deleteInvoice(order_id);
             this.total_invoices -= 1;
         }
         return 0;

@@ -145,16 +145,17 @@ public class LoadUtils {
         Map<String, Invoice> invoices = new HashMap<>();
         for (String item : items) {
             Order order = objectMapper.readValue(item, Order.class);
-            if (invoices.get(order.getInvoice_id()) == null) {
-                invoices.put(order.getInvoice_id(), Invoice.builder()
-                                .id(order.getInvoice_id())
+            String[] ids = order.getId().split(":");
+            if (invoices.get(ids[0]) == null) {
+                invoices.put(ids[0], Invoice.builder()
+                                .id(ids[0])
                                 .timestamp(order.getTimestamp())
                                 .orders(new HashMap<>())
                         .build());
             }
-            double current_cost = invoices.get(order.getInvoice_id()).getTotal_cost();
-            invoices.get(order.getInvoice_id()).getOrders().put(order.getId(), order);
-            invoices.get(order.getInvoice_id()).setTotal_cost(current_cost + order.getCost());
+            double current_cost = invoices.get(ids[0]).getTotal_cost();
+            invoices.get(ids[0]).getOrders().put(order.getId(), order);
+            invoices.get(ids[0]).setTotal_cost(current_cost + order.getCost());
         }
         return invoices;
     }
@@ -175,26 +176,26 @@ public class LoadUtils {
                 case TELEVISION:
                     Television television = objectMapper.readValue(item, Television.class);
                     ids = television.getId().split(":");
-                    if (warehouses.get(ids[1]) == null) {
-                        warehouses.put(ids[1], Warehouse.builder()
-                                        .id(ids[1])
+                    if (warehouses.get(ids[0]) == null) {
+                        warehouses.put(ids[0], Warehouse.builder()
+                                        .id(ids[0])
                                         .address(television.getWarehouse_address())
                                         .products(new HashMap<>())
                                 .build());
                     }
-                    warehouses.get(ids[1]).getProducts().put(television.getId(), television);
+                    warehouses.get(ids[0]).getProducts().put(television.getId(), television);
                     break;
                 case STEREO:
                     Stereo stereo = objectMapper.readValue(item, Stereo.class);
                     ids = stereo.getId().split(":");
-                    if (warehouses.get(ids[1]) == null) {
-                        warehouses.put(ids[1], Warehouse.builder()
-                                .id(ids[1])
+                    if (warehouses.get(ids[0]) == null) {
+                        warehouses.put(ids[0], Warehouse.builder()
+                                .id(ids[0])
                                 .address(stereo.getWarehouse_address())
                                 .products(new HashMap<>())
                                 .build());
                     }
-                    warehouses.get(ids[1]).getProducts().put(stereo.getId(), stereo);
+                    warehouses.get(ids[0]).getProducts().put(stereo.getId(), stereo);
                     break;
             }
         }

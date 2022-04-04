@@ -90,6 +90,7 @@ public class InventoryManager {
     public int deleteInventory(String product_id) {
         int current_items = this.inventory.getTotal_items();
         int current_warehouse = this.inventory.getTotal_warehouses();
+        String[] ids = product_id.split(":");
         switch (this.warehouseManager.deleteProduct(product_id)) {
             case -1:
                 break;
