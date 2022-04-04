@@ -42,6 +42,12 @@ public class LoadUtils {
         return objectMapper.readValue(IOUtils.toString(new FileInputStream(owner_path), StandardCharsets.UTF_8), Owner.class);
     }
 
+    /**
+     * Load the PersonManager from a serialized list of json person items
+     * @param people_path
+     * @return PersonManager
+     * @throws IOException
+     */
     public static PersonManager loadPersonManagerFromJson(String people_path) throws IOException {
         Map<String, Person> persons = new HashMap<>();
         String[] people = IOUtils.toString(new FileInputStream(people_path), StandardCharsets.UTF_8).split("\\r?\\n");
@@ -54,6 +60,11 @@ public class LoadUtils {
         return new PersonManager(persons);
     }
 
+    /**
+     * Deserialize a json person item to a Person object
+     * @param str
+     * @return Person
+     */
     public static Person loadPersonFromJson(String str) {
         JSONObject jsonObject = new JSONObject(str);
         try {
@@ -72,9 +83,9 @@ public class LoadUtils {
         }
     }
     /**
-     *
+     * Load the Invoice Manager from a list of serialized order items
      * @param order_path
-     * @return
+     * @return InvoiceManager
      * @throws IOException
      */
     public static InvoiceManager getInvoiceFromJson(String order_path) throws IOException {
@@ -82,12 +93,11 @@ public class LoadUtils {
     }
 
     /**
-     *
+     * Deserialize json order item to Order object
      * @param str
-     * @return
+     * @return Order
      */
     public static Order getOrderFromJson(String str) {
-        JSONObject jsonItem = new JSONObject(str);
         try {
             return objectMapper.readValue(str, Order.class);
         } catch (IOException e) {
@@ -96,9 +106,9 @@ public class LoadUtils {
     }
 
     /**
-     *
+     * Get a single product item from a serialized json item
      * @param str
-     * @return
+     * @return Product
      */
     public static Product getProductFromJson(String str) {
         JSONObject jsonItem = new JSONObject(str);
@@ -143,7 +153,7 @@ public class LoadUtils {
     }
 
     /**
-     * Load the Inventor from list of product jsons
+     * Load the Warehouses from list of json products
      * @param product_path
      * @return inventory
      * @throws IOException
@@ -185,33 +195,13 @@ public class LoadUtils {
     }
 
     /**
-     *
+     * Load the Inventory manager from json product items
      * @param product_path
-     * @return
+     * @return InventoryManager
      * @throws IOException
      */
     public static InventoryManager loadInventoryManagerFromJson(String product_path) throws IOException {
         Map<String, Warehouse> warehouses = LoadUtils.loadProductsFromJson(product_path);
         return new InventoryManager(warehouses);
     }
-
-    /**
-     *
-     * @param warehouses
-     * @return
-     */
-    public static Inventory loadInventoryFromWarehouses(Map<String, Warehouse> warehouses) {
-        Inventory inventory = new Inventory();
-        for (Map.Entry<String, Warehouse> warehouseEntry : warehouses.entrySet()) {
-            if (warehouseEntry.getValue().getProducts() != null) {
-                for (Map.Entry<String, Product> productEntry : warehouseEntry.getValue().getProducts().entrySet()) {
-                    inventory.setTotal_items(inventory.getTotal_items() + 1);
-                }
-                inventory.setTotal_warehouses(inventory.getTotal_warehouses() + 1);
-            }
-        }
-        return inventory;
-    }
-
-
 }
