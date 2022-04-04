@@ -17,8 +17,6 @@ public abstract class Product {
     @NonNull
     private String id;
     @NonNull
-    private String warehouse_id;
-    @NonNull
     private String warehouse_address;
     @NonNull
     private ProductEnum product_type;

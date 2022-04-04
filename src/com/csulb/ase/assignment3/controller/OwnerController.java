@@ -26,7 +26,25 @@ public class OwnerController {
     private InventoryManager inventoryManager;
     private InvoiceManager invoiceManager;
 
-    public OwnerController(String firstname, String lastname, String username, String password, Inventory inventory) {
+    public OwnerController(Owner owner) {
+        this.owner = owner;
+        this.inventoryManager = new InventoryManager();
+        this.invoiceManager = new InvoiceManager();
+    }
+
+    public OwnerController(Owner owner, InventoryManager inventoryManager) {
+        this.owner = owner;
+        this.inventoryManager = inventoryManager;
+        this.invoiceManager = new InvoiceManager();
+    }
+
+    public OwnerController(Owner owner, InventoryManager inventoryManager, InvoiceManager invoiceManager) {
+        this.owner = owner;
+        this.inventoryManager = inventoryManager;
+        this.invoiceManager = invoiceManager;
+    }
+
+    public OwnerController(String firstname, String lastname, String username, String password, InventoryManager inventoryManager, InvoiceManager invoiceManager) {
         this.owner = Owner.builder()
                 .id(GeneratorUtils.generatePersonId(PersonEnum.OWNER))
                 .person_type(PersonEnum.OWNER)
@@ -36,101 +54,76 @@ public class OwnerController {
                 .username(username)
                 .password(password)
                 .build();
-        this.inventoryManager = new InventoryManager();
+        this.inventoryManager = inventoryManager;
+        this.invoiceManager = invoiceManager;
     }
 
-    public OwnerController(Owner owner, Inventory inventory, Map<String, Warehouse> warehouses) {
-        this.owner = owner;
-//        this.inventoryManager = new InventoryManager(inventory, warehouses);
-    }
-
-    public Person createCustomer(String firstname, String middleName, String lastname, String phone_number, String email, String address, long start,
-                                 DeliveryEnum preferred_delivery, PaymentEnum preferred_payment) {
-        Customer customer = Customer.builder()
-                .id(GeneratorUtils.generatePersonId(PersonEnum.CUSTOMER))
-                .person_type(PersonEnum.CUSTOMER)
-                .first_name(firstname)
-                .middle_name(middleName)
-                .last_name(lastname)
-                .phone_number(phone_number)
-                .email(email)
-                .address(address)
-                .start(start)
-                .preferred_delivery(preferred_delivery)
-                .preferred_payment(preferred_payment)
-                .build();
-
-        if (owner.getCustomers() == null) {
-            owner.setCustomers(new HashMap<>());
+    public int createPerson(Person person) {
+        switch(person.getPerson_type()) {
+            case CUSTOMER:
+                if (this.owner.getCustomers() == null) {
+                    this.owner.setCustomers(new HashMap<>());
+                }
+                this.owner.getCustomers().put(person.getId(), (Customer) person);
+                return 0;
+            case SUPPLIER:
+                if (this.owner.getSuppliers() == null) {
+                    this.owner.setSuppliers(new HashMap<>());
+                }
+                this.owner.getSuppliers().put(person.getId(), (Supplier) person);
+                return 0;
+            case SALESPERSON:
+                if (this.owner.getSalesPersons() == null) {
+                    this.owner.setSalesPersons(new HashMap<>());
+                }
+                this.owner.getSalesPersons().put(person.getId(), (SalesPerson) person);
+                return 0;
+            default:
+                return -1;
         }
-        owner.getCustomers().put(customer.getId(), customer);
-        return customer;
     }
 
-    public Person createSupplier(String firstname, String middleName, String lastname, String phone_number, String email, String address, long start,
-                                 double quote, SupplierType supplierType, BusinessStatus businessStatus) {
-        Supplier supplier = Supplier.builder()
-                .id(GeneratorUtils.generatePersonId(PersonEnum.SUPPLIER))
-                .person_type(PersonEnum.SUPPLIER)
-                .first_name(firstname)
-                .middle_name(middleName)
-                .last_name(lastname)
-                .phone_number(phone_number)
-                .email(email)
-                .address(address)
-                .start(start)
-                .quote(quote)
-                .supplies(supplierType)
-                .status(businessStatus)
-                .build();
-
-        if (owner.getSuppliers() == null) {
-            owner.setSuppliers(new HashMap<>());
+    public Person retrievePerson(String person_id) {
+        String[] person_type = person_id.split("-");
+        switch(person_type[0]) {
+            case "SAL":
+                return this.owner.getSalesPersons().get(person_id);
+            case "CUS":
+                return this.owner.getCustomers().get(person_id);
+            case "SUP":
+                return this.owner.getSuppliers().get(person_id);
+            default:
+                return null;
         }
-        owner.getSuppliers().put(supplier.getId(), supplier);
-        return supplier;
     }
 
-    public Person createSalesPerson(String firstname, String middleName, String lastname, String phone_number, String email, String address, long start,
-                                    int totalSales, double commissionRate, double performanceScore) {
-        SalesPerson salesperson = SalesPerson.builder()
-                .id(GeneratorUtils.generatePersonId(PersonEnum.SALESPERSON))
-                .person_type(PersonEnum.SALESPERSON)
-                .first_name(firstname)
-                .middle_name(middleName)
-                .last_name(lastname)
-                .phone_number(phone_number)
-                .address(address)
-                .email(email)
-                .start(start)
-                .total_sales(totalSales)
-                .commission_rate(commissionRate)
-                .performance_score(performanceScore)
-                .build();
+    public Inventory retrieveInventory() {
+        return this.inventoryManager.readInventory();
+    }
 
-        if (owner.getSalesPersons() == null) {
-            owner.setSalesPersons(new HashMap<>());
+    public int createProduct(Product product) {
+        this.inventoryManager.createInventory(product);
+        return 0;
+    }
+
+    public Product retrieveProduct(String product_id) {
+        String[] ids = product_id.split(":");
+        if (this.inventoryManager.readWarehouses(ids[1]) == null) {
+            return null;
         }
-        owner.getSalesPersons().put(salesperson.getId(), salesperson);
-        return salesperson;
+        return this.inventoryManager.readWarehouses(ids[1]).getProducts().get(product_id);
     }
 
-//    public Product retrieveProduct(String warehouse_id, String product_id) {
-//        return inventoryManager.readInventory(warehouse_id).getProducts().get(product_id);
-//    }
-//
-//    public int addProduct(Product product) {
-//        inventoryManager.createInventory(product);
-//        return 0;
-//    }
-//
-//    public int updateProduct(Product product) {
-//        inventoryManager.updateInventory(product);
-//        return 0;
-//    }
-//
-//    public int removeProduct(Product product) {
-//        inventoryManager.deleteInventory(product);
-//        return 0;
-//    }
+    public int updateProduct(Product product) {
+        if (product == null) {
+            return -1;
+        }
+        this.inventoryManager.updateInventory(product);
+        return 0;
+    }
+
+    public int deleteProduct(String product_id) {
+        this.inventoryManager.deleteInventory(product_id);
+        return 0;
+    }
 }

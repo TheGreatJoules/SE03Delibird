@@ -80,14 +80,17 @@ public class InventoryManager {
     }
 
     public int updateInventory(Product product) {
+        if (product == null) {
+            return -1;
+        }
         this.warehouseManager.updateProduct(product);
         return 0;
     }
 
-    public int deleteInventory(Product product) {
+    public int deleteInventory(String product_id) {
         int current_items = this.inventory.getTotal_items();
         int current_warehouse = this.inventory.getTotal_warehouses();
-        switch (this.warehouseManager.deleteProduct(product)) {
+        switch (this.warehouseManager.deleteProduct(product_id)) {
             case -1:
                 break;
             case 0:

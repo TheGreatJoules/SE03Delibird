@@ -7,6 +7,7 @@ import com.csulb.ase.assignment3.models.Inventory;
 import com.csulb.ase.assignment3.models.Invoice;
 import com.csulb.ase.assignment3.models.Order;
 import com.csulb.ase.assignment3.models.Owner;
+import com.csulb.ase.assignment3.models.Person;
 import com.csulb.ase.assignment3.models.PersonEnum;
 import com.csulb.ase.assignment3.models.Product;
 import com.csulb.ase.assignment3.models.ProductEnum;
@@ -32,11 +33,10 @@ public class LoadUtils {
      * Load the owner graph with corresponding data from people and invoices
      * @param owner_path
      * @param people_path
-     * @param order_path
      * @return owner
      * @throws IOException
      */
-    public static Owner loadOwnerFromJson(String owner_path, String people_path, String order_path) throws IOException {
+    public static Owner loadOwnerFromJson(String owner_path, String people_path) throws IOException {
         Owner owner = objectMapper.readValue(IOUtils.toString(new FileInputStream(owner_path), StandardCharsets.UTF_8), Owner.class);
         String[] persons = IOUtils.toString(new FileInputStream(people_path), StandardCharsets.UTF_8).split("\\r?\\n");
 
@@ -69,15 +69,41 @@ public class LoadUtils {
                 default:
             }
         }
-
-        owner.setInvoices(loadInvoicesFromJson(order_path));
         return owner;
     }
 
+    public static Person loadPersonFromJson(String str) {
+        JSONObject jsonObject = new JSONObject(str);
+        try {
+            switch(PersonEnum.valueOf(jsonObject.get("person_type").toString())) {
+                case CUSTOMER:
+                    return objectMapper.readValue(str, Customer.class);
+                case SUPPLIER:
+                    return objectMapper.readValue(str, Supplier.class);
+                case SALESPERSON:
+                    return objectMapper.readValue(str, SalesPerson.class);
+                default:
+                    return null;
+            }
+        } catch (IOException e) {
+            return null;
+        }
+    }
+    /**
+     *
+     * @param order_path
+     * @return
+     * @throws IOException
+     */
     public static InvoiceManager getInvoiceFromJson(String order_path) throws IOException {
         return new InvoiceManager(loadInvoicesFromJson(order_path));
     }
 
+    /**
+     *
+     * @param str
+     * @return
+     */
     public static Order getOrderFromJson(String str) {
         JSONObject jsonItem = new JSONObject(str);
         try {
@@ -87,6 +113,11 @@ public class LoadUtils {
         }
     }
 
+    /**
+     *
+     * @param str
+     * @return
+     */
     public static Product getProductFromJson(String str) {
         JSONObject jsonItem = new JSONObject(str);
         try {
@@ -135,6 +166,7 @@ public class LoadUtils {
      * @throws IOException
      */
     public static Map<String, Warehouse> loadProductsFromJson(String product_path) throws IOException {
+        String[] ids;
         String[] items = IOUtils.toString(new FileInputStream(product_path), StandardCharsets.UTF_8).split("\\r?\\n");
         Map<String, Warehouse> warehouses = new HashMap<>();
         for (String item : items) {
@@ -142,36 +174,49 @@ public class LoadUtils {
             switch (ProductEnum.valueOf(jsonItem.get("product_type").toString())) {
                 case TELEVISION:
                     Television television = objectMapper.readValue(item, Television.class);
-                    if (warehouses.get(television.getWarehouse_id()) == null) {
-                        warehouses.put(television.getWarehouse_id(), Warehouse.builder()
-                                        .id(television.getWarehouse_id())
+                    ids = television.getId().split(":");
+                    if (warehouses.get(ids[1]) == null) {
+                        warehouses.put(ids[1], Warehouse.builder()
+                                        .id(ids[1])
                                         .address(television.getWarehouse_address())
                                         .products(new HashMap<>())
                                 .build());
                     }
-                    warehouses.get(television.getWarehouse_id()).getProducts().put(television.getId(), television);
+                    warehouses.get(ids[1]).getProducts().put(television.getId(), television);
                     break;
                 case STEREO:
                     Stereo stereo = objectMapper.readValue(item, Stereo.class);
-                    if (warehouses.get(stereo.getWarehouse_id()) == null) {
-                        warehouses.put(stereo.getWarehouse_id(), Warehouse.builder()
-                                .id(stereo.getWarehouse_id())
+                    ids = stereo.getId().split(":");
+                    if (warehouses.get(ids[1]) == null) {
+                        warehouses.put(ids[1], Warehouse.builder()
+                                .id(ids[1])
                                 .address(stereo.getWarehouse_address())
                                 .products(new HashMap<>())
                                 .build());
                     }
-                    warehouses.get(stereo.getWarehouse_id()).getProducts().put(stereo.getId(), stereo);
+                    warehouses.get(ids[1]).getProducts().put(stereo.getId(), stereo);
                     break;
             }
         }
         return warehouses;
     }
 
+    /**
+     *
+     * @param product_path
+     * @return
+     * @throws IOException
+     */
     public static InventoryManager loadInventoryManagerFromJson(String product_path) throws IOException {
         Map<String, Warehouse> warehouses = LoadUtils.loadProductsFromJson(product_path);
         return new InventoryManager(warehouses);
     }
 
+    /**
+     *
+     * @param warehouses
+     * @return
+     */
     public static Inventory loadInventoryFromWarehouses(Map<String, Warehouse> warehouses) {
         Inventory inventory = new Inventory();
         for (Map.Entry<String, Warehouse> warehouseEntry : warehouses.entrySet()) {
@@ -184,4 +229,6 @@ public class LoadUtils {
         }
         return inventory;
     }
+
+
 }
