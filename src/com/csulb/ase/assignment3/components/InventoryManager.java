@@ -3,9 +3,8 @@ package com.csulb.ase.assignment3.components;
 import com.csulb.ase.assignment3.models.Inventory;
 import com.csulb.ase.assignment3.models.Product;
 import com.csulb.ase.assignment3.models.ColorEnum;
+import com.csulb.ase.assignment3.models.Electronics;
 import com.csulb.ase.assignment3.models.ProductEnum;
-import com.csulb.ase.assignment3.models.Stereo;
-import com.csulb.ase.assignment3.models.Television;
 import com.csulb.ase.assignment3.models.Warehouse;
 import com.csulb.ase.assignment3.utils.GeneratorUtils;
 
@@ -35,7 +34,7 @@ public class InventoryManager {
     }
 
     public Product createTelevision(String name, String display_type, String manufacturer, String dimensions, ColorEnum colorEnum, Boolean smart) {
-        return Television.builder()
+        return Electronics.builder()
                 .id(Objects.requireNonNull(GeneratorUtils.generateProductId(ProductEnum.TELEVISION)))
                 .product_type(ProductEnum.TELEVISION)
                 .product_name(name)
@@ -47,8 +46,8 @@ public class InventoryManager {
                 .build();
     }
 
-    public Stereo createStereo(String name, String display_type, String manufacturer, String dimensions, ColorEnum colorEnum, Boolean smart) {
-        return Stereo.builder()
+    public Product createStereo(String name, String display_type, String manufacturer, String dimensions, ColorEnum colorEnum, Boolean smart) {
+        return Electronics.builder()
                 .id(Objects.requireNonNull(GeneratorUtils.generateProductId(ProductEnum.STEREO)))
                 .product_color(colorEnum)
                 .build();

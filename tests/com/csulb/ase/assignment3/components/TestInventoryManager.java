@@ -1,11 +1,10 @@
-package com.csulb.ase.assignment3.usecases;
+package com.csulb.ase.assignment3.components;
 
 import com.csulb.ase.assignment3.components.InventoryManager;
 import com.csulb.ase.assignment3.models.ColorEnum;
+import com.csulb.ase.assignment3.models.Electronics;
 import com.csulb.ase.assignment3.models.Product;
 import com.csulb.ase.assignment3.models.ProductEnum;
-import com.csulb.ase.assignment3.models.Stereo;
-import com.csulb.ase.assignment3.models.Television;
 import com.csulb.ase.assignment3.models.Warehouse;
 import com.csulb.ase.assignment3.utils.LoadUtils;
 import org.testng.annotations.BeforeMethod;
@@ -29,7 +28,7 @@ public class TestInventoryManager {
     @Test(dataProvider = "add-stereo")
     public void test_CreateStereo_Product(String str) {
         Product exact = LoadUtils.getProductFromJson(str);
-        Product actual = Stereo.builder()
+        Product actual = Electronics.builder()
                 .id("WAR-1:PRO-STR-123")
                 .warehouse_address("Irvine")
                 .product_type(ProductEnum.STEREO)
@@ -56,7 +55,7 @@ public class TestInventoryManager {
     @Test(dataProvider = "add-television")
     public void test_CreateTelevision_Product(String str) {
         Product exact = LoadUtils.getProductFromJson(str);
-        Product actual = Television.builder()
+        Product actual = Electronics.builder()
                 .id("WAR-1:PRO-TV-124")
                 .warehouse_address("Long Beach")
                 .product_type(ProductEnum.TELEVISION)

@@ -4,6 +4,7 @@ import com.csulb.ase.assignment3.components.InventoryManager;
 import com.csulb.ase.assignment3.components.InvoiceManager;
 import com.csulb.ase.assignment3.components.PersonManager;
 import com.csulb.ase.assignment3.models.Customer;
+import com.csulb.ase.assignment3.models.Electronics;
 import com.csulb.ase.assignment3.models.Inventory;
 import com.csulb.ase.assignment3.models.Invoice;
 import com.csulb.ase.assignment3.models.Order;
@@ -13,9 +14,7 @@ import com.csulb.ase.assignment3.models.PersonEnum;
 import com.csulb.ase.assignment3.models.Product;
 import com.csulb.ase.assignment3.models.ProductEnum;
 import com.csulb.ase.assignment3.models.SalesPerson;
-import com.csulb.ase.assignment3.models.Stereo;
 import com.csulb.ase.assignment3.models.Supplier;
-import com.csulb.ase.assignment3.models.Television;
 import com.csulb.ase.assignment3.models.Warehouse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
@@ -111,16 +110,8 @@ public class LoadUtils {
      * @return Product
      */
     public static Product getProductFromJson(String str) {
-        JSONObject jsonItem = new JSONObject(str);
         try {
-            switch (ProductEnum.valueOf(jsonItem.get("product_type").toString())) {
-                case STEREO:
-                    return objectMapper.readValue(str, Stereo.class);
-                case TELEVISION:
-                    return objectMapper.readValue(str, Television.class);
-                default:
-                    return null;
-            }
+            return objectMapper.readValue(str, Electronics.class);
         } catch (IOException e) {
             return null;
         }
@@ -164,32 +155,16 @@ public class LoadUtils {
         Map<String, Warehouse> warehouses = new HashMap<>();
         for (String item : items) {
             JSONObject jsonItem = new JSONObject(item);
-            switch (ProductEnum.valueOf(jsonItem.get("product_type").toString())) {
-                case TELEVISION:
-                    Television television = objectMapper.readValue(item, Television.class);
-                    ids = television.getId().split(":");
-                    if (warehouses.get(ids[0]) == null) {
-                        warehouses.put(ids[0], Warehouse.builder()
-                                        .id(ids[0])
-                                        .address(television.getWarehouse_address())
-                                        .products(new HashMap<>())
-                                .build());
-                    }
-                    warehouses.get(ids[0]).getProducts().put(television.getId(), television);
-                    break;
-                case STEREO:
-                    Stereo stereo = objectMapper.readValue(item, Stereo.class);
-                    ids = stereo.getId().split(":");
-                    if (warehouses.get(ids[0]) == null) {
-                        warehouses.put(ids[0], Warehouse.builder()
+            Product product = objectMapper.readValue(item, Electronics.class);
+            ids = product.getId().split(":");
+            if (warehouses.get(ids[0]) == null) {
+                warehouses.put(ids[0], Warehouse.builder()
                                 .id(ids[0])
-                                .address(stereo.getWarehouse_address())
+                                .address(product.getWarehouse_address())
                                 .products(new HashMap<>())
-                                .build());
-                    }
-                    warehouses.get(ids[0]).getProducts().put(stereo.getId(), stereo);
-                    break;
+                        .build());
             }
+            warehouses.get(ids[0]).getProducts().put(product.getId(), product);
         }
         return warehouses;
     }

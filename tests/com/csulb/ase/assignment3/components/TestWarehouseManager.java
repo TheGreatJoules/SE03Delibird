@@ -1,4 +1,4 @@
-package com.csulb.ase.assignment3.usecases;
+package com.csulb.ase.assignment3.components;
 
 import com.csulb.ase.assignment3.components.WarehouseManager;
 import com.csulb.ase.assignment3.models.Product;

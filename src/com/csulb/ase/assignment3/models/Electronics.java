@@ -11,11 +11,15 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Stereo extends Product{
+public class Electronics extends Product{
     private double output_wattage;
     private double channels;
     private double audio_zones;
     private boolean wifi_capable;
     private boolean bluetooth_enabled;
     private String minimum_impedance;
+    private String resolution;
+    private String display_type;
+    private String refresh_type;
+    private boolean smart;
 }
