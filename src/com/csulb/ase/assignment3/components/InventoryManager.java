@@ -6,7 +6,7 @@ import com.csulb.ase.assignment3.models.ColorEnum;
 import com.csulb.ase.assignment3.models.Electronics;
 import com.csulb.ase.assignment3.models.ProductEnum;
 import com.csulb.ase.assignment3.models.Warehouse;
-import com.csulb.ase.assignment3.utils.GeneratorUtils;
+import com.csulb.ase.assignment3.utils.IdentifierUtil;
 
 import java.util.Map;
 import java.util.Objects;
@@ -35,7 +35,7 @@ public class InventoryManager {
 
     public Product createTelevision(String name, String display_type, String manufacturer, String dimensions, ColorEnum colorEnum, Boolean smart) {
         return Electronics.builder()
-                .id(Objects.requireNonNull(GeneratorUtils.generateProductId(ProductEnum.TELEVISION)))
+                .id(Objects.requireNonNull(IdentifierUtil.generateProductId(ProductEnum.TELEVISION)))
                 .product_type(ProductEnum.TELEVISION)
                 .product_name(name)
                 .manufacturer(manufacturer)
@@ -48,7 +48,7 @@ public class InventoryManager {
 
     public Product createStereo(String name, String display_type, String manufacturer, String dimensions, ColorEnum colorEnum, Boolean smart) {
         return Electronics.builder()
-                .id(Objects.requireNonNull(GeneratorUtils.generateProductId(ProductEnum.STEREO)))
+                .id(Objects.requireNonNull(IdentifierUtil.generateProductId(ProductEnum.STEREO)))
                 .product_color(colorEnum)
                 .build();
     }

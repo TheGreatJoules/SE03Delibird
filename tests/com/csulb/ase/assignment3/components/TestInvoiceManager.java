@@ -1,6 +1,5 @@
 package com.csulb.ase.assignment3.components;
 
-import com.csulb.ase.assignment3.components.InvoiceManager;
 import com.csulb.ase.assignment3.models.Invoice;
 import com.csulb.ase.assignment3.models.Order;
 import com.csulb.ase.assignment3.utils.LoadUtils;
@@ -66,21 +65,21 @@ public class TestInvoiceManager {
     @DataProvider(name="read-orders")
     public static Object[][] getSavedProducts() {
         return new Object[][] {
-                {"{\"id\":\"INV-1:ORD-1:TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}\n"}
+                {"{\"id\":\"INV-1:CUS-1:ORD-1:TLV-123\",\"person_id\":\"CUS-1\",\"product_id\":\"TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}"}
         };
     }
 
     @DataProvider(name="add-orders")
     public static Object[][] getAddedOrders() {
         return new Object[][] {
-                {"{\"id\":\"INV-1:ORD-4:STR-234\",\"product_type\":\"STEREO\",\"timestamp\":1648722131,\"quantity\":2,\"cost\":199.99}"}
+                {"{\"id\":\"INV-1:CUS-1:ORD-4:STR-234\",\"person_id\":\"CUS-1\",\"product_id\":\"STR-234\",\"product_type\":\"STEREO\",\"timestamp\":1648722131,\"quantity\":2,\"cost\":199.99}"}
         };
     }
 
     @DataProvider(name="update-orders")
     public static Object[][] getUpdatedOrders() {
         return new Object[][] {
-                {"{\"id\":\"INV-1:ORD-1:TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":3,\"cost\":299.99}"}
+                {"{\"id\":\"INV-1:CUS-1:ORD-1:TLV-123\",\"person_id\":\"CUS-1\",\"product_id\":\"TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":3,\"cost\":299.99}"}
         };
     }
 

@@ -1,8 +1,5 @@
 package com.csulb.ase.assignment3.components;
 
-import com.csulb.ase.assignment3.components.InventoryManager;
-import com.csulb.ase.assignment3.components.InvoiceManager;
-import com.csulb.ase.assignment3.components.PersonManager;
 import com.csulb.ase.assignment3.controller.OwnerController;
 import com.csulb.ase.assignment3.models.Order;
 import com.csulb.ase.assignment3.models.Owner;
@@ -111,43 +108,43 @@ public class TestOwnerController {
     @DataProvider(name="add-products")
     public static Object[][] getAddedProducts() {
         return new Object[][] {
-                {"{\"id\":\"WAR-1:PRO-TV-124\",\"warehouse_address\":\"Long Beach\",\"product_type\":\"TELEVISION\",\"manufacturer\":\"Sony\",\"model_name\":\"KD55X80K\",\"series\":\"X80K\",\"height\":48.63,\"width\":13.38,\"depth\":30.88,\"weight\":49.9,\"product_color\":\"BLACK\",\"year\":2022,\"resolution\":\"4K\",\"display_type\":\"LCD\",\"refresh_type\":\"60 Hz\",\"stock_count\":5,\"sold_count\":0}"}
+                {"{\"id\":\"WAR-1:TLV-124\",\"warehouse_address\":\"Long Beach\",\"product_type\":\"TELEVISION\",\"manufacturer\":\"Sony\",\"model_name\":\"KD55X80K\",\"series\":\"X80K\",\"height\":48.63,\"width\":13.38,\"depth\":30.88,\"weight\":49.9,\"product_color\":\"BLACK\",\"year\":2022,\"resolution\":\"4K\",\"display_type\":\"LCD\",\"refresh_type\":\"60 Hz\",\"stock_count\":5,\"sold_count\":0}"}
         };
     }
 
     @DataProvider(name="update-products")
     public static Object[][] getUpdateProducts() {
         return new Object[][] {
-                {"{\"id\":\"WAR-1:PRO-STR-123\",\"warehouse_address\":\"Long Beach\",\"product_type\":\"STEREO\",\"manufacturer\":\"Sony\",\"model_name\":\"R-S202BL\",\"series\":\"RX-V\",\"height\":5.5,\"width\":17.125,\"depth\":12.625,\"weight\":14.8,\"product_color\":\"WHITE\",\"output_wattage\":200,\"channels\":2,\"audio_zones\":1,\"minimum_impedance\":\"4 ohms\",\"wifi_capable\":false,\"bluetooth_enabled\":true,\"stock_count\":5,\"sold_count\":0}"}
+                {"{\"id\":\"WAR-1:STR-123\",\"warehouse_address\":\"Long Beach\",\"product_type\":\"STEREO\",\"manufacturer\":\"Sony\",\"model_name\":\"R-S202BL\",\"series\":\"RX-V\",\"height\":5.5,\"width\":17.125,\"depth\":12.625,\"weight\":14.8,\"product_color\":\"WHITE\",\"output_wattage\":200,\"channels\":2,\"audio_zones\":1,\"minimum_impedance\":\"4 ohms\",\"wifi_capable\":false,\"bluetooth_enabled\":true,\"stock_count\":5,\"sold_count\":0}"}
         };
     }
 
     @DataProvider(name="delete-products")
     public static Object[][] getDeletedProducts() {
         return new Object[][] {
-                {"WAR-1:PRO-STR-123"}
+                {"WAR-1:STR-123"}
         };
     }
 
     @DataProvider(name="add-orders")
     public static Object[][] getAddedOrders() {
         return new Object[][] {
-                {"{\"id\":\"INV-1:ORD-4:STR-235\",\"product_type\":\"STEREO\",\"timestamp\":1648722131,\"quantity\":5,\"cost\":199.99}"},
-                {"{\"id\":\"INV-2:ORD-1:TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}\n"}
+                {"{\"id\":\"INV-1:CUS-1:ORD-4:STR-235\",\"person_id\":\"CUS-1\",\"product_id\":\"STR-235\",\"product_type\":\"STEREO\",\"timestamp\":1648722131,\"quantity\":5,\"cost\":199.99}"},
+                {"{\"id\":\"INV-2:CUS-1:ORD-1:TLV-123\",\"person_id\":\"CUS-1\",\"product_id\":\"TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}\n"}
         };
     }
 
     @DataProvider(name="update-orders")
     public static Object[][] getUpdatedOrders() {
         return new Object[][] {
-                {"{\"id\":\"INV-1:ORD-1:TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":3,\"cost\":299.99}\n"}
+                {"{\"id\":\"INV-1:CUS-1:ORD-1:TLV-123\",\"person_id\":\"CUS-1\",\"product_id\":\"TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":3,\"cost\":299.99}\n"}
         };
     }
 
     @DataProvider(name="delete-orders")
     public static Object[][] getDeletedOrders() {
         return new Object[][] {
-                {"{\"id\":\"INV-1:ORD-1:TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}\n"}
+                {"{\"id\":\"INV-1:CUS-1:ORD-1:TLV-123\",\"person_id\":\"CUS-1\",\"product_id\":\"TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}\n"}
         };
     }
 }

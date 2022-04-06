@@ -9,7 +9,7 @@ import com.csulb.ase.assignment3.models.Owner;
 import com.csulb.ase.assignment3.models.Person;
 import com.csulb.ase.assignment3.models.PersonEnum;
 import com.csulb.ase.assignment3.models.Product;
-import com.csulb.ase.assignment3.utils.GeneratorUtils;
+import com.csulb.ase.assignment3.utils.IdentifierUtil;
 
 import java.time.Instant;
 
@@ -51,7 +51,7 @@ public class OwnerController {
 
     public OwnerController(String firstname, String lastname, String username, String password, InventoryManager inventoryManager, InvoiceManager invoiceManager) {
         this.owner = Owner.builder()
-                .id(GeneratorUtils.generatePersonId(PersonEnum.OWNER))
+                .id(IdentifierUtil.generatePersonId(PersonEnum.OWNER))
                 .person_type(PersonEnum.OWNER)
                 .first_name(firstname)
                 .last_name(lastname)

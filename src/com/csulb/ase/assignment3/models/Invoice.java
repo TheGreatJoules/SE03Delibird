@@ -19,6 +19,8 @@ public class Invoice {
     @NonNull
     private String id;
     @NonNull
+    private String person_id;
+    @NonNull
     private long timestamp;
     private double total_cost;
     private Map<String, Order> orders;

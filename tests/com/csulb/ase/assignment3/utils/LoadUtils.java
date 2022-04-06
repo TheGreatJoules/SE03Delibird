@@ -132,6 +132,7 @@ public class LoadUtils {
             if (invoices.get(ids[0]) == null) {
                 invoices.put(ids[0], Invoice.builder()
                                 .id(ids[0])
+                                .person_id(ids[1])
                                 .timestamp(order.getTimestamp())
                                 .orders(new HashMap<>())
                         .build());

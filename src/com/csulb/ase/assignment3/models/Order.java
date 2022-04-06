@@ -14,6 +14,8 @@ public class Order {
     @NonNull
     private String id;
     @NonNull
+    private String person_id;
+    @NonNull
     private String product_id;
     @NonNull
     private ProductEnum product_type;

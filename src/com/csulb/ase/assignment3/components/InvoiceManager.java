@@ -1,13 +1,10 @@
 package com.csulb.ase.assignment3.components;
 
-import com.csulb.ase.assignment3.models.ComponentEnum;
 import com.csulb.ase.assignment3.models.Invoice;
 import com.csulb.ase.assignment3.models.Order;
-import com.csulb.ase.assignment3.utils.GeneratorUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class InvoiceManager{
     private Map<String, Invoice> invoices;
@@ -43,6 +40,7 @@ public class InvoiceManager{
         if (invoice == null) {
             invoice = Invoice.builder()
                     .id(ids[0])
+                    .person_id(ids[1])
                     .timestamp(order.getTimestamp())
                     .orders(new HashMap<>())
                     .build();
@@ -70,7 +68,7 @@ public class InvoiceManager{
      */
     public Order readOrder(String order_id) {
         String[] ids = order_id.split(":");
-        if (readInvoice(ids[0]) == null) {
+        if (readInvoice(ids[0]) == null || readInvoice(ids[0]).getOrders() == null) {
             return null;
         }
         return readInvoice(ids[0]).getOrders().get(order_id);

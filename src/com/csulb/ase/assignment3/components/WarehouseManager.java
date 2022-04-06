@@ -3,7 +3,7 @@ package com.csulb.ase.assignment3.components;
 import com.csulb.ase.assignment3.models.ComponentEnum;
 import com.csulb.ase.assignment3.models.Product;
 import com.csulb.ase.assignment3.models.Warehouse;
-import com.csulb.ase.assignment3.utils.GeneratorUtils;
+import com.csulb.ase.assignment3.utils.IdentifierUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -108,7 +108,7 @@ public class WarehouseManager {
 
     public Warehouse createWarehouse(String address, Map<String, Product> products) {
         Warehouse warehouse = Warehouse.builder()
-                .id(Objects.requireNonNull(GeneratorUtils.generateEntityId(ComponentEnum.WAREHOUSE)))
+                .id(Objects.requireNonNull(IdentifierUtil.generateEntityId(ComponentEnum.WAREHOUSE)))
                 .total_items(0)
                 .address(address)
                 .products(products != null ? products : new HashMap<>())
