@@ -5,14 +5,12 @@ import com.csulb.ase.assignment3.components.InvoiceManager;
 import com.csulb.ase.assignment3.components.PersonManager;
 import com.csulb.ase.assignment3.models.Customer;
 import com.csulb.ase.assignment3.models.Electronics;
-import com.csulb.ase.assignment3.models.Inventory;
 import com.csulb.ase.assignment3.models.Invoice;
 import com.csulb.ase.assignment3.models.Order;
 import com.csulb.ase.assignment3.models.Owner;
 import com.csulb.ase.assignment3.models.Person;
 import com.csulb.ase.assignment3.models.PersonEnum;
 import com.csulb.ase.assignment3.models.Product;
-import com.csulb.ase.assignment3.models.ProductEnum;
 import com.csulb.ase.assignment3.models.SalesPerson;
 import com.csulb.ase.assignment3.models.Supplier;
 import com.csulb.ase.assignment3.models.Warehouse;
@@ -20,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -29,6 +28,38 @@ import java.util.Objects;
 
 public class LoadUtils {
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    public static final String ORDERS_PATH = "tests" +
+                                                File.separator + "com" +
+                                                File.separator + "csulb" +
+                                                File.separator + "ase" +
+                                                File.separator + "assignment3" +
+                                                File.separator + "data" +
+                                                File.separator + "orders.json";
+
+    public static final String PRODUCT_PATH = "tests" +
+                                                File.separator + "com" +
+                                                File.separator + "csulb" +
+                                                File.separator + "ase" +
+                                                File.separator + "assignment3" +
+                                                File.separator + "data" +
+                                                File.separator + "products.json";
+
+    public static final String OWNER_PATH = "tests" +
+                                                File.separator + "com" +
+                                                File.separator + "csulb" +
+                                                File.separator + "ase" +
+                                                File.separator + "assignment3" +
+                                                File.separator + "data" +
+                                                File.separator + "owner.json";
+
+    public static final String PERSONS_PATH = "tests" +
+                                                File.separator + "com" +
+                                                File.separator + "csulb" +
+                                                File.separator + "ase" +
+                                                File.separator + "assignment3" +
+                                                File.separator + "data" +
+                                                File.separator + "persons.json";
 
     /**
      * Load the owner graph with corresponding data from people and invoices

@@ -45,12 +45,17 @@ This project was created using maven 3.6.3
 
 ### Components
 * InventoryManager
+  * 
 * InvoiceManager
+  * 
 * WarehouseManager
+  * 
 
 ### Controllers
 * OwnerController
+  * The controller that orchestrates and manages all transactions.
 
 ### Utils
-* GenerateUtils
+* IdentifierUtils
+* ExpenseUtils
 * LoadUtils

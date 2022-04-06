@@ -12,14 +12,14 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Electronics extends Product{
-    private double output_wattage;
-    private double channels;
-    private double audio_zones;
-    private boolean wifi_capable;
-    private boolean bluetooth_enabled;
+    private Double output_wattage;
+    private Double channels;
+    private Double audio_zones;
+    private Boolean wifi_capable;
+    private Boolean bluetooth_enabled;
     private String minimum_impedance;
     private String resolution;
     private String display_type;
     private String refresh_type;
-    private boolean smart;
+    private Boolean smart;
 }

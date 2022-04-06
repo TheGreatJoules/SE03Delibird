@@ -33,16 +33,35 @@ public class InventoryManager {
         }
     }
 
-    public Product createTelevision(String name, String display_type, String manufacturer, String dimensions, ColorEnum colorEnum, Boolean smart) {
+    public Product createProduct(String id, ProductEnum type, String manufacturer, String model, String series, String address,
+                                 double height, double width, double depth, double weight, String display_type, int year,
+                                 int stock, int sold, ColorEnum colorEnum, String resolution, String refresh, Double output_wattage,
+                                 Double channels, Double audio_zone, Boolean wifi_capable, Boolean bluetooth_enabled,
+                                 String minimum_impedance) {
         return Electronics.builder()
-                .id(Objects.requireNonNull(IdentifierUtil.generateProductId(ProductEnum.TELEVISION)))
-                .product_type(ProductEnum.TELEVISION)
-                .product_name(name)
+                .id(id != null ? id : IdentifierUtil.generateProductId(ProductEnum.TELEVISION))
+                .product_type(type)
+                .warehouse_address(address)
                 .manufacturer(manufacturer)
-                .dimensions(dimensions)
+                .model_name(model)
+                .series(series)
+                .height(height)
+                .width(width)
+                .depth(depth)
+                .weight(weight)
                 .product_color(colorEnum)
-                .smart(smart)
+                .year(year)
                 .display_type(display_type)
+                .resolution(resolution)
+                .refresh_type(refresh)
+                .output_wattage(output_wattage)
+                .wifi_capable(wifi_capable)
+                .bluetooth_enabled(bluetooth_enabled)
+                .channels(channels)
+                .audio_zones(audio_zone)
+                .minimum_impedance(minimum_impedance)
+                .stock_count(stock)
+                .sold_count(sold)
                 .build();
     }
 
@@ -54,19 +73,9 @@ public class InventoryManager {
     }
 
     public int createInventory(Product product) {
-        int current_items = this.inventory.getTotal_items();
-        int current_warehouse = this.inventory.getTotal_warehouses();
-        switch (this.warehouseManager.createProduct(product)) {
-            case -1:
-                break;
-            case 0:
-                this.inventory.setTotal_items(current_items + 1);
-                break;
-            case 1:
-                this.inventory.setTotal_items(current_items + 1);
-                this.inventory.setTotal_warehouses(current_warehouse + 1);
-                break;
-        }
+        this.warehouseManager.createProduct(product);
+        this.inventory.setTotal_warehouses(this.warehouseManager.totalWarehouses() + 1);
+        this.inventory.setTotal_items(this.inventory.getTotal_items() + 1);
         return 0;
     }
 

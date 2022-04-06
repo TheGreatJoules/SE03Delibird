@@ -77,10 +77,8 @@ public class IdentifierUtil {
                 sb.append(delimit);
                 sb.append(++orderCount);
                 return sb.toString();
-
-            default:
-                return null;
         }
+        return "";
     }
 
 }

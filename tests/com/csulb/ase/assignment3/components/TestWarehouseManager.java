@@ -1,6 +1,9 @@
 package com.csulb.ase.assignment3.components;
 
+import com.csulb.ase.assignment3.models.ColorEnum;
+import com.csulb.ase.assignment3.models.Electronics;
 import com.csulb.ase.assignment3.models.Product;
+import com.csulb.ase.assignment3.models.ProductEnum;
 import com.csulb.ase.assignment3.models.Warehouse;
 import com.csulb.ase.assignment3.utils.LoadUtils;
 import org.testng.annotations.BeforeMethod;
@@ -8,50 +11,45 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestWarehouseManager {
-    private static final String PRODUCTS_PATH = "tests/com/csulb/ase/assignment3/data/products.json";
+
     private WarehouseManager warehouseManager;
 
     @BeforeMethod
     public void setup() throws IOException {
-        this.warehouseManager = new WarehouseManager(LoadUtils.loadProductsFromJson(PRODUCTS_PATH));
+        this.warehouseManager = new WarehouseManager(LoadUtils.loadProductsFromJson(LoadUtils.PRODUCT_PATH));
     }
 
     @Test(dataProvider="read-products")
-    public void test_FindProduct(String str) {
-        Product exact = LoadUtils.getProductFromJson(str);
-        Product actual = this.warehouseManager.readProduct(Objects.requireNonNull(exact).getId());
+    public void test_FindProduct(Product exact) {
+        Product actual = this.warehouseManager.readProduct(exact.getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 
     @Test(dataProvider = "add-products")
-    public void test_CreateProduct(String str){
-        Product exact = LoadUtils.getProductFromJson(str);
+    public void test_CreateProduct(Product exact){
         int transaction_status = this.warehouseManager.createProduct(exact);
-        assert transaction_status > 0;
-        Product actual = this.warehouseManager.readProduct(Objects.requireNonNull(exact).getId());
+        assert transaction_status == 0;
+        Product actual = this.warehouseManager.readProduct(exact.getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 
     @Test(dataProvider="update-products")
-    public void test_UpdateProduct(String str) {
-        Product exact = LoadUtils.getProductFromJson(str);
+    public void test_UpdateProduct(Product exact) {
         int transaction_status = this.warehouseManager.updateProduct(exact);
         assert transaction_status == 0;
-        Product actual = this.warehouseManager.readProduct(Objects.requireNonNull(exact).getId());
+        Product actual = this.warehouseManager.readProduct(exact.getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 
     @Test(dataProvider = "read-products")
-    public void test_DeleteProduct(String str){
-        Product exact = LoadUtils.getProductFromJson(str);
-        int transaction_status = this.warehouseManager.deleteProduct(Objects.requireNonNull(exact).getId());
+    public void test_DeleteProduct(Product exact){
+        int transaction_status = this.warehouseManager.deleteProduct(exact.getId());
         assert transaction_status == 0;
-        Product actual = this.warehouseManager.readProduct(Objects.requireNonNull(exact).getId());
+        Product actual = this.warehouseManager.readProduct(exact.getId());
         assert actual == null;
     }
 
@@ -76,21 +74,22 @@ public class TestWarehouseManager {
     @DataProvider(name="read-products")
     public static Object[][] getSavedProducts() {
         return new Object[][] {
-                {"{\"id\":\"WAR-1:STR-123\",\"warehouse_address\":\"Irvine\",\"product_type\":\"STEREO\",\"manufacturer\":\"Sony\",\"model_name\":\"R-S202BL\",\"series\":\"RX-V\",\"height\":5.5,\"width\":17.125,\"depth\":12.625,\"weight\":14.8,\"product_color\":\"BLACK\",\"output_wattage\":200,\"channels\":2,\"audio_zones\":1,\"minimum_impedance\":\"4 ohms\",\"wifi_capable\":false,\"bluetooth_enabled\":true,\"stock_count\":5,\"sold_count\":0}"}
+                {electronics_stereo_item("WAR-1:STR-123", "Sony", "R-S202BL", "RX-V", 5, 0)}
         };
     }
 
     @DataProvider(name="add-products")
     public static Object[][] getAddedProducts() {
         return new Object[][] {
-                {"{\"id\":\"WAR-1:TLV-124\",\"warehouse_address\":\"Long Beach\",\"product_type\":\"TELEVISION\",\"manufacturer\":\"Sony\",\"model_name\":\"KD55X80K\",\"series\":\"X80K\",\"height\":48.63,\"width\":13.38,\"depth\":30.88,\"weight\":49.9,\"product_color\":\"BLACK\",\"year\":2022,\"resolution\":\"4K\",\"display_type\":\"LCD\",\"refresh_type\":\"60 Hz\",\"stock_count\":5,\"sold_count\":0}"}
+                {electronics_television_item("WAR-1:TLV-123", "Sony", "KD55X80K", "X80K", 5, 0)},
+                {electronics_stereo_item("WAR-1:STR-123", "Sony", "R-S202BL","RX-V", 5, 0)}
         };
     }
 
     @DataProvider(name="update-products")
-    public static Object[][] getUpdateProducts() {
+    public static Object[][] getUpdatedProducts() {
         return new Object[][] {
-                {"{\"id\":\"WAR-1:STR-123\",\"warehouse_address\":\"Long Beach\",\"product_type\":\"STEREO\",\"manufacturer\":\"Sony\",\"model_name\":\"R-S202BL\",\"series\":\"RX-V\",\"height\":5.5,\"width\":17.125,\"depth\":12.625,\"weight\":14.8,\"product_color\":\"WHITE\",\"output_wattage\":200,\"channels\":2,\"audio_zones\":1,\"minimum_impedance\":\"4 ohms\",\"wifi_capable\":false,\"bluetooth_enabled\":true,\"stock_count\":5,\"sold_count\":0}"}
+                {electronics_television_item("WAR-1:TLV-124", "Sony", "KD55X80K", "X81K", 5, 0)}
         };
     }
 
@@ -107,4 +106,52 @@ public class TestWarehouseManager {
                 {"WAR-1", "11837 Artesia Blvd"}
         };
     }
+
+    public static Electronics electronics_television_item(String id, String manufacturer, String model, String series, int stock, int sold) {
+        return Electronics.builder()
+                .id(id)
+                .warehouse_address("Newport")
+                .product_type(ProductEnum.TELEVISION)
+                .manufacturer(manufacturer)
+                .model_name(model)
+                .series(series)
+                .height(50.0)
+                .width(15.0)
+                .depth(30.0)
+                .weight(50.0)
+                .product_color(ColorEnum.BLACK)
+                .year(2022)
+                .resolution("4K")
+                .display_type("LCD")
+                .refresh_type("60 Hz")
+                .stock_count(stock)
+                .sold_count(sold)
+                .build();
+    }
+
+    public static Electronics electronics_stereo_item(String id, String manufacturer, String model, String series, int stock, int sold) {
+        return Electronics.builder()
+                .id(id)
+                .product_type(ProductEnum.STEREO)
+                .warehouse_address("Irvine")
+                .manufacturer(manufacturer)
+                .model_name(model)
+                .series(series)
+                .year(2022)
+                .height(5.0)
+                .width(17.0)
+                .depth(12.0)
+                .weight(14.0)
+                .product_color(ColorEnum.BLACK)
+                .output_wattage(200.0)
+                .channels(2.0)
+                .audio_zones(1.0)
+                .minimum_impedance("4 ohms")
+                .wifi_capable(true)
+                .bluetooth_enabled(true)
+                .stock_count(stock)
+                .sold_count(sold)
+                .build();
+    }
+
 }

@@ -22,7 +22,6 @@ public abstract class Product {
     private ProductEnum product_type;
     private int stock_count;
     private int sold_count;
-    private String product_name;
     private String model_name;
     private String series;
     private String manufacturer;

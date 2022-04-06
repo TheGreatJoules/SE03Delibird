@@ -53,23 +53,20 @@ public class WarehouseManager {
      * @return status code
      */
     public int createProduct(Product product) {
-        int response = 0;
         if (product == null) {
             return -1;
         }
         String[] ids = product.getId().split(":");
-        Warehouse warehouse = this.warehouses.get(ids[0]);
-        if (warehouse == null) {
-            warehouse = createWarehouse(product.getWarehouse_address(), null);
+
+        if (!this.warehouses.containsKey(ids[0])) {
+            createWarehouse(ids[0], product.getWarehouse_address(), null);
             this.total_warehouses += 1;
-            response += 1;
         }
-        if (warehouse.getProducts().get(product.getId()) == null) {
-            response += 1;
-        }
+
+        Warehouse warehouse = this.warehouses.get(ids[0]);
         warehouse.getProducts().put(product.getId(), product);
         this.total_items += 1;
-        return response;
+        return 0;
     }
 
     /**
@@ -106,9 +103,9 @@ public class WarehouseManager {
         return 0;
     }
 
-    public Warehouse createWarehouse(String address, Map<String, Product> products) {
+    public Warehouse createWarehouse(String id, String address, Map<String, Product> products) {
         Warehouse warehouse = Warehouse.builder()
-                .id(Objects.requireNonNull(IdentifierUtil.generateEntityId(ComponentEnum.WAREHOUSE)))
+                .id(id != null ? id : Objects.requireNonNull(IdentifierUtil.generateEntityId(ComponentEnum.WAREHOUSE)))
                 .total_items(0)
                 .address(address)
                 .products(products != null ? products : new HashMap<>())
@@ -137,5 +134,9 @@ public class WarehouseManager {
         this.warehouses.remove(warehouse_id);
         this.total_warehouses -= 1;
         return 0;
+    }
+
+    public int totalWarehouses() {
+        return warehouses.size();
     }
 }
