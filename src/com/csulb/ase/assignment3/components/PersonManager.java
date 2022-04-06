@@ -1,13 +1,15 @@
 package com.csulb.ase.assignment3.components;
 
-import com.csulb.ase.assignment3.models.Customer;
 import com.csulb.ase.assignment3.models.Person;
 import com.csulb.ase.assignment3.models.SalesPerson;
-import com.csulb.ase.assignment3.models.Supplier;
+import com.csulb.ase.assignment3.utils.CommissionUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Manages the relationship between people
+ */
 public class PersonManager {
     private Map<String, Person> persons;
 
@@ -26,6 +28,29 @@ public class PersonManager {
 
     public Person retrievePerson(String person_id) {
         return this.persons.get(person_id);
+    }
+
+    public void updateEmployee(String person_id, long timestamp) {
+        SalesPerson salesPerson = (SalesPerson) retrievePerson(person_id);
+
+        salesPerson.setTotal_sales(CommissionUtil.calculateSingleSale(salesPerson.getTotal_sales()));
+
+        salesPerson.setPerformance_score(CommissionUtil.calculatePerformanceScore(
+                salesPerson.getPerformance_score(),
+                salesPerson.getLast_sell(),
+                timestamp));
+
+        salesPerson.setCommission_rate(CommissionUtil.calculateCommissionRate(
+                salesPerson.getCommission_rate(),
+                salesPerson.getLast_sell(),
+                timestamp
+        ));
+
+        salesPerson.setTotal_earnings(CommissionUtil.calculateEarnings(
+                salesPerson.getCommission_rate(),
+                salesPerson.getTotal_sales()));
+
+        salesPerson.setLast_sell(timestamp);
     }
 
 }

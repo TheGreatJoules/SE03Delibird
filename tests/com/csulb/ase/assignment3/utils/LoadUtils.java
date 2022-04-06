@@ -129,6 +129,7 @@ public class LoadUtils {
         for (String item : items) {
             Order order = objectMapper.readValue(item, Order.class);
             String[] ids = order.getId().split(":");
+
             if (invoices.get(ids[0]) == null) {
                 invoices.put(ids[0], Invoice.builder()
                                 .id(ids[0])

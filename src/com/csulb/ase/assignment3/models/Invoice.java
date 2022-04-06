@@ -22,6 +22,13 @@ public class Invoice {
     private String person_id;
     @NonNull
     private long timestamp;
+    private String street;
+    private String state;
+    private String city;
+    private String zipcode;
     private double total_cost;
+    private double total_adjusted_cost;
+    private PaymentEnum paymentEnum;
+    private DeliveryEnum deliveryEnum;
     private Map<String, Order> orders;
 }

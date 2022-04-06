@@ -1,7 +1,9 @@
 package com.csulb.ase.assignment3.components;
 
+import com.csulb.ase.assignment3.models.DeliveryEnum;
 import com.csulb.ase.assignment3.models.Invoice;
 import com.csulb.ase.assignment3.models.Order;
+import com.csulb.ase.assignment3.models.PaymentEnum;
 import com.csulb.ase.assignment3.utils.LoadUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -31,7 +33,7 @@ public class TestInvoiceManager {
     @Test(dataProvider = "add-orders")
     public void test_Create_Invoice(String str) {
         Order exact = LoadUtils.getOrderFromJson(str);
-        int transaction_status = this.invoiceManager.createInvoice(exact);
+        int transaction_status = this.invoiceManager.createInvoice(exact, "1250 Bellmotor Blvd:Long Beach:CA:90840", DeliveryEnum.PICKUP, PaymentEnum.CASH);
         assert transaction_status == 0;
         Order actual = this.invoiceManager.readOrder(Objects.requireNonNull(exact).getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
@@ -65,7 +67,7 @@ public class TestInvoiceManager {
     @DataProvider(name="read-orders")
     public static Object[][] getSavedProducts() {
         return new Object[][] {
-                {"{\"id\":\"INV-1:CUS-1:ORD-1:TLV-123\",\"person_id\":\"CUS-1\",\"product_id\":\"TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}"}
+                {"{\"id\":\"INV-1:CUS-1:ORD-1:TLV-123\",\"person_id\":\"CUS-1\",\"salesperson_id\":\"SAL-1\",\"product_id\":\"TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}"}
         };
     }
 

@@ -14,7 +14,8 @@ public class Order {
     @NonNull
     private String id;
     @NonNull
-    private String person_id;
+    private String person_id; //change to customer_id
+    private String salesperson_id;
     @NonNull
     private String product_id;
     @NonNull

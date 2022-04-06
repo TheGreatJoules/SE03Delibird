@@ -1,7 +1,10 @@
 package com.csulb.ase.assignment3.components;
 
+import com.csulb.ase.assignment3.models.DeliveryEnum;
 import com.csulb.ase.assignment3.models.Invoice;
 import com.csulb.ase.assignment3.models.Order;
+import com.csulb.ase.assignment3.models.PaymentEnum;
+import com.csulb.ase.assignment3.utils.ExpenseUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,25 +34,43 @@ public class InvoiceManager{
      * @param order
      * @return status code
      */
-    public int createInvoice(Order order) {
+    public int createInvoice(Order order, String address, DeliveryEnum deliveryEnum, PaymentEnum paymentEnum) {
         if (order == null) {
             return -1;
         }
         String[] ids = order.getId().split(":");
-        Invoice invoice = invoices.get(ids[0]);
-        if (invoice == null) {
-            invoice = Invoice.builder()
+        String[] location = address.split(":");
+        if (!invoices.containsKey(ids[0])) {
+            Invoice invoice = Invoice.builder()
                     .id(ids[0])
                     .person_id(ids[1])
+                    .street(location[0])
+                    .city(location[1])
+                    .state(location[2])
+                    .zipcode(location[3])
+                    .deliveryEnum(deliveryEnum)
+                    .paymentEnum(paymentEnum)
                     .timestamp(order.getTimestamp())
                     .orders(new HashMap<>())
                     .build();
             this.invoices.put(invoice.getId(), invoice);
         }
+        Invoice invoice = invoices.get(ids[0]);
+        updateInvoice(invoice, location, deliveryEnum, paymentEnum);
         this.total_invoices += 1;
         invoice.setTotal_cost(invoice.getTotal_cost() + order.getCost());
+        invoice.setTotal_adjusted_cost(ExpenseUtil.calculateStateTax(invoice.getState(), invoice.getTotal_cost()));
         invoice.getOrders().put(order.getId(), order);
         return 0;
+    }
+
+    public void updateInvoice(Invoice invoice, String[] location, DeliveryEnum deliveryEnum, PaymentEnum paymentEnum) {
+        invoice.setStreet(invoice.getStreet() == null ? location[0] : invoice.getStreet());
+        invoice.setCity(invoice.getCity() == null ? location[1] : invoice.getCity());
+        invoice.setState(invoice.getState() == null ? location[2] : invoice.getState());
+        invoice.setZipcode(invoice.getZipcode() == null ? location[3] : invoice.getZipcode());
+        invoice.setDeliveryEnum(invoice.getDeliveryEnum() == null ? deliveryEnum : invoice.getDeliveryEnum());
+        invoice.setPaymentEnum(invoice.getDeliveryEnum() == null ? paymentEnum : invoice.getPaymentEnum());
     }
 
     /**

@@ -1,8 +1,10 @@
 package com.csulb.ase.assignment3.components;
 
 import com.csulb.ase.assignment3.controller.OwnerController;
+import com.csulb.ase.assignment3.models.DeliveryEnum;
 import com.csulb.ase.assignment3.models.Order;
 import com.csulb.ase.assignment3.models.Owner;
+import com.csulb.ase.assignment3.models.PaymentEnum;
 import com.csulb.ase.assignment3.models.Person;
 import com.csulb.ase.assignment3.models.Product;
 import com.csulb.ase.assignment3.utils.LoadUtils;
@@ -74,7 +76,7 @@ public class TestOwnerController {
     @Test(dataProvider = "add-orders")
     public void test_AddReadOrder_Successful(String str) {
         Order exact = LoadUtils.getOrderFromJson(str);
-        int transaction_status = this.ownerController.createOrder(exact);
+        int transaction_status = this.ownerController.createOrder(Objects.requireNonNull(exact), DeliveryEnum.PICKUP, PaymentEnum.CASH);
         assert transaction_status == 0;
         Order actual = this.ownerController.readOrder(Objects.requireNonNull(exact).getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
@@ -129,8 +131,8 @@ public class TestOwnerController {
     @DataProvider(name="add-orders")
     public static Object[][] getAddedOrders() {
         return new Object[][] {
-                {"{\"id\":\"INV-1:CUS-1:ORD-4:STR-235\",\"person_id\":\"CUS-1\",\"product_id\":\"STR-235\",\"product_type\":\"STEREO\",\"timestamp\":1648722131,\"quantity\":5,\"cost\":199.99}"},
-                {"{\"id\":\"INV-2:CUS-1:ORD-1:TLV-123\",\"person_id\":\"CUS-1\",\"product_id\":\"TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}\n"}
+                {"{\"id\":\"INV-1:CUS-1:ORD-4:STR-235\",\"person_id\":\"CUS-1\",\"salesperson_id\":\"SAL-1\",\"product_id\":\"STR-235\",\"product_type\":\"STEREO\",\"timestamp\":1648722131,\"quantity\":5,\"cost\":199.99}"},
+                {"{\"id\":\"INV-2:CUS-1:ORD-1:TLV-123\",\"person_id\":\"CUS-1\",\"salesperson_id\":\"SAL-1\",\"product_id\":\"TLV-123\",\"product_type\":\"TELEVISION\",\"timestamp\":1648722131,\"quantity\":1,\"cost\":299.99}\n"}
         };
     }
 

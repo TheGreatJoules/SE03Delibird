@@ -15,4 +15,6 @@ public class SalesPerson extends Person {
     private int total_sales;
     private double commission_rate;
     private double performance_score;
+    private double total_earnings;
+    private long last_sell;
 }

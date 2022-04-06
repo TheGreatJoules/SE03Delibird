@@ -3,12 +3,17 @@ package com.csulb.ase.assignment3.controller;
 import com.csulb.ase.assignment3.components.InventoryManager;
 import com.csulb.ase.assignment3.components.InvoiceManager;
 import com.csulb.ase.assignment3.components.PersonManager;
+import com.csulb.ase.assignment3.models.Customer;
+import com.csulb.ase.assignment3.models.DeliveryEnum;
 import com.csulb.ase.assignment3.models.Inventory;
 import com.csulb.ase.assignment3.models.Order;
 import com.csulb.ase.assignment3.models.Owner;
+import com.csulb.ase.assignment3.models.PaymentEnum;
 import com.csulb.ase.assignment3.models.Person;
 import com.csulb.ase.assignment3.models.PersonEnum;
 import com.csulb.ase.assignment3.models.Product;
+import com.csulb.ase.assignment3.models.SalesPerson;
+import com.csulb.ase.assignment3.utils.CommissionUtil;
 import com.csulb.ase.assignment3.utils.IdentifierUtil;
 
 import java.time.Instant;
@@ -102,8 +107,11 @@ public class OwnerController {
         return 0;
     }
 
-    public int createOrder(Order order) {
-        this.invoiceManager.createInvoice(order);
+    public int createOrder(Order order, DeliveryEnum deliveryEnum, PaymentEnum paymentEnum) {
+        Customer customer = (Customer) personManager.retrievePerson(order.getPerson_id());
+        if (this.invoiceManager.createInvoice(order, customer.getAddress(), deliveryEnum, paymentEnum) == 0) {
+            this.personManager.updateEmployee(order.getSalesperson_id(), order.getTimestamp());
+        }
         return 0;
     }
 
