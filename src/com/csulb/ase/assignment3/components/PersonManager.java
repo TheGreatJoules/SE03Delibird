@@ -32,6 +32,7 @@ public class PersonManager {
 
     public void updateEmployee(String person_id, long timestamp) {
         SalesPerson salesPerson = (SalesPerson) retrievePerson(person_id);
+        double old_performance_score = salesPerson.getPerformance_score();
 
         salesPerson.setTotal_sales(CommissionUtil.calculateSingleSale(salesPerson.getTotal_sales()));
 
@@ -42,8 +43,8 @@ public class PersonManager {
 
         salesPerson.setCommission_rate(CommissionUtil.calculateCommissionRate(
                 salesPerson.getCommission_rate(),
-                salesPerson.getLast_sell(),
-                timestamp
+                old_performance_score,
+                salesPerson.getPerformance_score()
         ));
 
         salesPerson.setTotal_earnings(CommissionUtil.calculateEarnings(

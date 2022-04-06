@@ -5,12 +5,6 @@ public class CommissionUtil {
     private static final long ONE_WEEK = 7 * 24 * 60 * 60;
     private static final long ONE_MONTH = 30 * 7 * 24 * 60 * 60;
 
-    public static double calculateCommissionRate(double commission_rate, long start, long end) {
-        // if 10 sales are made increment commission rate
-
-        return 0;
-    }
-
     public static double calculatePerformanceScore(double performance_score, long last_day, long today) {
         // check recent sold item if its within a a month stay the same
         long time_delay = (today - last_day) - ONE_DAY;
@@ -23,6 +17,14 @@ public class CommissionUtil {
         } else {
             return 0;
         }
+    }
+
+    public static double calculateCommissionRate(double commission_rate, double old_performance_score, double latest_performance_score) {
+        double performance_difference = latest_performance_score - old_performance_score;
+        if (performance_difference <= 0) {
+            return commission_rate;
+        }
+        return commission_rate + performance_difference * commission_rate;
     }
 
     public static int calculateSingleSale(int total_sales) {
