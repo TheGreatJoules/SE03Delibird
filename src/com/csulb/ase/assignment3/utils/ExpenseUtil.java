@@ -1,6 +1,5 @@
 package com.csulb.ase.assignment3.utils;
 
-import com.csulb.ase.assignment3.models.Order;
 import com.csulb.ase.assignment3.models.Person;
 import com.csulb.ase.assignment3.models.StateTaxRateEnum;
 

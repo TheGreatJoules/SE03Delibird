@@ -1,7 +1,5 @@
 package com.csulb.ase.assignment3.utils;
 
-import com.csulb.ase.assignment3.models.SalesPerson;
-
 public class CommissionUtil {
     private static final long ONE_DAY = 24 * 60 * 60;
     private static final long ONE_WEEK = 7 * 24 * 60 * 60;
