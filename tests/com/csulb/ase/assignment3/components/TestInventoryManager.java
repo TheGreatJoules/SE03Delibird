@@ -25,7 +25,7 @@ public class TestInventoryManager {
 
     @Test(dataProvider = "add-stereo")
     public void test_CreateStereo_Product(Product exact) {
-        Product actual = this.inventoryManager.createProduct("WAR-1:STR-123", ProductEnum.STEREO, "Sony",
+        Product actual = this.inventoryManager.createProduct("WAR-1:STR-123", "WAR-1",ProductEnum.STEREO, "Sony",
                 "R-S202BL", "RX-V", "Irvine", 5.0, 17.0, 12.0, 14.0,
                 null,2022, 5, 0, ColorEnum.BLACK, null, null, 200.0,
                 2.0, 1.0, true, true, "4 ohms");
@@ -37,7 +37,7 @@ public class TestInventoryManager {
 
     @Test(dataProvider = "add-television")
     public void test_CreateTelevision_Product(Product exact) {
-        Product actual = this.inventoryManager.createProduct("WAR-1:TLV-124", ProductEnum.TELEVISION, "Sony",
+        Product actual = this.inventoryManager.createProduct("WAR-1:TLV-124", "WAR-1", ProductEnum.TELEVISION, "Sony",
                 "KD55X80K", "X80K", "Newport", 50.0, 15.0, 30.0, 50.0,
                 "LCD",2022, 5, 0, ColorEnum.BLACK, "4K", "60 Hz", null,
                 null, null, null, null, null);
@@ -85,36 +85,36 @@ public class TestInventoryManager {
     @DataProvider(name="add-television")
     public static Object[][] getAddedTelevision() {
         return new Object[][] {
-                {electronics_television_item("WAR-1:TLV-124", "Sony", "KD55X80K", "X80K",5, 0)}
+                {electronics_television_item("WAR-1:TLV-124", "WAR-1","Sony", "KD55X80K", "X80K",5, 0)}
         };
     }
 
     @DataProvider(name="add-stereo")
     public static Object[][] getAddedStereo() {
         return new Object[][] {
-                {electronics_stereo_item("WAR-1:STR-123", "Sony", "R-S202BL","RX-V", 5, 0)}
+                {electronics_stereo_item("WAR-1:STR-123", "WAR-1","Sony", "R-S202BL","RX-V", 5, 0)}
         };
     }
 
     @DataProvider(name="add-products")
     public static Object[][] getAddedProducts() {
         return new Object[][] {
-                {electronics_television_item("WAR-1:TLV-123", "Sony", "KD55X80K", "X80K", 5, 0)},
-                {electronics_stereo_item("WAR-1:STR-123", "Sony", "R-S202BL","RX-V", 5, 0)}
+                {electronics_television_item("WAR-1:TLV-123", "WAR-1","Sony", "KD55X80K", "X80K", 5, 0)},
+                {electronics_stereo_item("WAR-1:STR-123", "WAR-1","Sony", "R-S202BL","RX-V", 5, 0)}
         };
     }
 
     @DataProvider(name="update-products")
     public static Object[][] getUpdatedProducts() {
         return new Object[][] {
-                {electronics_television_item("WAR-1:TLV-124", "Sony", "KD55X80K", "X81K", 5, 0)}
+                {electronics_television_item("WAR-1:TLV-124", "WAR-1","Sony", "KD55X80K", "X81K", 5, 0)}
         };
     }
 
     @DataProvider(name="delete-products")
     public static Object[][] getDeletedProducts() {
         return new Object[][] {
-                {electronics_television_item("WAR-1:STR-123", "Sony", "R-S202BL", "RX-V", 5, 0)}
+                {electronics_television_item("WAR-1:STR-123", "WAR-1","Sony", "R-S202BL", "RX-V", 5, 0)}
         };
     }
 
@@ -125,9 +125,10 @@ public class TestInventoryManager {
         };
     }
 
-    public static Electronics electronics_television_item(String id, String manufacturer, String model, String series, int stock, int sold) {
+    public static Electronics electronics_television_item(String id, String warehouse_id, String manufacturer, String model, String series, int stock, int sold) {
         return Electronics.builder()
                 .id(id)
+                .warehouse_id(warehouse_id)
                 .warehouse_address("Newport")
                 .product_type(ProductEnum.TELEVISION)
                 .manufacturer(manufacturer)
@@ -147,10 +148,11 @@ public class TestInventoryManager {
                 .build();
     }
 
-    public static Electronics electronics_stereo_item(String id, String manufacturer, String model, String series, int stock, int sold) {
+    public static Electronics electronics_stereo_item(String id, String warehouse_id, String manufacturer, String model, String series, int stock, int sold) {
         return Electronics.builder()
                 .id(id)
                 .product_type(ProductEnum.STEREO)
+                .warehouse_id(warehouse_id)
                 .warehouse_address("Irvine")
                 .manufacturer(manufacturer)
                 .model_name(model)

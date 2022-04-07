@@ -32,13 +32,14 @@ public class InventoryManager {
         }
     }
 
-    public Product createProduct(String id, ProductEnum type, String manufacturer, String model, String series, String address,
+    public Product createProduct(String id, String warehouse_id, ProductEnum type, String manufacturer, String model, String series, String address,
                                  double height, double width, double depth, double weight, String display_type, int year,
                                  int stock, int sold, ColorEnum colorEnum, String resolution, String refresh, Double output_wattage,
                                  Double channels, Double audio_zone, Boolean wifi_capable, Boolean bluetooth_enabled,
                                  String minimum_impedance) {
         return Electronics.builder()
                 .id(id != null ? id : IdentifierUtil.generateProductId(ProductEnum.TELEVISION))
+                .warehouse_id(warehouse_id)
                 .product_type(type)
                 .warehouse_address(address)
                 .manufacturer(manufacturer)
@@ -84,6 +85,10 @@ public class InventoryManager {
             return -1;
         }
         this.warehouseManager.updateProduct(product);
+        return 0;
+    }
+
+    public int updateInventory(String product_id, int quantity) {
         return 0;
     }
 

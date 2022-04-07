@@ -13,7 +13,9 @@ import com.csulb.ase.assignment3.models.Person;
 import com.csulb.ase.assignment3.models.PersonEnum;
 import com.csulb.ase.assignment3.models.Product;
 import com.csulb.ase.assignment3.models.SalesPerson;
+import com.csulb.ase.assignment3.models.Supplier;
 import com.csulb.ase.assignment3.utils.CommissionUtil;
+import com.csulb.ase.assignment3.utils.ExpenseUtil;
 import com.csulb.ase.assignment3.utils.IdentifierUtil;
 
 import java.time.Instant;
@@ -79,6 +81,13 @@ public class OwnerController {
 
     public Inventory readInventory() {
         return this.inventoryManager.readInventory();
+    }
+
+    public int updateInventory(String supplier_id, String product_id, int quantity) {
+        Supplier supplier = (Supplier) this.personManager.retrievePerson(supplier_id);
+        this.owner.setExpense(ExpenseUtil.calculateExpenses(this.owner.getExpense(), supplier.getQuote(), quantity));
+        this.inventoryManager.updateInventory(product_id, quantity);
+        return 0;
     }
 
     public int createProduct(Product product) {

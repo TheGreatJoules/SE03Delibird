@@ -17,4 +17,6 @@ public class Owner extends Person {
     private String username;
     @NonNull
     private String password;
+    private Double revenue;
+    private Double expense;
 }

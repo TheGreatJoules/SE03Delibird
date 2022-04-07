@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Supplier extends Person{
-    private double quote;
+    private Double quote;
     private SupplierType supplies;
     private BusinessStatus status;
 

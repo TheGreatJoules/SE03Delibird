@@ -18,4 +18,8 @@ public class ExpenseUtil {
         }
         return total_discouts;
     }
+
+    public static double calculateExpenses(double current_expense, double quote, int quantity) {
+        return current_expense + quote * quantity;
+    }
 }
