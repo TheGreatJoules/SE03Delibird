@@ -4,6 +4,7 @@ import com.csulb.ase.assignment3.models.DeliveryEnum;
 import com.csulb.ase.assignment3.models.Invoice;
 import com.csulb.ase.assignment3.models.Order;
 import com.csulb.ase.assignment3.models.PaymentEnum;
+import com.csulb.ase.assignment3.models.StateTaxRateEnum;
 import com.csulb.ase.assignment3.utils.ExpenseUtil;
 import com.csulb.ase.assignment3.utils.IdentifierUtil;
 
@@ -47,8 +48,9 @@ public class InvoiceManager{
         }
         Invoice invoice = invoices.get(ids[0]);
         invoice.setTotal_cost(invoice.getTotal_cost() + order.getCost());
-        invoice.setDiscounts(ExpenseUtil.calculateDiscounts(invoice.getDiscounts(), deliveryEnum.toString(), paymentEnum.toString()));
-        invoice.setTotal_adjusted_cost(ExpenseUtil.calculateStateTax(invoice.getState(), invoice.getTotal_cost()));
+        invoice.setTax_rate(StateTaxRateEnum.valueOf(invoice.getState()).tax_rate);
+        invoice.setDiscounts(ExpenseUtil.calculateDiscounts(deliveryEnum.toString(), paymentEnum.toString()));
+        invoice.setTotal_adjusted_cost(ExpenseUtil.calculateAdjustedTotal(invoice.getTax_rate(), invoice.getTotal_cost(), invoice.getDiscounts()));
         invoice.getOrders().put(order.getId(), order);
         this.total_invoices += 1;
         return 0;
@@ -57,7 +59,7 @@ public class InvoiceManager{
     public Invoice createInvoice(String[] ids, String[] location, DeliveryEnum delivery, PaymentEnum paymentEnum, long timestamp) {
         return Invoice.builder()
                 .id(ids[0])
-                .person_id(ids[1])
+                .customer_id(ids[1])
                 .street(location[0])
                 .city(location[1])
                 .state(location[2])
@@ -79,6 +81,10 @@ public class InvoiceManager{
         invoice.setZipcode(location[3]);
         invoice.setDeliveryEnum(deliveryEnum);
         invoice.setPaymentEnum(paymentEnum);
+        invoice.setDiscounts(ExpenseUtil.calculateDiscounts(deliveryEnum.toString(), paymentEnum.toString()));
+        invoice.setTax_rate(StateTaxRateEnum.valueOf(invoice.getState()).tax_rate);
+        invoice.setDiscounts(ExpenseUtil.calculateDiscounts(deliveryEnum.toString(), paymentEnum.toString()));
+        invoice.setTotal_adjusted_cost(ExpenseUtil.calculateAdjustedTotal(invoice.getTax_rate(), invoice.getTotal_cost(), invoice.getDiscounts()));
     }
 
     /**

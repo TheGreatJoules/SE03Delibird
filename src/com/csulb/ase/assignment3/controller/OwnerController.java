@@ -108,7 +108,7 @@ public class OwnerController {
     }
 
     public int createOrder(Order order, DeliveryEnum deliveryEnum, PaymentEnum paymentEnum) {
-        Customer customer = (Customer) personManager.retrievePerson(order.getPerson_id());
+        Customer customer = (Customer) personManager.retrievePerson(order.getCustomer_id());
         if (this.invoiceManager.createInvoice(order, customer.getAddress(), deliveryEnum, paymentEnum) == 0) {
             this.personManager.updateEmployee(order.getSalesperson_id(), order.getTimestamp());
         }

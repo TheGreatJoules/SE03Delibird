@@ -16,17 +16,14 @@ public class Order {
     @NonNull
     private String id;
     @NonNull
-    private String person_id; //change to customer_id
+    private String customer_id;
     @NonNull
     private String salesperson_id;
     @NonNull
     private String product_id;
     @NonNull
     private ProductEnum product_type;
-    @NonNull
     private long timestamp;
-    @NonNull
     private int quantity;
-    @NonNull
     private double cost;
 }

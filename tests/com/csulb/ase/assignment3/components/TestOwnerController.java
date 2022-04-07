@@ -201,7 +201,7 @@ public class TestOwnerController {
     public static Order television_order_item(String id, int quantity, double cost) {
         return Order.builder()
                 .id(id)
-                .person_id("CUS-1")
+                .customer_id("CUS-1")
                 .salesperson_id("SAL-1")
                 .product_id("TLV-123")
                 .product_type(ProductEnum.TELEVISION)
@@ -214,7 +214,7 @@ public class TestOwnerController {
     public static Order stereo_order_item(String id, int quantity, double cost) {
         return Order.builder()
                 .id(id)
-                .person_id("CUS-1")
+                .customer_id("CUS-1")
                 .salesperson_id("SAL-1")
                 .product_id("STR-234")
                 .product_type(ProductEnum.STEREO)

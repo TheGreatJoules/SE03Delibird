@@ -19,9 +19,8 @@ public class Invoice {
     @NonNull
     private String id;
     @NonNull
-    private String person_id;
+    private String customer_id;
     private String salesperson_id;
-    @NonNull
     private long timestamp;
     @NonNull
     private String street;
@@ -33,6 +32,7 @@ public class Invoice {
     private String zipcode;
     private double total_cost;
     private double discounts;
+    private double tax_rate;
     private double total_adjusted_cost;
     @NonNull
     private PaymentEnum paymentEnum;
