@@ -153,5 +153,4 @@ public class TestWarehouseManager {
                 .sold_count(sold)
                 .build();
     }
-
 }

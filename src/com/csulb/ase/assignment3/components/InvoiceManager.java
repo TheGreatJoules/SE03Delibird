@@ -73,12 +73,12 @@ public class InvoiceManager{
     }
 
     public void updateInvoice(Invoice invoice, String[] location, DeliveryEnum deliveryEnum, PaymentEnum paymentEnum) {
-        invoice.setStreet(invoice.getStreet() == null ? location[0] : invoice.getStreet());
-        invoice.setCity(invoice.getCity() == null ? location[1] : invoice.getCity());
-        invoice.setState(invoice.getState() == null ? location[2] : invoice.getState());
-        invoice.setZipcode(invoice.getZipcode() == null ? location[3] : invoice.getZipcode());
-        invoice.setDeliveryEnum(invoice.getDeliveryEnum() == null ? deliveryEnum : invoice.getDeliveryEnum());
-        invoice.setPaymentEnum(invoice.getDeliveryEnum() == null ? paymentEnum : invoice.getPaymentEnum());
+        invoice.setStreet(location[0]);
+        invoice.setCity(location[1]);
+        invoice.setState(location[2]);
+        invoice.setZipcode(location[3]);
+        invoice.setDeliveryEnum(deliveryEnum);
+        invoice.setPaymentEnum(paymentEnum);
     }
 
     /**

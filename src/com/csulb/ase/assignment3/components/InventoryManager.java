@@ -9,7 +9,6 @@ import com.csulb.ase.assignment3.models.Warehouse;
 import com.csulb.ase.assignment3.utils.IdentifierUtil;
 
 import java.util.Map;
-import java.util.Objects;
 
 public class InventoryManager {
     private Inventory inventory;
@@ -65,13 +64,6 @@ public class InventoryManager {
                 .build();
     }
 
-    public Product createStereo(String name, String display_type, String manufacturer, String dimensions, ColorEnum colorEnum, Boolean smart) {
-        return Electronics.builder()
-                .id(Objects.requireNonNull(IdentifierUtil.generateProductId(ProductEnum.STEREO)))
-                .product_color(colorEnum)
-                .build();
-    }
-
     public int createInventory(Product product) {
         this.warehouseManager.createProduct(product);
         this.inventory.setTotal_warehouses(this.warehouseManager.totalWarehouses() + 1);
@@ -97,15 +89,10 @@ public class InventoryManager {
 
     public int deleteInventory(String product_id) {
         int current_items = this.inventory.getTotal_items();
-        int current_warehouse = this.inventory.getTotal_warehouses();
-        String[] ids = product_id.split(":");
-        switch (this.warehouseManager.deleteProduct(product_id)) {
-            case -1:
-                break;
-            case 0:
-                this.inventory.setTotal_items(current_items - 1);
-                break;
+        if (this.warehouseManager.deleteProduct(product_id) == -1) {
+            return -1;
         }
+        this.inventory.setTotal_items(current_items - 1);
         return 0;
     }
 }
