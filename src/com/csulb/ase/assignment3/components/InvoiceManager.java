@@ -5,6 +5,7 @@ import com.csulb.ase.assignment3.models.Invoice;
 import com.csulb.ase.assignment3.models.Order;
 import com.csulb.ase.assignment3.models.PaymentEnum;
 import com.csulb.ase.assignment3.utils.ExpenseUtil;
+import com.csulb.ase.assignment3.utils.IdentifierUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,30 +39,37 @@ public class InvoiceManager{
         if (order == null) {
             return -1;
         }
-        String[] ids = order.getId().split(":");
-        String[] location = address.split(":");
+        String[] ids = IdentifierUtil.parseId(order.getId());
+        String[] location = IdentifierUtil.parseId(address);
         if (!invoices.containsKey(ids[0])) {
-            Invoice invoice = Invoice.builder()
-                    .id(ids[0])
-                    .person_id(ids[1])
-                    .street(location[0])
-                    .city(location[1])
-                    .state(location[2])
-                    .zipcode(location[3])
-                    .deliveryEnum(deliveryEnum)
-                    .paymentEnum(paymentEnum)
-                    .timestamp(order.getTimestamp())
-                    .orders(new HashMap<>())
-                    .build();
+            Invoice invoice = createInvoice(ids, location, deliveryEnum, paymentEnum, order.getTimestamp());
             this.invoices.put(invoice.getId(), invoice);
         }
         Invoice invoice = invoices.get(ids[0]);
-        updateInvoice(invoice, location, deliveryEnum, paymentEnum);
-        this.total_invoices += 1;
         invoice.setTotal_cost(invoice.getTotal_cost() + order.getCost());
+        invoice.setDiscounts(ExpenseUtil.calculateDiscounts(invoice.getDiscounts(), deliveryEnum.toString(), paymentEnum.toString()));
         invoice.setTotal_adjusted_cost(ExpenseUtil.calculateStateTax(invoice.getState(), invoice.getTotal_cost()));
         invoice.getOrders().put(order.getId(), order);
+        this.total_invoices += 1;
         return 0;
+    }
+
+    public Invoice createInvoice(String[] ids, String[] location, DeliveryEnum delivery, PaymentEnum paymentEnum, long timestamp) {
+        return Invoice.builder()
+                .id(ids[0])
+                .person_id(ids[1])
+                .street(location[0])
+                .city(location[1])
+                .state(location[2])
+                .zipcode(location[3])
+                .deliveryEnum(delivery)
+                .paymentEnum(paymentEnum)
+                .timestamp(timestamp)
+                .discounts(0.0)
+                .total_adjusted_cost(0.0)
+                .total_cost(0.0)
+                .orders(new HashMap<>())
+                .build();
     }
 
     public void updateInvoice(Invoice invoice, String[] location, DeliveryEnum deliveryEnum, PaymentEnum paymentEnum) {
@@ -88,7 +96,7 @@ public class InvoiceManager{
      * @return Order
      */
     public Order readOrder(String order_id) {
-        String[] ids = order_id.split(":");
+        String[] ids = IdentifierUtil.parseId(order_id);
         if (readInvoice(ids[0]) == null || readInvoice(ids[0]).getOrders() == null) {
             return null;
         }
@@ -104,7 +112,7 @@ public class InvoiceManager{
         if (order == null) {
             return -1;
         }
-        String[] ids = order.getId().split(":");
+        String[] ids = IdentifierUtil.parseId(order.getId());
         Invoice invoice = invoices.get(ids[0]);
         if (invoice == null) {
             return -1;
@@ -137,7 +145,7 @@ public class InvoiceManager{
         if (order_id == null) {
             return -1;
         }
-        String[] ids = order_id.split(":");
+        String[] ids = IdentifierUtil.parseId(order_id);
         if (this.invoices.get(ids[0]) == null || this.invoices.get(ids[0]).getOrders() == null) {
             return -1;
         }

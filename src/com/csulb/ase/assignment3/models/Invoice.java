@@ -20,15 +20,23 @@ public class Invoice {
     private String id;
     @NonNull
     private String person_id;
+    private String salesperson_id;
     @NonNull
     private long timestamp;
+    @NonNull
     private String street;
+    @NonNull
     private String state;
+    @NonNull
     private String city;
+    @NonNull
     private String zipcode;
     private double total_cost;
+    private double discounts;
     private double total_adjusted_cost;
+    @NonNull
     private PaymentEnum paymentEnum;
+    @NonNull
     private DeliveryEnum deliveryEnum;
     private Map<String, Order> orders;
 }

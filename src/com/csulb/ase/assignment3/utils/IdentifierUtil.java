@@ -81,4 +81,8 @@ public class IdentifierUtil {
         return "";
     }
 
+    public static String[] parseId(String id) {
+        return id.split(":");
+    }
+
 }

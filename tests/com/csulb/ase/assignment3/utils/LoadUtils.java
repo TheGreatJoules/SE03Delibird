@@ -37,6 +37,14 @@ public class LoadUtils {
                                                 File.separator + "data" +
                                                 File.separator + "orders.json";
 
+    public static final String INVOICES_PATH = "tests" +
+                                                File.separator + "com" +
+                                                File.separator + "csulb" +
+                                                File.separator + "ase" +
+                                                File.separator + "assignment3" +
+                                                File.separator + "data" +
+                                                File.separator + "invoices.json";
+
     public static final String PRODUCT_PATH = "tests" +
                                                 File.separator + "com" +
                                                 File.separator + "csulb" +
@@ -118,8 +126,8 @@ public class LoadUtils {
      * @return InvoiceManager
      * @throws IOException
      */
-    public static InvoiceManager getInvoiceFromJson(String order_path) throws IOException {
-        return new InvoiceManager(loadInvoicesFromJson(order_path));
+    public static InvoiceManager getInvoiceFromJson(String invoice_path, String order_path) throws IOException {
+        return new InvoiceManager(loadInvoicesFromJson(invoice_path, order_path));
     }
 
     /**
@@ -154,27 +162,38 @@ public class LoadUtils {
      * @return invoices - a collection of invoices hashed by their unique identifier
      * @throws IOException
      */
-    private static Map<String, Invoice> loadInvoicesFromJson(String order_path) throws IOException {
+    private static Map<String, Invoice> loadOrdersFromJson(Map<String, Invoice> invoices, String order_path) throws IOException {
         String[] items = IOUtils.toString(new FileInputStream(order_path), StandardCharsets.UTF_8).split("\\r?\\n");
-        Map<String, Invoice> invoices = new HashMap<>();
         for (String item : items) {
             Order order = objectMapper.readValue(item, Order.class);
             String[] ids = order.getId().split(":");
-
-            if (invoices.get(ids[0]) == null) {
-                invoices.put(ids[0], Invoice.builder()
-                                .id(ids[0])
-                                .person_id(ids[1])
-                                .timestamp(order.getTimestamp())
-                                .orders(new HashMap<>())
-                        .build());
-            }
             double current_cost = invoices.get(ids[0]).getTotal_cost();
             invoices.get(ids[0]).getOrders().put(order.getId(), order);
             invoices.get(ids[0]).setTotal_cost(current_cost + order.getCost());
         }
         return invoices;
     }
+
+    /**
+     * Generate Invoices from orders
+     * @param invoice_path
+     * @return invoices - a collection of invoices hashed by their unique identifier
+     * @throws IOException
+     */
+    private static Map<String, Invoice> loadInvoicesFromJson(String invoice_path, String order_path) throws IOException {
+        String[] items = IOUtils.toString(new FileInputStream(invoice_path), StandardCharsets.UTF_8).split("\\r?\\n");
+        Map<String, Invoice> invoices = new HashMap<>();
+
+        for (String item : items) {
+            Invoice invoice = objectMapper.readValue(item, Invoice.class);
+            String[] ids = invoice.getId().split(":");
+            invoices.putIfAbsent(ids[0], invoice);
+            invoices.get(ids[0]).setOrders(new HashMap<>());
+        }
+        loadOrdersFromJson(invoices, order_path);
+        return invoices;
+    }
+
 
     /**
      * Load the Warehouses from list of json products

@@ -19,7 +19,7 @@ public class TestInvoiceManager {
 
     @BeforeMethod
     public void setup() throws IOException {
-        invoiceManager = LoadUtils.getInvoiceFromJson(LoadUtils.ORDERS_PATH);
+        invoiceManager = LoadUtils.getInvoiceFromJson(LoadUtils.INVOICES_PATH, LoadUtils.ORDERS_PATH);
     }
 
     @Test(dataProvider = "exist-orders")

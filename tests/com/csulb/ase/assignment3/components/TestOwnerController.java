@@ -33,7 +33,7 @@ public class TestOwnerController {
 
     @BeforeSuite
     public void setup() throws IOException {
-        invoiceManager = LoadUtils.getInvoiceFromJson(LoadUtils.ORDERS_PATH);
+        invoiceManager = LoadUtils.getInvoiceFromJson(LoadUtils.INVOICES_PATH, LoadUtils.ORDERS_PATH);
         inventoryManager = LoadUtils.loadInventoryManagerFromJson(LoadUtils.PRODUCT_PATH);
         personManager = LoadUtils.loadPersonManagerFromJson(LoadUtils.PERSONS_PATH);
         owner = LoadUtils.loadOwnerFromJson(LoadUtils.OWNER_PATH, LoadUtils.PERSONS_PATH);
