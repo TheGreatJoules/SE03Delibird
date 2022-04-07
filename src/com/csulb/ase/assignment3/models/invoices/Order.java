@@ -1,5 +1,6 @@
-package com.csulb.ase.assignment3.models;
+package com.csulb.ase.assignment3.models.invoices;
 
+import com.csulb.ase.assignment3.models.ProductEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

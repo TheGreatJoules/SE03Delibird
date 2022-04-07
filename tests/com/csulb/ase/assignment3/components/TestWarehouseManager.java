@@ -1,10 +1,10 @@
 package com.csulb.ase.assignment3.components;
 
 import com.csulb.ase.assignment3.models.ColorEnum;
-import com.csulb.ase.assignment3.models.Electronics;
-import com.csulb.ase.assignment3.models.Product;
+import com.csulb.ase.assignment3.models.inventory.Electronics;
+import com.csulb.ase.assignment3.models.inventory.Product;
 import com.csulb.ase.assignment3.models.ProductEnum;
-import com.csulb.ase.assignment3.models.Warehouse;
+import com.csulb.ase.assignment3.models.inventory.Warehouse;
 import com.csulb.ase.assignment3.utils.LoadUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -30,7 +30,7 @@ public class TestWarehouseManager {
     }
 
     @Test(dataProvider = "add-products")
-    public void test_CreateProduct(Product exact){
+    public void test_CreateFindProduct_Successful(Product exact){
         int transaction_status = this.warehouseManager.createProduct(exact);
         assert transaction_status == 0;
         Product actual = this.warehouseManager.findProduct(exact.getId());
@@ -38,7 +38,7 @@ public class TestWarehouseManager {
     }
 
     @Test(dataProvider="update-products")
-    public void test_UpdateProduct(Product exact) {
+    public void test_UpdateFindProduct_Successful(Product exact) {
         int transaction_status = this.warehouseManager.updateProduct(exact);
         assert transaction_status == 0;
         Product actual = this.warehouseManager.findProduct(exact.getId());
@@ -46,7 +46,7 @@ public class TestWarehouseManager {
     }
 
     @Test(dataProvider = "read-products")
-    public void test_DeleteProduct(Product exact){
+    public void test_DeleteFindProduct_Successful(Product exact){
         int transaction_status = this.warehouseManager.deleteProduct(exact.getId());
         assert transaction_status == 0;
         Product actual = this.warehouseManager.findProduct(exact.getId());
@@ -69,6 +69,22 @@ public class TestWarehouseManager {
     public void test_UpdateWarehouse(String warehouse_id, String address) {
         int transaction_status = this.warehouseManager.updateWarehouse(warehouse_id, address);
         assert transaction_status == 0;
+    }
+
+    @Test(dataProvider = "update-inventory")
+    public void test_UpdatedProductQuantity(String product_id, int quantity) {
+        int exact = this.warehouseManager.findProduct(product_id).getStock_count() + quantity;
+        int transaction_status = this.warehouseManager.updateStock(product_id, quantity);
+        assert transaction_status == 0;
+        int actual = this.warehouseManager.findProduct(product_id).getStock_count();
+        assert exact == actual;
+    }
+
+    @DataProvider(name="update-inventory")
+    public static Object[][] getUpdatedProductQuantity() {
+        return new Object[][] {
+                {"TLV-123", 10}
+        };
     }
 
     @DataProvider(name="read-products")

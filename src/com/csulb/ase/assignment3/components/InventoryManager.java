@@ -1,11 +1,11 @@
 package com.csulb.ase.assignment3.components;
 
-import com.csulb.ase.assignment3.models.Inventory;
-import com.csulb.ase.assignment3.models.Product;
+import com.csulb.ase.assignment3.models.inventory.Inventory;
+import com.csulb.ase.assignment3.models.inventory.Product;
 import com.csulb.ase.assignment3.models.ColorEnum;
-import com.csulb.ase.assignment3.models.Electronics;
+import com.csulb.ase.assignment3.models.inventory.Electronics;
 import com.csulb.ase.assignment3.models.ProductEnum;
-import com.csulb.ase.assignment3.models.Warehouse;
+import com.csulb.ase.assignment3.models.inventory.Warehouse;
 import com.csulb.ase.assignment3.utils.IdentifierUtil;
 
 import java.util.Map;

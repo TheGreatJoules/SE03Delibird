@@ -1,7 +1,7 @@
 package com.csulb.ase.assignment3.components;
 
-import com.csulb.ase.assignment3.models.Person;
-import com.csulb.ase.assignment3.models.SalesPerson;
+import com.csulb.ase.assignment3.models.persons.Person;
+import com.csulb.ase.assignment3.models.persons.SalesPerson;
 import com.csulb.ase.assignment3.utils.CommissionUtil;
 
 import java.util.HashMap;

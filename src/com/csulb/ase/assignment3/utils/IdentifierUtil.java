@@ -1,7 +1,7 @@
 package com.csulb.ase.assignment3.utils;
 
 import com.csulb.ase.assignment3.models.ComponentEnum;
-import com.csulb.ase.assignment3.models.PersonEnum;
+import com.csulb.ase.assignment3.models.persons.PersonEnum;
 import com.csulb.ase.assignment3.models.ProductEnum;
 
 public class IdentifierUtil {

@@ -1,4 +1,4 @@
-package com.csulb.ase.assignment3.models;
+package com.csulb.ase.assignment3.models.invoices;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.Map;
 
 @Setter

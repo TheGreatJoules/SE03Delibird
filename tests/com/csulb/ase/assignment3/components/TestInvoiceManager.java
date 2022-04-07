@@ -1,9 +1,9 @@
 package com.csulb.ase.assignment3.components;
 
-import com.csulb.ase.assignment3.models.DeliveryEnum;
-import com.csulb.ase.assignment3.models.Invoice;
-import com.csulb.ase.assignment3.models.Order;
-import com.csulb.ase.assignment3.models.PaymentEnum;
+import com.csulb.ase.assignment3.models.invoices.DeliveryEnum;
+import com.csulb.ase.assignment3.models.invoices.Invoice;
+import com.csulb.ase.assignment3.models.invoices.Order;
+import com.csulb.ase.assignment3.models.invoices.PaymentEnum;
 import com.csulb.ase.assignment3.models.ProductEnum;
 import com.csulb.ase.assignment3.utils.LoadUtils;
 import org.testng.annotations.BeforeMethod;

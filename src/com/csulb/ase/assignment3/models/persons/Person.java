@@ -1,12 +1,10 @@
-package com.csulb.ase.assignment3.models;
+package com.csulb.ase.assignment3.models.persons;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import java.util.Date;
 
 @Getter
 @Setter

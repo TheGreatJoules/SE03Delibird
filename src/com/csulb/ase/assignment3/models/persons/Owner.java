@@ -1,4 +1,4 @@
-package com.csulb.ase.assignment3.models;
+package com.csulb.ase.assignment3.models.persons;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

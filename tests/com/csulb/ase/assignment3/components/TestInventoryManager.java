@@ -1,10 +1,10 @@
 package com.csulb.ase.assignment3.components;
 
 import com.csulb.ase.assignment3.models.ColorEnum;
-import com.csulb.ase.assignment3.models.Electronics;
-import com.csulb.ase.assignment3.models.Product;
+import com.csulb.ase.assignment3.models.inventory.Electronics;
+import com.csulb.ase.assignment3.models.inventory.Product;
 import com.csulb.ase.assignment3.models.ProductEnum;
-import com.csulb.ase.assignment3.models.Warehouse;
+import com.csulb.ase.assignment3.models.inventory.Warehouse;
 import com.csulb.ase.assignment3.utils.LoadUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -23,7 +23,7 @@ public class TestInventoryManager {
     }
 
     @Test(dataProvider = "add-stereo")
-    public void test_CreateStereo_Product(Product exact) {
+    public void test_CreateStereo_Product_Successful(Product exact) {
         Product actual = this.inventoryManager.createProduct("STR-123", "WAR-1",ProductEnum.STEREO, "Sony",
                 "R-S202BL", "RX-V", "Irvine", 5.0, 17.0, 12.0, 14.0,
                 null,2022, 5, 0, ColorEnum.BLACK, null, null, 200.0,
@@ -35,7 +35,7 @@ public class TestInventoryManager {
     }
 
     @Test(dataProvider = "add-television")
-    public void test_CreateTelevision_Product(Product exact) {
+    public void test_CreateTelevision_Product_Successful(Product exact) {
         Product actual = this.inventoryManager.createProduct("TLV-124", "WAR-1", ProductEnum.TELEVISION, "Sony",
                 "KD55X80K", "X80K", "Newport", 50.0, 15.0, 30.0, 50.0,
                 "LCD",2022, 5, 0, ColorEnum.BLACK, "4K", "60 Hz", null,
@@ -46,7 +46,7 @@ public class TestInventoryManager {
     }
 
     @Test(dataProvider = "add-products")
-    public void test_AddProduct_Inventory(Product exact) {
+    public void test_AddProduct_Inventory_Successful(Product exact) {
         int current_items = this.inventoryManager.readInventory().getTotal_items();
         int current_warehouses = this.inventoryManager.readInventory().getTotal_warehouses();
         int transaction_status = this.inventoryManager.createInventory(exact);
@@ -56,7 +56,7 @@ public class TestInventoryManager {
     }
 
     @Test(dataProvider = "update-products")
-    public void test_ReadUpdate_Inventory(Product exact) {
+    public void test_ReadUpdate_Inventory_Successful(Product exact) {
         int current_items = this.inventoryManager.readInventory().getTotal_items();
         int current_warehouses = this.inventoryManager.readInventory().getTotal_warehouses();
         int transaction_status = this.inventoryManager.updateInventory(exact);
@@ -66,13 +66,29 @@ public class TestInventoryManager {
     }
 
     @Test(dataProvider = "delete-products")
-    public void test_ReadDelete_Inventory(Product exact) {
+    public void test_ReadDelete_Inventory_Successful(Product exact) {
         int current_items = this.inventoryManager.readInventory().getTotal_items();
         int current_warehouses = this.inventoryManager.readInventory().getTotal_warehouses();
         int transaction_status = this.inventoryManager.deleteInventory(exact.getId());
         assert transaction_status == 0;
         int actual = this.inventoryManager.readInventory().getTotal_items();
         assert (current_items - 1) == actual;
+    }
+
+    @Test(dataProvider = "update-product-quantity")
+    public void test_UpdateInventory(String product_id, int quantity) {
+        int exact_quantity = this.inventoryManager.findProduct(product_id).getStock_count() + quantity;
+        int transaction_status = this.inventoryManager.updateInventory(product_id, quantity);
+        int actual_quantity = this.inventoryManager.findProduct(product_id).getStock_count();
+        assert transaction_status == 0;
+        assert exact_quantity == actual_quantity;
+    }
+
+    @DataProvider(name="update-product-quantity")
+    public static Object[][] getUpdatedInventoryQuality() {
+        return new Object[][] {
+                {"TLV-123", 10}
+        };
     }
 
     @Test(dataProvider = "read-warehouses")

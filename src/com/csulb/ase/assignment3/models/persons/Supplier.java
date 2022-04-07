@@ -1,4 +1,4 @@
-package com.csulb.ase.assignment3.models;
+package com.csulb.ase.assignment3.models.persons;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +11,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Supplier extends Person{
+public class Supplier extends Person {
     private Double quote;
     private SupplierType supplies;
-    private BusinessStatus status;
+    private StatusEnum status;
 
 }

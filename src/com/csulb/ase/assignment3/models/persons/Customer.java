@@ -1,5 +1,7 @@
-package com.csulb.ase.assignment3.models;
+package com.csulb.ase.assignment3.models.persons;
 
+import com.csulb.ase.assignment3.models.invoices.DeliveryEnum;
+import com.csulb.ase.assignment3.models.invoices.PaymentEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +15,7 @@ import java.util.Date;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer extends Person{
+public class Customer extends Person {
     private double sales_tax;
     private Date last_purchase;
     private int purchase_quantity;

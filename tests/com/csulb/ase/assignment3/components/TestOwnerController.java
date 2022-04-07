@@ -1,20 +1,23 @@
 package com.csulb.ase.assignment3.components;
 
 import com.csulb.ase.assignment3.controller.OwnerController;
+import com.csulb.ase.assignment3.models.persons.StatusEnum;
 import com.csulb.ase.assignment3.models.ColorEnum;
-import com.csulb.ase.assignment3.models.Customer;
-import com.csulb.ase.assignment3.models.DeliveryEnum;
-import com.csulb.ase.assignment3.models.Electronics;
-import com.csulb.ase.assignment3.models.Order;
-import com.csulb.ase.assignment3.models.Owner;
-import com.csulb.ase.assignment3.models.PaymentEnum;
-import com.csulb.ase.assignment3.models.Person;
-import com.csulb.ase.assignment3.models.PersonEnum;
-import com.csulb.ase.assignment3.models.Product;
+import com.csulb.ase.assignment3.models.persons.Customer;
+import com.csulb.ase.assignment3.models.invoices.DeliveryEnum;
+import com.csulb.ase.assignment3.models.inventory.Electronics;
+import com.csulb.ase.assignment3.models.invoices.Order;
+import com.csulb.ase.assignment3.models.persons.Owner;
+import com.csulb.ase.assignment3.models.invoices.PaymentEnum;
+import com.csulb.ase.assignment3.models.persons.Person;
+import com.csulb.ase.assignment3.models.persons.PersonEnum;
+import com.csulb.ase.assignment3.models.inventory.Product;
 import com.csulb.ase.assignment3.models.ProductEnum;
-import com.csulb.ase.assignment3.models.SalesPerson;
-import com.csulb.ase.assignment3.models.Supplier;
+import com.csulb.ase.assignment3.models.persons.SalesPerson;
+import com.csulb.ase.assignment3.models.persons.Supplier;
+import com.csulb.ase.assignment3.models.persons.SupplierType;
 import com.csulb.ase.assignment3.utils.LoadUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -96,12 +99,28 @@ public class TestOwnerController {
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 
+    @Test(dataProvider = "read-suppliers")
+    public void test_UpdateInventory_Successful(Supplier exact, String product_id, int quantity) throws JsonProcessingException {
+        double exact_expense = this.owner.getExpense() + exact.getQuote() * quantity;
+        int transaction_status = this.ownerController.updateInventory(exact.getId(), product_id, quantity);
+        assert transaction_status == 0;
+        double actual = this.owner.getExpense();
+        assert actual == exact_expense;
+    }
+
+    @DataProvider(name="read-suppliers")
+    public static Object[][] getExistingPersons() {
+        return new Object[][] {
+                {supplier_television_item("SUP-1"), "TLV-123", 10}
+        };
+    }
+
     @DataProvider(name="add-persons")
     public static Object[][] getAddedPersons() {
         return new Object[][] {
                 {customer_person_item("CUS-2")},
                 {salesperson_person_item("SAL-2")},
-                {supplier_person_item("SUP-1")}
+                {supplier_television_item("SUP-1")}
         };
     }
 
@@ -251,16 +270,19 @@ public class TestOwnerController {
                 .build();
     }
 
-    public static Person supplier_person_item(String id) {
+    public static Person supplier_television_item(String id) {
         return Supplier.builder()
                 .id(id)
-                .person_type(PersonEnum.SALESPERSON)
+                .person_type(PersonEnum.SUPPLIER)
                 .first_name("ricky")
                 .last_name("rock")
                 .address("1650 Bellstone Blvd:Long Beach:CA:90840")
                 .phone_number("(562) 985-4444")
                 .email("ricky_rock@csulb.edu")
                 .start(1647721600)
+                .quote(100.0)
+                .supplies(SupplierType.TELEVISION)
+                .status(StatusEnum.GOOD)
                 .build();
     }
 }

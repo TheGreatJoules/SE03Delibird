@@ -1,5 +1,7 @@
-package com.csulb.ase.assignment3.models;
+package com.csulb.ase.assignment3.models.inventory;
 
+import com.csulb.ase.assignment3.models.ColorEnum;
+import com.csulb.ase.assignment3.models.ProductEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

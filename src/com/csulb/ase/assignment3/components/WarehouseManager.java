@@ -1,8 +1,8 @@
 package com.csulb.ase.assignment3.components;
 
 import com.csulb.ase.assignment3.models.ComponentEnum;
-import com.csulb.ase.assignment3.models.Product;
-import com.csulb.ase.assignment3.models.Warehouse;
+import com.csulb.ase.assignment3.models.inventory.Product;
+import com.csulb.ase.assignment3.models.inventory.Warehouse;
 import com.csulb.ase.assignment3.utils.IdentifierUtil;
 
 import java.util.HashMap;
@@ -20,6 +20,10 @@ public class WarehouseManager {
         this.warehouses = new HashMap<>();
     }
 
+    /**
+     *
+     * @param warehouses
+     */
     public WarehouseManager(Map<String, Warehouse> warehouses) {
         this.total_warehouses = 0;
         this.total_items = 0;
@@ -30,10 +34,21 @@ public class WarehouseManager {
         this.warehouses = warehouses;
     }
 
+    /**
+     *
+     * @param product_id
+     * @return
+     */
     public Product findProduct(String product_id) {
         return readProduct(product_id, findWarehouse(product_id));
     }
 
+    /**
+     *
+     * @param product_id
+     * @param warehouse_id
+     * @return
+     */
     public Product readProduct(String product_id, String warehouse_id) {
         if (readWarehouse(warehouse_id) == null) {
             return null;
@@ -48,6 +63,11 @@ public class WarehouseManager {
         return readWarehouse(warehouse_id).getProducts().get(product_id);
     }
 
+    /**
+     *
+     * @param product_id
+     * @return
+     */
     public String findWarehouse(String product_id) {
         for (Map.Entry<String, Warehouse> warehouseEntry : this.warehouses.entrySet()) {
             Map<String, Product> warehouse = warehouseEntry.getValue().getProducts();
@@ -96,9 +116,20 @@ public class WarehouseManager {
         return 0;
     }
 
+    /**
+     *
+     * @param product_id
+     * @param quantity
+     * @return
+     */
     public int updateStock(String product_id, int quantity) {
         Product product = readProduct(product_id, findWarehouse(product_id));
-        product.setStock_count(product.getStock_count() + quantity);
+        if (quantity < 0) {
+            product.setStock_count(product.getStock_count() + quantity);
+            product.setSold_count(product.getSold_count() + quantity*-1);
+        } else {
+            product.setStock_count(product.getStock_count() + quantity);
+        }
         Warehouse warehouse = readWarehouse(product.getWarehouse_id());
         warehouse.setTotal_items(warehouse.getTotal_items() + quantity);
         return 0;
@@ -122,6 +153,13 @@ public class WarehouseManager {
         return 0;
     }
 
+    /**
+     * s
+     * @param id
+     * @param address
+     * @param products
+     * @return
+     */
     public Warehouse createWarehouse(String id, String address, Map<String, Product> products) {
         Warehouse warehouse = Warehouse.builder()
                 .id(id != null ? id : Objects.requireNonNull(IdentifierUtil.generateEntityId(ComponentEnum.WAREHOUSE)))
@@ -134,6 +172,11 @@ public class WarehouseManager {
         return warehouse;
     }
 
+    /**
+     *
+     * @param warehouse_id
+     * @return
+     */
     public Warehouse readWarehouse(String warehouse_id) {
         return warehouses.get(warehouse_id);
     }
@@ -147,6 +190,11 @@ public class WarehouseManager {
         return 0;
     }
 
+    /**
+     *
+     * @param warehouse_id
+     * @return
+     */
     public int deleteWarehouse(String warehouse_id) {
         Warehouse warehouse = this.warehouses.get(warehouse_id);
         this.total_items -= warehouse.getTotal_items();
@@ -155,6 +203,10 @@ public class WarehouseManager {
         return 0;
     }
 
+    /**
+     *
+     * @return
+     */
     public int totalWarehouses() {
         return warehouses.size();
     }
