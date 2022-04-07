@@ -108,30 +108,29 @@ public class TestOwnerController {
     @DataProvider(name="add-products")
     public static Object[][] getAddedProducts() {
         return new Object[][] {
-                {electronics_television_item("WAR-1:TLV-123","WAR-1","Sony", "KD55X80K", "X80K", 5, 0)},
-                {electronics_stereo_item("WAR-1:STR-123","WAR-1","Sony", "R-S202BL","RX-V", 5, 0)}
+                {electronics_television_item("TLV-123","WAR-1","Sony", "KD55X80K", "X80K", 5, 0)},
+                {electronics_stereo_item("STR-123","WAR-1","Sony", "R-S202BL","RX-V", 5, 0)}
         };
     }
 
     @DataProvider(name="update-products")
     public static Object[][] getUpdatedProducts() {
         return new Object[][] {
-                {electronics_television_item("WAR-1:TLV-124","WAR-1","Sony", "KD55X80K", "X81K", 5, 0)}
+                {electronics_television_item("TLV-124","WAR-1","Sony", "KD55X80K", "X81K", 5, 0)}
         };
     }
 
     @DataProvider(name="read-products")
     public static Object[][] getSavedProducts() {
         return new Object[][] {
-                {electronics_television_item("WAR-1:STR-123","WAR-1","Sony", "R-S202BL", "RX-V", 5, 0)}
+                {electronics_television_item("STR-123","WAR-1","Sony", "R-S202BL", "RX-V", 5, 0)}
         };
     }
 
     @DataProvider(name="add-orders")
     public static Object[][] getAddedOrders() {
         return new Object[][] {
-                {television_order_item("INV-1:CUS-1:ORD-4:TLV-123", 1, 299.99)},
-                {stereo_order_item("INV-1:CUS-1:ORD-5:STR-234", 1, 150.99)}
+                {stereo_order_item("INV-1:CUS-1:ORD-5:STR-123", 1, 150.99)}
         };
     }
 

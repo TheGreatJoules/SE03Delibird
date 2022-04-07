@@ -14,6 +14,11 @@ public class IdentifierUtil {
     public static int orderCount = 0;
     public static int invoiceCount = 0;
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     public static String generatePersonId(PersonEnum type){
         StringBuilder sb = new StringBuilder();
         switch(type) {
@@ -41,6 +46,11 @@ public class IdentifierUtil {
         return "123";
     }
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     public static String generateEntityId(ComponentEnum type){
         StringBuilder sb = new StringBuilder();
         switch(type) {
@@ -60,10 +70,18 @@ public class IdentifierUtil {
                 sb.append(++invoiceCount);
                 return sb.toString();
             default:
-                return null;
+                sb.append("OTH");
+                sb.append(delimit);
+                sb.append(++invoiceCount);
+                return sb.toString();
         }
     }
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     public static String generateProductId(ProductEnum type){
         StringBuilder sb = new StringBuilder();
         switch(type) {
@@ -81,6 +99,11 @@ public class IdentifierUtil {
         return "";
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public static String[] parseId(String id) {
         return id.split(":");
     }

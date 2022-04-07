@@ -25,7 +25,7 @@ public class TestWarehouseManager {
 
     @Test(dataProvider="read-products")
     public void test_FindProduct(Product exact) {
-        Product actual = this.warehouseManager.readProduct(exact.getId());
+        Product actual = this.warehouseManager.findProduct(exact.getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 
@@ -33,7 +33,7 @@ public class TestWarehouseManager {
     public void test_CreateProduct(Product exact){
         int transaction_status = this.warehouseManager.createProduct(exact);
         assert transaction_status == 0;
-        Product actual = this.warehouseManager.readProduct(exact.getId());
+        Product actual = this.warehouseManager.findProduct(exact.getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 
@@ -41,7 +41,7 @@ public class TestWarehouseManager {
     public void test_UpdateProduct(Product exact) {
         int transaction_status = this.warehouseManager.updateProduct(exact);
         assert transaction_status == 0;
-        Product actual = this.warehouseManager.readProduct(exact.getId());
+        Product actual = this.warehouseManager.findProduct(exact.getId());
         assertThat(actual).isEqualToComparingFieldByField(exact);
     }
 
@@ -49,7 +49,7 @@ public class TestWarehouseManager {
     public void test_DeleteProduct(Product exact){
         int transaction_status = this.warehouseManager.deleteProduct(exact.getId());
         assert transaction_status == 0;
-        Product actual = this.warehouseManager.readProduct(exact.getId());
+        Product actual = this.warehouseManager.findProduct(exact.getId());
         assert actual == null;
     }
 
@@ -61,35 +61,35 @@ public class TestWarehouseManager {
 
     @Test(dataProvider = "read-warehouses")
     public void test_DeleteWarehouse(String str) {
-        int trasaction_status = this.warehouseManager.deleteWarehouse(str);
-        assert trasaction_status == 0;
+        int transaction_status = this.warehouseManager.deleteWarehouse(str);
+        assert transaction_status == 0;
     }
 
     @Test(dataProvider = "update-warehouses")
     public void test_UpdateWarehouse(String warehouse_id, String address) {
-        int trasaction_status = this.warehouseManager.updateWarehouse(warehouse_id, address);
-        assert trasaction_status == 0;
+        int transaction_status = this.warehouseManager.updateWarehouse(warehouse_id, address);
+        assert transaction_status == 0;
     }
 
     @DataProvider(name="read-products")
     public static Object[][] getSavedProducts() {
         return new Object[][] {
-                {electronics_stereo_item("WAR-1:STR-123", "WAR-1","Sony", "R-S202BL", "RX-V", 5, 0)}
+                {electronics_stereo_item("STR-234", "WAR-1","Sony", "R-S202BL", "RX-V", 5, 0)}
         };
     }
 
     @DataProvider(name="add-products")
     public static Object[][] getAddedProducts() {
         return new Object[][] {
-                {electronics_television_item("WAR-1:TLV-123", "WAR-1","Sony", "KD55X80K", "X80K", 5, 0)},
-                {electronics_stereo_item("WAR-1:STR-123","WAR-1","Sony", "R-S202BL","RX-V", 5, 0)}
+                {electronics_television_item("TLV-123", "WAR-1","Sony", "KD55X80K", "X80K", 5, 0)},
+                {electronics_stereo_item("STR-123","WAR-1","Sony", "R-S202BL","RX-V", 5, 0)}
         };
     }
 
     @DataProvider(name="update-products")
     public static Object[][] getUpdatedProducts() {
         return new Object[][] {
-                {electronics_television_item("WAR-1:TLV-124", "WAR-1", "Sony", "KD55X80K", "X81K", 5, 0)}
+                {electronics_television_item("TLV-124", "WAR-1", "Sony", "KD55X80K", "X81K", 5, 0)}
         };
     }
 

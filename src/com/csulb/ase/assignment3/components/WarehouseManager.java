@@ -30,21 +30,34 @@ public class WarehouseManager {
         this.warehouses = warehouses;
     }
 
-    /**
-     * Find a product by providing the required ids to query
-     * @param product_id
-     * @return product or null
-     */
-    public Product readProduct(String product_id) {
-        String[] ids = product_id.split(":");
+    public Product findProduct(String product_id) {
+        return readProduct(product_id, findWarehouse(product_id));
+    }
 
-        if (readWarehouse(ids[0]).getProducts() == null) {
+    public Product readProduct(String product_id, String warehouse_id) {
+        if (readWarehouse(warehouse_id) == null) {
             return null;
         }
-        if (readWarehouse(ids[0]).getProducts().get(product_id) == null) {
+
+        if (readWarehouse(warehouse_id).getProducts() == null) {
             return null;
         }
-        return readWarehouse(ids[0]).getProducts().get(product_id);
+        if (readWarehouse(warehouse_id).getProducts().get(product_id) == null) {
+            return null;
+        }
+        return readWarehouse(warehouse_id).getProducts().get(product_id);
+    }
+
+    public String findWarehouse(String product_id) {
+        for (Map.Entry<String, Warehouse> warehouseEntry : this.warehouses.entrySet()) {
+            Map<String, Product> warehouse = warehouseEntry.getValue().getProducts();
+            for (Map.Entry<String, Product> product : warehouse.entrySet()) {
+                if (product.getKey().equals(product_id)) {
+                    return warehouseEntry.getKey();
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -78,9 +91,16 @@ public class WarehouseManager {
         if (product == null) {
             return -1;
         }
-        String[] ids = product.getId().split(":");
-        Warehouse warehouse = this.warehouses.get(ids[0]);
+        Warehouse warehouse = this.warehouses.get(product.getWarehouse_id());
         warehouse.getProducts().put(product.getId(), product);
+        return 0;
+    }
+
+    public int updateStock(String product_id, int quantity) {
+        Product product = readProduct(product_id, findWarehouse(product_id));
+        product.setStock_count(product.getStock_count() + quantity);
+        Warehouse warehouse = readWarehouse(product.getWarehouse_id());
+        warehouse.setTotal_items(warehouse.getTotal_items() + quantity);
         return 0;
     }
 
@@ -93,8 +113,7 @@ public class WarehouseManager {
         if (product_id == null) {
             return -1;
         }
-        String[] ids = product_id.split(":");
-        Warehouse warehouse = this.warehouses.get(ids[0]);
+        Warehouse warehouse = this.warehouses.get(findWarehouse(product_id));
         if (warehouse.getProducts().get(product_id) == null) {
             return -1;
         }

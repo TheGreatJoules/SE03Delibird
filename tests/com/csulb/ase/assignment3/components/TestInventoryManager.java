@@ -11,7 +11,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +24,7 @@ public class TestInventoryManager {
 
     @Test(dataProvider = "add-stereo")
     public void test_CreateStereo_Product(Product exact) {
-        Product actual = this.inventoryManager.createProduct("WAR-1:STR-123", "WAR-1",ProductEnum.STEREO, "Sony",
+        Product actual = this.inventoryManager.createProduct("STR-123", "WAR-1",ProductEnum.STEREO, "Sony",
                 "R-S202BL", "RX-V", "Irvine", 5.0, 17.0, 12.0, 14.0,
                 null,2022, 5, 0, ColorEnum.BLACK, null, null, 200.0,
                 2.0, 1.0, true, true, "4 ohms");
@@ -37,7 +36,7 @@ public class TestInventoryManager {
 
     @Test(dataProvider = "add-television")
     public void test_CreateTelevision_Product(Product exact) {
-        Product actual = this.inventoryManager.createProduct("WAR-1:TLV-124", "WAR-1", ProductEnum.TELEVISION, "Sony",
+        Product actual = this.inventoryManager.createProduct("TLV-124", "WAR-1", ProductEnum.TELEVISION, "Sony",
                 "KD55X80K", "X80K", "Newport", 50.0, 15.0, 30.0, 50.0,
                 "LCD",2022, 5, 0, ColorEnum.BLACK, "4K", "60 Hz", null,
                 null, null, null, null, null);
@@ -70,7 +69,7 @@ public class TestInventoryManager {
     public void test_ReadDelete_Inventory(Product exact) {
         int current_items = this.inventoryManager.readInventory().getTotal_items();
         int current_warehouses = this.inventoryManager.readInventory().getTotal_warehouses();
-        int transaction_status = this.inventoryManager.deleteInventory(Objects.requireNonNull(exact).getId());
+        int transaction_status = this.inventoryManager.deleteInventory(exact.getId());
         assert transaction_status == 0;
         int actual = this.inventoryManager.readInventory().getTotal_items();
         assert (current_items - 1) == actual;
@@ -85,36 +84,36 @@ public class TestInventoryManager {
     @DataProvider(name="add-television")
     public static Object[][] getAddedTelevision() {
         return new Object[][] {
-                {electronics_television_item("WAR-1:TLV-124", "WAR-1","Sony", "KD55X80K", "X80K",5, 0)}
+                {electronics_television_item("TLV-124", "WAR-1","Sony", "KD55X80K", "X80K",5, 0)}
         };
     }
 
     @DataProvider(name="add-stereo")
     public static Object[][] getAddedStereo() {
         return new Object[][] {
-                {electronics_stereo_item("WAR-1:STR-123", "WAR-1","Sony", "R-S202BL","RX-V", 5, 0)}
+                {electronics_stereo_item("STR-123", "WAR-1","Sony", "R-S202BL","RX-V", 5, 0)}
         };
     }
 
     @DataProvider(name="add-products")
     public static Object[][] getAddedProducts() {
         return new Object[][] {
-                {electronics_television_item("WAR-1:TLV-123", "WAR-1","Sony", "KD55X80K", "X80K", 5, 0)},
-                {electronics_stereo_item("WAR-1:STR-123", "WAR-1","Sony", "R-S202BL","RX-V", 5, 0)}
+                {electronics_television_item("TLV-123", "WAR-1","Sony", "KD55X80K", "X80K", 5, 0)},
+                {electronics_stereo_item("STR-123", "WAR-1","Sony", "R-S202BL","RX-V", 5, 0)}
         };
     }
 
     @DataProvider(name="update-products")
     public static Object[][] getUpdatedProducts() {
         return new Object[][] {
-                {electronics_television_item("WAR-1:TLV-124", "WAR-1","Sony", "KD55X80K", "X81K", 5, 0)}
+                {electronics_television_item("TLV-124", "WAR-1","Sony", "KD55X80K", "X81K", 5, 0)}
         };
     }
 
     @DataProvider(name="delete-products")
     public static Object[][] getDeletedProducts() {
         return new Object[][] {
-                {electronics_television_item("WAR-1:STR-123", "WAR-1","Sony", "R-S202BL", "RX-V", 5, 0)}
+                {electronics_television_item("STR-234", "WAR-1","Sony", "R-S202BL", "RX-V", 5, 0)}
         };
     }
 
@@ -173,5 +172,4 @@ public class TestInventoryManager {
                 .sold_count(sold)
                 .build();
     }
-
 }

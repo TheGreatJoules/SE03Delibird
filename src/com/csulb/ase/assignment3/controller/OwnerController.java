@@ -12,9 +12,7 @@ import com.csulb.ase.assignment3.models.PaymentEnum;
 import com.csulb.ase.assignment3.models.Person;
 import com.csulb.ase.assignment3.models.PersonEnum;
 import com.csulb.ase.assignment3.models.Product;
-import com.csulb.ase.assignment3.models.SalesPerson;
 import com.csulb.ase.assignment3.models.Supplier;
-import com.csulb.ase.assignment3.utils.CommissionUtil;
 import com.csulb.ase.assignment3.utils.ExpenseUtil;
 import com.csulb.ase.assignment3.utils.IdentifierUtil;
 
@@ -96,11 +94,7 @@ public class OwnerController {
     }
 
     public Product retrieveProduct(String product_id) {
-        String[] ids = product_id.split(":");
-        if (this.inventoryManager.readWarehouses(ids[0]) == null) {
-            return null;
-        }
-        return this.inventoryManager.readWarehouses(ids[0]).getProducts().get(product_id);
+        return this.inventoryManager.findProduct(product_id);
     }
 
     public int updateProduct(Product product) {
@@ -118,9 +112,10 @@ public class OwnerController {
 
     public int createOrder(Order order, DeliveryEnum deliveryEnum, PaymentEnum paymentEnum) {
         Customer customer = (Customer) personManager.retrievePerson(order.getCustomer_id());
-        if (this.invoiceManager.createInvoice(order, customer.getAddress(), deliveryEnum, paymentEnum) == 0) {
-            this.personManager.updateEmployee(order.getSalesperson_id(), order.getTimestamp());
-        }
+        this.invoiceManager.createInvoice(order, customer.getAddress(), deliveryEnum, paymentEnum);
+        this.personManager.updateEmployee(order.getSalesperson_id(), order.getTimestamp());
+        this.inventoryManager.updateInventory(order.getProduct_id(), -1);
+        this.owner.setRevenue(owner.getRevenue() + order.getCost());
         return 0;
     }
 

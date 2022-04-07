@@ -1,5 +1,6 @@
 package com.csulb.ase.assignment3.components;
 
+import com.csulb.ase.assignment3.models.ComponentEnum;
 import com.csulb.ase.assignment3.models.DeliveryEnum;
 import com.csulb.ase.assignment3.models.Invoice;
 import com.csulb.ase.assignment3.models.Order;
@@ -58,7 +59,7 @@ public class InvoiceManager{
 
     public Invoice createInvoice(String[] ids, String[] location, DeliveryEnum delivery, PaymentEnum paymentEnum, long timestamp) {
         return Invoice.builder()
-                .id(ids[0])
+                .id(ids[0] != null ? ids[0] : IdentifierUtil.generateEntityId(ComponentEnum.INVOICE))
                 .customer_id(ids[1])
                 .street(location[0])
                 .city(location[1])

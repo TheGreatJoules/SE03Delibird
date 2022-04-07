@@ -4,5 +4,6 @@ public enum ComponentEnum {
     WAREHOUSE,
     ORDER,
     INVOICE,
-    PRODUCT
+    PRODUCT,
+    OTHER
 }

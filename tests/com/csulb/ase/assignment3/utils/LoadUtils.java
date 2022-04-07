@@ -202,21 +202,18 @@ public class LoadUtils {
      * @throws IOException
      */
     public static Map<String, Warehouse> loadProductsFromJson(String product_path) throws IOException {
-        String[] ids;
         String[] items = IOUtils.toString(new FileInputStream(product_path), StandardCharsets.UTF_8).split("\\r?\\n");
         Map<String, Warehouse> warehouses = new HashMap<>();
         for (String item : items) {
-            JSONObject jsonItem = new JSONObject(item);
             Product product = objectMapper.readValue(item, Electronics.class);
-            ids = product.getId().split(":");
-            if (warehouses.get(ids[0]) == null) {
-                warehouses.put(ids[0], Warehouse.builder()
-                                .id(ids[0])
+            if (warehouses.get(product.getWarehouse_id()) == null) {
+                warehouses.put(product.getWarehouse_id(), Warehouse.builder()
+                                .id(product.getWarehouse_id())
                                 .address(product.getWarehouse_address())
                                 .products(new HashMap<>())
                         .build());
             }
-            warehouses.get(ids[0]).getProducts().put(product.getId(), product);
+            warehouses.get(product.getWarehouse_id()).getProducts().put(product.getId(), product);
         }
         return warehouses;
     }

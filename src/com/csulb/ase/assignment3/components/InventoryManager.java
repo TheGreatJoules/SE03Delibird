@@ -32,6 +32,10 @@ public class InventoryManager {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public Product createProduct(String id, String warehouse_id, ProductEnum type, String manufacturer, String model, String series, String address,
                                  double height, double width, double depth, double weight, String display_type, int year,
                                  int stock, int sold, ColorEnum colorEnum, String resolution, String refresh, Double output_wattage,
@@ -65,6 +69,11 @@ public class InventoryManager {
                 .build();
     }
 
+    /**
+     *
+     * @param product
+     * @return
+     */
     public int createInventory(Product product) {
         this.warehouseManager.createProduct(product);
         this.inventory.setTotal_warehouses(this.warehouseManager.totalWarehouses() + 1);
@@ -72,14 +81,28 @@ public class InventoryManager {
         return 0;
     }
 
+    /**
+     *
+     * @return
+     */
     public Inventory readInventory() {
         return this.inventory;
     }
 
+    /**
+     *
+     * @param warehouse_id
+     * @return
+     */
     public Warehouse readWarehouses(String warehouse_id) {
         return this.warehouseManager.readWarehouse(warehouse_id);
     }
 
+    /**
+     *
+     * @param product
+     * @return
+     */
     public int updateInventory(Product product) {
         if (product == null) {
             return -1;
@@ -88,10 +111,22 @@ public class InventoryManager {
         return 0;
     }
 
+    /**
+     *
+     * @param product_id
+     * @param quantity
+     * @return
+     */
     public int updateInventory(String product_id, int quantity) {
+        this.warehouseManager.updateStock(product_id, quantity);
         return 0;
     }
 
+    /**
+     *
+     * @param product_id
+     * @return
+     */
     public int deleteInventory(String product_id) {
         int current_items = this.inventory.getTotal_items();
         if (this.warehouseManager.deleteProduct(product_id) == -1) {
@@ -99,5 +134,9 @@ public class InventoryManager {
         }
         this.inventory.setTotal_items(current_items - 1);
         return 0;
+    }
+
+    public Product findProduct(String product_id) {
+        return this.warehouseManager.findProduct(product_id);
     }
 }

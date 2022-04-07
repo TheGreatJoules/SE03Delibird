@@ -26,7 +26,6 @@ public abstract class Product {
     private String model_name;
     private String series;
     private String manufacturer;
-    private String dimensions;
     private double height;
     private double width;
     private double depth;
