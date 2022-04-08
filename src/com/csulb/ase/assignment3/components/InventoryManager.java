@@ -2,7 +2,7 @@ package com.csulb.ase.assignment3.components;
 
 import com.csulb.ase.assignment3.models.inventory.Inventory;
 import com.csulb.ase.assignment3.models.inventory.Product;
-import com.csulb.ase.assignment3.models.ColorEnum;
+import com.csulb.ase.assignment3.models.inventory.ColorEnum;
 import com.csulb.ase.assignment3.models.inventory.Electronics;
 import com.csulb.ase.assignment3.models.ProductEnum;
 import com.csulb.ase.assignment3.models.inventory.Warehouse;

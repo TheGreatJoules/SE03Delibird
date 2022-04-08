@@ -21,6 +21,7 @@ public class Invoice {
     private String customer_id;
     private String salesperson_id;
     private long timestamp;
+    private long last_timestamp;
     @NonNull
     private String street;
     @NonNull
@@ -35,6 +36,8 @@ public class Invoice {
     private double total_adjusted_cost;
     @NonNull
     private PaymentEnum paymentEnum;
+    @NonNull
+    private InvoiceStatusEnum status;
     @NonNull
     private DeliveryEnum deliveryEnum;
     private Map<String, Order> orders;

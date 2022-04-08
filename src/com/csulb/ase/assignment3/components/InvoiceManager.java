@@ -3,6 +3,7 @@ package com.csulb.ase.assignment3.components;
 import com.csulb.ase.assignment3.models.ComponentEnum;
 import com.csulb.ase.assignment3.models.invoices.DeliveryEnum;
 import com.csulb.ase.assignment3.models.invoices.Invoice;
+import com.csulb.ase.assignment3.models.invoices.InvoiceStatusEnum;
 import com.csulb.ase.assignment3.models.invoices.Order;
 import com.csulb.ase.assignment3.models.invoices.PaymentEnum;
 import com.csulb.ase.assignment3.models.StateTaxRateEnum;
@@ -50,8 +51,8 @@ public class InvoiceManager{
         Invoice invoice = invoices.get(ids[0]);
         invoice.setTotal_cost(invoice.getTotal_cost() + order.getCost());
         invoice.setTax_rate(StateTaxRateEnum.valueOf(invoice.getState()).tax_rate);
-        invoice.setDiscounts(ExpenseUtil.calculateDiscounts(deliveryEnum.toString(), paymentEnum.toString()));
-        invoice.setTotal_adjusted_cost(ExpenseUtil.calculateAdjustedTotal(invoice.getTax_rate(), invoice.getTotal_cost(), invoice.getDiscounts()));
+        invoice.setDiscounts(ExpenseUtil.calculateDiscounts(deliveryEnum));
+        invoice.setTotal_adjusted_cost(ExpenseUtil.calculateAdjustedTotal(invoice.getTax_rate(), invoice.getTotal_cost(), invoice.getDiscounts(), invoice.getPaymentEnum(), invoice.getStatus(), invoice.getStatus(), invoice.getTimestamp(), -1));
         invoice.getOrders().put(order.getId(), order);
         this.total_invoices += 1;
         return 0;
@@ -67,6 +68,7 @@ public class InvoiceManager{
                 .zipcode(location[3])
                 .deliveryEnum(delivery)
                 .paymentEnum(paymentEnum)
+                .status(paymentEnum == PaymentEnum.FINANCE ? InvoiceStatusEnum.OPEN : InvoiceStatusEnum.CLOSE)
                 .timestamp(timestamp)
                 .discounts(0.0)
                 .total_adjusted_cost(0.0)
@@ -75,17 +77,19 @@ public class InvoiceManager{
                 .build();
     }
 
-    public void updateInvoice(Invoice invoice, String[] location, DeliveryEnum deliveryEnum, PaymentEnum paymentEnum) {
+    public int updateInvoice(Invoice invoice, String[] location, DeliveryEnum deliveryEnum, PaymentEnum paymentEnum, InvoiceStatusEnum status, long timestamp) {
         invoice.setStreet(location[0]);
         invoice.setCity(location[1]);
         invoice.setState(location[2]);
         invoice.setZipcode(location[3]);
         invoice.setDeliveryEnum(deliveryEnum);
         invoice.setPaymentEnum(paymentEnum);
-        invoice.setDiscounts(ExpenseUtil.calculateDiscounts(deliveryEnum.toString(), paymentEnum.toString()));
         invoice.setTax_rate(StateTaxRateEnum.valueOf(invoice.getState()).tax_rate);
-        invoice.setDiscounts(ExpenseUtil.calculateDiscounts(deliveryEnum.toString(), paymentEnum.toString()));
-        invoice.setTotal_adjusted_cost(ExpenseUtil.calculateAdjustedTotal(invoice.getTax_rate(), invoice.getTotal_cost(), invoice.getDiscounts()));
+        invoice.setLast_timestamp(timestamp);
+        invoice.setDiscounts(ExpenseUtil.calculateDiscounts(deliveryEnum));
+        invoice.setTotal_adjusted_cost(ExpenseUtil.calculateAdjustedTotal(invoice.getTax_rate(), invoice.getTotal_cost(), invoice.getDiscounts(), invoice.getPaymentEnum(), invoice.getStatus(), status, invoice.getTimestamp(), timestamp));
+        invoice.setStatus(status);
+        return 0;
     }
 
     /**

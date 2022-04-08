@@ -1,4 +1,4 @@
-package com.csulb.ase.assignment3.models;
+package com.csulb.ase.assignment3.models.inventory;
 
 public enum ColorEnum {
     RED,

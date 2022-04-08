@@ -7,7 +7,7 @@ public class CommissionUtil {
 
     public static double calculatePerformanceScore(double performance_score, long last_day, long today) {
         // check recent sold item if its within a a month stay the same
-        long time_delay = (today - last_day) - ONE_DAY;
+        long time_delay = today * ONE_DAY - last_day * ONE_DAY;
         if (time_delay <= ONE_DAY) {
             return 1;
         } else if (time_delay <= ONE_WEEK) {

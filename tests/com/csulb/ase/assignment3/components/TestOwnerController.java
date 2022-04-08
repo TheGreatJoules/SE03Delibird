@@ -2,7 +2,7 @@ package com.csulb.ase.assignment3.components;
 
 import com.csulb.ase.assignment3.controller.OwnerController;
 import com.csulb.ase.assignment3.models.persons.StatusEnum;
-import com.csulb.ase.assignment3.models.ColorEnum;
+import com.csulb.ase.assignment3.models.inventory.ColorEnum;
 import com.csulb.ase.assignment3.models.persons.Customer;
 import com.csulb.ase.assignment3.models.invoices.DeliveryEnum;
 import com.csulb.ase.assignment3.models.inventory.Electronics;
