@@ -39,7 +39,7 @@ public class TestOwnerController {
         invoiceManager = LoadUtils.getInvoiceFromJson(LoadUtils.INVOICES_PATH, LoadUtils.ORDERS_PATH);
         inventoryManager = LoadUtils.loadInventoryManagerFromJson(LoadUtils.PRODUCT_PATH);
         personManager = LoadUtils.loadPersonManagerFromJson(LoadUtils.PERSONS_PATH);
-        owner = LoadUtils.loadOwnerFromJson(LoadUtils.OWNER_PATH, LoadUtils.PERSONS_PATH);
+        owner = LoadUtils.loadOwnerFromJson(LoadUtils.OWNER_PATH);
         ownerController = new OwnerController(owner, inventoryManager, invoiceManager, personManager);
     }
 

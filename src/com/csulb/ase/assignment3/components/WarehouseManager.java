@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Warehouse Manager manages the products and any transaction relating to products
+ */
 public class WarehouseManager {
     private Map<String, Warehouse> warehouses;
     private int total_items;
@@ -20,10 +23,6 @@ public class WarehouseManager {
         this.warehouses = new HashMap<>();
     }
 
-    /**
-     *
-     * @param warehouses
-     */
     public WarehouseManager(Map<String, Warehouse> warehouses) {
         this.total_warehouses = 0;
         this.total_items = 0;
@@ -35,19 +34,19 @@ public class WarehouseManager {
     }
 
     /**
-     *
-     * @param product_id
-     * @return
+     * Return the Product to be queried and read from
+     * @param product_id the hashed id correlated with the product
+     * @return the product if it exists
      */
     public Product findProduct(String product_id) {
         return readProduct(product_id, findWarehouse(product_id));
     }
 
     /**
-     *
-     * @param product_id
-     * @param warehouse_id
-     * @return
+     * Return the product from a specific warehouse
+     * @param product_id the hashed id correlated with the product
+     * @param warehouse_id the hashed id correlated with the warehouse
+     * @return the product if it exists
      */
     public Product readProduct(String product_id, String warehouse_id) {
         if (readWarehouse(warehouse_id) == null) {
@@ -64,9 +63,9 @@ public class WarehouseManager {
     }
 
     /**
-     *
-     * @param product_id
-     * @return
+     * Return the warehouse corresponding to the product unique identifier
+     * @param product_id the hashed id correlated with the product
+     * @return the warehouse unique identifier if it exists
      */
     public String findWarehouse(String product_id) {
         for (Map.Entry<String, Warehouse> warehouseEntry : this.warehouses.entrySet()) {
@@ -82,8 +81,8 @@ public class WarehouseManager {
 
     /**
      * Create a product and place it in the respected warehouse
-     * @param product
-     * @return status code
+     * @param product the Product to be uploaded
+     * @return transaction status
      */
     public int createProduct(Product product) {
         if (product == null) {
@@ -104,8 +103,8 @@ public class WarehouseManager {
 
     /**
      * Update Product by providing new product to replace with updated fields
-     * @param product
-     * @return status code
+     * @param product the Product to be replaced previous
+     * @return transaction status
      */
     public int updateProduct(Product product) {
         if (product == null) {
@@ -117,10 +116,10 @@ public class WarehouseManager {
     }
 
     /**
-     *
-     * @param product_id
-     * @param quantity
-     * @return
+     * Update the stock for the provided product
+     * @param product_id the hashed id correlated with the product
+     * @param quantity the amount of product to be allocated
+     * @return transaction status
      */
     public int updateStock(String product_id, int quantity) {
         Product product = readProduct(product_id, findWarehouse(product_id));
@@ -136,9 +135,9 @@ public class WarehouseManager {
     }
 
     /**
-     * Delete Product by providing a product to delete
-     * @param product_id
-     * @return status code
+     * Delete Product corresponding to the provided unique identifier
+     * @param product_id the hashed id correlated with the product
+     * @return transaction status
      */
     public int deleteProduct(String product_id) {
         if (product_id == null) {
@@ -154,11 +153,11 @@ public class WarehouseManager {
     }
 
     /**
-     * s
-     * @param id
-     * @param address
-     * @param products
-     * @return
+     * Create a new warehouse and upload it the warehouse directory
+     * @param id the hashed id correlated with the warehouse if provided
+     * @param address the address of the warehouse
+     * @param products the map of products to be copied over
+     * @return the created warehouse
      */
     public Warehouse createWarehouse(String id, String address, Map<String, Product> products) {
         Warehouse warehouse = Warehouse.builder()
@@ -173,14 +172,20 @@ public class WarehouseManager {
     }
 
     /**
-     *
-     * @param warehouse_id
-     * @return
+     * Return the warehouse corresponding to the provided unique identifier
+     * @param warehouse_id the hashed id correlated with the warehouse
+     * @return the Warehouse if it exists
      */
     public Warehouse readWarehouse(String warehouse_id) {
         return warehouses.get(warehouse_id);
     }
 
+    /**
+     * Update the provided warehouse data
+     * @param warehouse_id the hashed id correlated with the warehouse
+     * @param address the address to replace previous
+     * @return transaction status
+     */
     public int updateWarehouse(String warehouse_id, String address) {
         Warehouse warehouse = this.warehouses.get(warehouse_id);
         if (warehouse == null) {
@@ -191,9 +196,9 @@ public class WarehouseManager {
     }
 
     /**
-     *
-     * @param warehouse_id
-     * @return
+     * Delete the provided warehouse by the provided warehouse id
+     * @param warehouse_id the hashed id correlated with the warehouse
+     * @return transaction status
      */
     public int deleteWarehouse(String warehouse_id) {
         Warehouse warehouse = this.warehouses.get(warehouse_id);
@@ -204,8 +209,8 @@ public class WarehouseManager {
     }
 
     /**
-     *
-     * @return
+     * Determine the warehouse size
+     * @return the warehouses size
      */
     public int totalWarehouses() {
         return warehouses.size();

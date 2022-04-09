@@ -13,6 +13,9 @@ import com.csulb.ase.assignment3.utils.IdentifierUtil;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Invoice Manager manages the invoices and any transaction relating to orders
+ */
 public class InvoiceManager{
     private Map<String, Invoice> invoices;
     private int total_orders;
@@ -34,9 +37,9 @@ public class InvoiceManager{
     }
 
     /**
-     * Add a constructed order to its collection
-     * @param order
-     * @return status code
+     * Upload new order to be added to its corresponding invoice if it exists
+     * @param order the order to be added
+     * @return transaction status
      */
     public int createInvoice(Order order, String address, DeliveryEnum deliveryEnum, PaymentEnum paymentEnum) {
         if (order == null) {
@@ -58,42 +61,8 @@ public class InvoiceManager{
         return 0;
     }
 
-    public Invoice createInvoice(String[] ids, String[] location, DeliveryEnum delivery, PaymentEnum paymentEnum, long timestamp) {
-        return Invoice.builder()
-                .id(ids[0] != null ? ids[0] : IdentifierUtil.generateEntityId(ComponentEnum.INVOICE))
-                .customer_id(ids[1])
-                .street(location[0])
-                .city(location[1])
-                .state(location[2])
-                .zipcode(location[3])
-                .deliveryEnum(delivery)
-                .paymentEnum(paymentEnum)
-                .status(paymentEnum == PaymentEnum.FINANCE ? InvoiceStatusEnum.OPEN : InvoiceStatusEnum.CLOSE)
-                .timestamp(timestamp)
-                .discounts(0.0)
-                .total_adjusted_cost(0.0)
-                .total_cost(0.0)
-                .orders(new HashMap<>())
-                .build();
-    }
-
-    public int updateInvoice(Invoice invoice, String[] location, DeliveryEnum deliveryEnum, PaymentEnum paymentEnum, InvoiceStatusEnum status, long timestamp) {
-        invoice.setStreet(location[0]);
-        invoice.setCity(location[1]);
-        invoice.setState(location[2]);
-        invoice.setZipcode(location[3]);
-        invoice.setDeliveryEnum(deliveryEnum);
-        invoice.setPaymentEnum(paymentEnum);
-        invoice.setTax_rate(StateTaxRateEnum.valueOf(invoice.getState()).tax_rate);
-        invoice.setLast_timestamp(timestamp);
-        invoice.setDiscounts(ExpenseUtil.calculateDiscounts(deliveryEnum));
-        invoice.setTotal_adjusted_cost(ExpenseUtil.calculateAdjustedTotal(invoice.getTax_rate(), invoice.getTotal_cost(), invoice.getDiscounts(), invoice.getPaymentEnum(), invoice.getStatus(), status, invoice.getTimestamp(), timestamp));
-        invoice.setStatus(status);
-        return 0;
-    }
-
     /**
-     * Find the invoice by its unique identifier
+     * Return the invoice based on the provided unique identifier
      * @param invoice_id
      * @return
      */
@@ -102,9 +71,9 @@ public class InvoiceManager{
     }
 
     /**
-     * Find the order based on its unique permutation of invoice and order id
-     * @param order_id
-     * @return Order
+     * Return the order based on the provided unique identifier
+     * @param order_id the hashed id correlated with the order
+     * @return the order if found
      */
     public Order readOrder(String order_id) {
         String[] ids = IdentifierUtil.parseId(order_id);
@@ -115,9 +84,9 @@ public class InvoiceManager{
     }
 
     /**
-     * Replace the current order with the latest order data
-     * @param order
-     * @return status code
+     * Replace the current order with the latest order
+     * @param order the product to be replaced
+     * @return transaction status
      */
     public int updateOrder(Order order) {
         if (order == null) {
@@ -134,8 +103,8 @@ public class InvoiceManager{
 
     /**
      * Delete the entire invoice entry along with all its orders
-     * @param invoice_id
-     * @return status code
+     * @param invoice_id the hashed id correlated with the invoice
+     * @return transaction status
      */
     public int deleteInvoice(String invoice_id) {
         Invoice invoice = this.invoices.get(invoice_id);
@@ -147,10 +116,10 @@ public class InvoiceManager{
     }
 
     /**
-     * Delete the loaded order from the collection.
+     * Delete the existing order from their directories.
      * If no orders exist with the respected invoice id delete the invoice entry
-     * @param order_id
-     * @return status code
+     * @param order_id the hashed id correlated with the order
+     * @return transaction status
      */
     public int deleteOrder(String order_id) {
         if (order_id == null) {
@@ -174,4 +143,58 @@ public class InvoiceManager{
         }
         return 0;
     }
+
+    /**
+     * Create an Invoice based on the provided inputs
+     * @param ids
+     * @param location
+     * @param delivery
+     * @param paymentEnum
+     * @param timestamp
+     * @return a populated Invoice
+     */
+    public Invoice createInvoice(String[] ids, String[] location, DeliveryEnum delivery, PaymentEnum paymentEnum, long timestamp) {
+        return Invoice.builder()
+                .id(ids[0] != null ? ids[0] : IdentifierUtil.generateEntityId(ComponentEnum.INVOICE))
+                .customer_id(ids[1])
+                .street(location[0])
+                .city(location[1])
+                .state(location[2])
+                .zipcode(location[3])
+                .deliveryEnum(delivery)
+                .paymentEnum(paymentEnum)
+                .status(paymentEnum == PaymentEnum.FINANCE ? InvoiceStatusEnum.OPEN : InvoiceStatusEnum.CLOSE)
+                .timestamp(timestamp)
+                .discounts(0.0)
+                .total_adjusted_cost(0.0)
+                .total_cost(0.0)
+                .orders(new HashMap<>())
+                .build();
+    }
+
+    /**
+     * Update the provided invoice by providing the invoice data to be overwritten with
+     * @param invoice
+     * @param location
+     * @param deliveryEnum
+     * @param paymentEnum
+     * @param status
+     * @param timestamp
+     * @return transaction status
+     */
+    public int updateInvoice(Invoice invoice, String[] location, DeliveryEnum deliveryEnum, PaymentEnum paymentEnum, InvoiceStatusEnum status, long timestamp) {
+        invoice.setStreet(location[0]);
+        invoice.setCity(location[1]);
+        invoice.setState(location[2]);
+        invoice.setZipcode(location[3]);
+        invoice.setDeliveryEnum(deliveryEnum);
+        invoice.setPaymentEnum(paymentEnum);
+        invoice.setTax_rate(StateTaxRateEnum.valueOf(invoice.getState()).tax_rate);
+        invoice.setLast_timestamp(timestamp);
+        invoice.setDiscounts(ExpenseUtil.calculateDiscounts(deliveryEnum));
+        invoice.setTotal_adjusted_cost(ExpenseUtil.calculateAdjustedTotal(invoice.getTax_rate(), invoice.getTotal_cost(), invoice.getDiscounts(), invoice.getPaymentEnum(), invoice.getStatus(), status, invoice.getTimestamp(), timestamp));
+        invoice.setStatus(status);
+        return 0;
+    }
+
 }

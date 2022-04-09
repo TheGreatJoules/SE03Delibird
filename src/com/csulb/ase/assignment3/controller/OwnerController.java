@@ -19,8 +19,7 @@ import com.csulb.ase.assignment3.utils.IdentifierUtil;
 import java.time.Instant;
 
 /**
- * The Controller for the Owner.
- * A set of commands given to the Owner.
+ * The OwnerController maintains and orchestras all transaction of the store
  */
 public class OwnerController {
     private final Owner owner;
@@ -69,9 +68,9 @@ public class OwnerController {
     }
 
     /**
-     *
+     * Upload person the person directory map
      * @param person
-     * @return
+     * @return transaction status
      */
     public int createPerson(Person person) {
         this.personManager.createPerson(person);
@@ -79,28 +78,28 @@ public class OwnerController {
     }
 
     /**
-     *
-     * @param person_id
-     * @return
+     * Return the person based on the provided unique identifier
+     * @param person_id the hashed id correlated with the person
+     * @return the person if they exists
      */
     public Person readPerson(String person_id) {
         return this.personManager.retrievePerson(person_id);
     }
 
     /**
-     *
-     * @return
+     * Return the Inventory to be queried and indexed
+     * @return the respected inventory of the owner
      */
     public Inventory readInventory() {
         return this.inventoryManager.readInventory();
     }
 
     /**
-     *
-     * @param supplier_id
-     * @param product_id
-     * @param quantity
-     * @return
+     * Update the product stock and adjust owner expenses with suppliers quote
+     * @param supplier_id the hashed id correlated with the supplier
+     * @param product_id the hashed id correlated with the product
+     * @param quantity the amount of products
+     * @return transaction status
      */
     public int updateInventory(String supplier_id, String product_id, int quantity) {
         Supplier supplier = (Supplier) this.personManager.retrievePerson(supplier_id);
@@ -110,9 +109,9 @@ public class OwnerController {
     }
 
     /**
-     *
-     * @param product
-     * @return
+     * Upload new product and register it in the inventory based on its unique identifier
+     * @param product The product to be uploaded
+     * @return transaction status
      */
     public int createProduct(Product product) {
         this.inventoryManager.createInventory(product);
@@ -120,18 +119,18 @@ public class OwnerController {
     }
 
     /**
-     *
-     * @param product_id
-     * @return
+     * Return the product corresponding to the provided unique identifier
+     * @param product_id the hashed id correlated with the product
+     * @return the product if it exists
      */
     public Product retrieveProduct(String product_id) {
         return this.inventoryManager.findProduct(product_id);
     }
 
     /**
-     *
-     * @param product
-     * @return
+     * Update the product by replacing the existing one with the provided one
+     * @param product Product to replace old
+     * @return transaction status
      */
     public int updateProduct(Product product) {
         if (product == null) {
@@ -142,9 +141,9 @@ public class OwnerController {
     }
 
     /**
-     *
-     * @param product_id
-     * @return
+     * Delete the product corresponding to the provided unique identifier
+     * @param product_id the hashed id correlated with the product
+     * @return transaction status
      */
     public int deleteProduct(String product_id) {
         this.inventoryManager.deleteInventory(product_id);
@@ -152,11 +151,11 @@ public class OwnerController {
     }
 
     /**
-     *
+     * Create new order by providing the corresponding values
      * @param order
      * @param deliveryEnum
      * @param paymentEnum
-     * @return
+     * @return transaction status
      */
     public int createOrder(Order order, DeliveryEnum deliveryEnum, PaymentEnum paymentEnum) {
         Customer customer = (Customer) personManager.retrievePerson(order.getCustomer_id());
@@ -168,18 +167,18 @@ public class OwnerController {
     }
 
     /**
-     *
-     * @param order_id
-     * @return
+     * Return the order corresponding to the provided unique identifier
+     * @param order_id the hashed id correlated with the order
+     * @return the order if it exists
      */
     public Order readOrder(String order_id) {
         return this.invoiceManager.readOrder(order_id);
     }
 
     /**
-     *
-     * @param order
-     * @return
+     * Update the order by replacing the existing one
+     * @param order the order to replace previous
+     * @return transaction status
      */
     public int updateOrder(Order order) {
         this.invoiceManager.updateOrder(order);
@@ -187,9 +186,9 @@ public class OwnerController {
     }
 
     /**
-     *
-     * @param order_id
-     * @return
+     * Delete the order corresponding to the provided unique identifier
+     * @param order_id the hashed id correlated with the order
+     * @return transaction status
      */
     public int deleteOrder(String order_id) {
         this.invoiceManager.deleteOrder(order_id);

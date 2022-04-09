@@ -26,6 +26,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * LoadUtils maps json to model objets and populates components data structures
+ */
 public class LoadUtils {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -70,21 +73,20 @@ public class LoadUtils {
                                                 File.separator + "persons.json";
 
     /**
-     * Load the owner graph with corresponding data from people and invoices
-     * @param owner_path
-     * @param people_path
-     * @return owner
+     * Returns a populated Owner from an owner json item
+     * @param owner_path json relative owner path
+     * @return A populated Owner object
      * @throws IOException
      */
-    public static Owner loadOwnerFromJson(String owner_path, String people_path) throws IOException {
+    public static Owner loadOwnerFromJson(String owner_path) throws IOException {
         return objectMapper.readValue(IOUtils.toString(new FileInputStream(owner_path), StandardCharsets.UTF_8), Owner.class);
     }
 
     /**
-     * Load the PersonManager from a serialized list of json person items
-     * @param people_path
-     * @return PersonManager
-     * @throws IOException
+     * Returns a populated PersonManager from list of json person items
+     * @param people_path json relative person path
+     * @return A populated PersonManager
+     * @throws IOException throws any file exception when loading the json items
      */
     public static PersonManager loadPersonManagerFromJson(String people_path) throws IOException {
         Map<String, Person> persons = new HashMap<>();
@@ -99,14 +101,13 @@ public class LoadUtils {
     }
 
     /**
-     * Deserialize a json person item to a Person object
-     * @param str
-     * @return Person
+     * Return Person based on its type
+     * @param str the deserialize json string
+     * @return A populated Person object
      */
     public static Person loadPersonFromJson(String str) {
-        JSONObject jsonObject = new JSONObject(str);
         try {
-            switch(PersonEnum.valueOf(jsonObject.get("person_type").toString())) {
+            switch(PersonEnum.valueOf(new JSONObject(str).get("person_type").toString())) {
                 case CUSTOMER:
                     return objectMapper.readValue(str, Customer.class);
                 case SUPPLIER:
@@ -120,47 +121,23 @@ public class LoadUtils {
             return null;
         }
     }
+
     /**
-     * Load the Invoice Manager from a list of serialized order items
-     * @param order_path
-     * @return InvoiceManager
-     * @throws IOException
+     * Returns a populated InvoiceManager from list of json invoice and order items
+     * @param invoice_path json relative product path
+     * @param order_path json relative order path
+     * @return A populated InvoiceManager
+     * @throws IOException throws any file exception when loading the json items
      */
     public static InvoiceManager getInvoiceFromJson(String invoice_path, String order_path) throws IOException {
         return new InvoiceManager(loadInvoicesFromJson(invoice_path, order_path));
     }
 
     /**
-     * Deserialize json order item to Order object
-     * @param str
-     * @return Order
-     */
-    public static Order getOrderFromJson(String str) {
-        try {
-            return objectMapper.readValue(str, Order.class);
-        } catch (IOException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Get a single product item from a serialized json item
-     * @param str
-     * @return Product
-     */
-    public static Product getProductFromJson(String str) {
-        try {
-            return objectMapper.readValue(str, Electronics.class);
-        } catch (IOException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Generate Invoices from orders
-     * @param order_path
+     * Returns a populated map of invoices from list of json invoice and order items hashed by their order id
+     * @param order_path json relative order path
      * @return invoices - a collection of invoices hashed by their unique identifier
-     * @throws IOException
+     * @throws IOException throws any file exception when loading the json
      */
     private static Map<String, Invoice> loadOrdersFromJson(Map<String, Invoice> invoices, String order_path) throws IOException {
         String[] items = IOUtils.toString(new FileInputStream(order_path), StandardCharsets.UTF_8).split("\\r?\\n");
@@ -175,10 +152,11 @@ public class LoadUtils {
     }
 
     /**
+     * a collection of invoices hashed by their unique identifier
      * Generate Invoices from orders
-     * @param invoice_path
-     * @return invoices - a collection of invoices hashed by their unique identifier
-     * @throws IOException
+     * @param invoice_path json relative invoice path
+     * @return populated map of invoices
+     * @throws IOException throws any file exception when loading the json
      */
     private static Map<String, Invoice> loadInvoicesFromJson(String invoice_path, String order_path) throws IOException {
         String[] items = IOUtils.toString(new FileInputStream(invoice_path), StandardCharsets.UTF_8).split("\\r?\\n");
@@ -196,10 +174,10 @@ public class LoadUtils {
 
 
     /**
-     * Load the Warehouses from list of json products
-     * @param product_path
-     * @return inventory
-     * @throws IOException
+     * Returns a populated map of warehouse from list of json product items hashed by their product id
+     * @param product_path json relative product path
+     * @return Load the Warehouses from list of json products
+     * @throws IOException throws any file exception when loading the json
      */
     public static Map<String, Warehouse> loadProductsFromJson(String product_path) throws IOException {
         String[] items = IOUtils.toString(new FileInputStream(product_path), StandardCharsets.UTF_8).split("\\r?\\n");
@@ -219,10 +197,10 @@ public class LoadUtils {
     }
 
     /**
-     * Load the Inventory manager from json product items
-     * @param product_path
-     * @return InventoryManager
-     * @throws IOException
+     * Returns a populated InventoryManager from list of json product items
+     * @param product_path json relative product path
+     * @return populated InventoryManager
+     * @throws IOException throws any file exception when loading the json
      */
     public static InventoryManager loadInventoryManagerFromJson(String product_path) throws IOException {
         Map<String, Warehouse> warehouses = LoadUtils.loadProductsFromJson(product_path);

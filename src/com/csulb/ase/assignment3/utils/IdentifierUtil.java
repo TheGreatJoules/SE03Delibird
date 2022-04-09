@@ -4,6 +4,9 @@ import com.csulb.ase.assignment3.models.ComponentEnum;
 import com.csulb.ase.assignment3.models.persons.PersonEnum;
 import com.csulb.ase.assignment3.models.ProductEnum;
 
+/**
+ * IdentifierUtil generates ids for all items and persons and manages the deserialization
+ */
 public class IdentifierUtil {
     public static final String delimit = "-";
     public static int ownerCount = 0;

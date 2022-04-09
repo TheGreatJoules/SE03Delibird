@@ -4,6 +4,9 @@ import com.csulb.ase.assignment3.models.invoices.DeliveryEnum;
 import com.csulb.ase.assignment3.models.invoices.InvoiceStatusEnum;
 import com.csulb.ase.assignment3.models.invoices.PaymentEnum;
 
+/**
+ * ExpenseUtil calculates expenses based on inputs
+ */
 public class ExpenseUtil {
     private static final long ONE_DAY = 24 * 60 * 60;
     private static final long ONE_WEEK = 7 * 24 * 60 * 60;
